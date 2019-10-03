@@ -1,0 +1,1255 @@
+# depslib dependency file v1.0
+1565766418 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Drawable.cpp
+	"../include/Drawable.h"
+
+1565837618 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Drawable.h
+	"TextureAtlas.h"
+	"Shader.h"
+
+1565841237 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/TextureAtlas.h
+	"ResourcesManager.h"
+	<map>
+	"GraphicsUtils.h"
+	"Texture.h"
+
+1565766358 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/ResourcesManager.h
+	"Definitions.h"
+	<stdlib.h>
+	<sstream>
+	<fstream>
+	<zip.h>
+
+1569835554 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Definitions.h
+	<unistd.h>
+	<bitset>
+	<sstream>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/quaternion.hpp>
+	<glm/gtx/transform.hpp>
+	<glm/gtx/norm.hpp>
+	<GLES/gl.h>
+	<GLES3/gl3.h>
+	<GLES3/gl3ext.h>
+	"TargetConditionals.h"
+	<glad/glad.h>
+	<OpenGLES/ES3/gl.h>
+	"vulkan/vulkan.h"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/glm.hpp
+	"detail/_fixes.hpp"
+	"detail/setup.hpp"
+	<cmath>
+	<climits>
+	<cfloat>
+	<limits>
+	<cassert>
+	"fwd.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"trigonometric.hpp"
+	"exponential.hpp"
+	"common.hpp"
+	"packing.hpp"
+	"geometric.hpp"
+	"matrix.hpp"
+	"vector_relational.hpp"
+	"integer.hpp"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/_fixes.hpp
+	<cmath>
+
+1554215232 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/setup.hpp
+	<cassert>
+	<cstddef>
+	"../simd/platform.h"
+	<cstdint>
+	<type_traits>
+
+1547219768 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/simd/platform.h
+	<cuda.h>
+	<immintrin.h>
+	<immintrin.h>
+	<popcntintrin.h>
+	<nmmintrin.h>
+	<smmintrin.h>
+	<tmmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+
+1551456338 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/fwd.hpp
+	"detail/qualifier.hpp"
+
+1537220928 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/qualifier.hpp
+	"setup.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/vec2.hpp
+	"./ext/vector_bool2.hpp"
+	"./ext/vector_bool2_precision.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float2_precision.hpp"
+	"./ext/vector_double2.hpp"
+	"./ext/vector_double2_precision.hpp"
+	"./ext/vector_int2.hpp"
+	"./ext/vector_int2_precision.hpp"
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_uint2_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_bool2.hpp
+	"../detail/type_vec2.hpp"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_vec2.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/_swizzle.hpp
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/_swizzle_func.hpp
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_vec2.inl
+	"./compute_vector_relational.hpp"
+
+1533836822 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/compute_vector_relational.hpp
+	"setup.hpp"
+	<limits>
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_bool2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_float2.hpp
+	"../detail/type_vec2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_float2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_double2.hpp
+	"../detail/type_vec2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_double2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_int2.hpp
+	"../detail/type_vec2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_int2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_uint2.hpp
+	"../detail/type_vec2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_uint2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/vec3.hpp
+	"./ext/vector_bool3.hpp"
+	"./ext/vector_bool3_precision.hpp"
+	"./ext/vector_float3.hpp"
+	"./ext/vector_float3_precision.hpp"
+	"./ext/vector_double3.hpp"
+	"./ext/vector_double3_precision.hpp"
+	"./ext/vector_int3.hpp"
+	"./ext/vector_int3_precision.hpp"
+	"./ext/vector_uint3.hpp"
+	"./ext/vector_uint3_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_bool3.hpp
+	"../detail/type_vec3.hpp"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_vec3.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_vec3.inl
+	"compute_vector_relational.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_bool3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_float3.hpp
+	"../detail/type_vec3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_float3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_double3.hpp
+	"../detail/type_vec3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_double3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_int3.hpp
+	"../detail/type_vec3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_int3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_uint3.hpp
+	"../detail/type_vec3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_uint3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/vec4.hpp
+	"./ext/vector_bool4.hpp"
+	"./ext/vector_bool4_precision.hpp"
+	"./ext/vector_float4.hpp"
+	"./ext/vector_float4_precision.hpp"
+	"./ext/vector_double4.hpp"
+	"./ext/vector_double4_precision.hpp"
+	"./ext/vector_int4.hpp"
+	"./ext/vector_int4_precision.hpp"
+	"./ext/vector_uint4.hpp"
+	"./ext/vector_uint4_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_bool4.hpp
+	"../detail/type_vec4.hpp"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_vec4.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_vec4.inl
+	"compute_vector_relational.hpp"
+	"type_vec4_simd.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_vec4_simd.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_bool4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_float4.hpp
+	"../detail/type_vec4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_float4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_double4.hpp
+	"../detail/type_vec4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_double4_precision.hpp
+	"../detail/setup.hpp"
+	"../detail/type_vec4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_int4.hpp
+	"../detail/type_vec4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_int4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_uint4.hpp
+	"../detail/type_vec4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_uint4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/mat2x2.hpp
+	"./ext/matrix_double2x2.hpp"
+	"./ext/matrix_double2x2_precision.hpp"
+	"./ext/matrix_float2x2.hpp"
+	"./ext/matrix_float2x2_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat2x2.hpp
+	"type_vec2.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x2.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat2x2.inl
+	"../matrix.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/matrix.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"detail/func_matrix.inl"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/mat2x3.hpp
+	"./ext/matrix_double2x3.hpp"
+	"./ext/matrix_double2x3_precision.hpp"
+	"./ext/matrix_float2x3.hpp"
+	"./ext/matrix_float2x3_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat2x3.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x3.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat2x3.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/mat2x4.hpp
+	"./ext/matrix_double2x4.hpp"
+	"./ext/matrix_double2x4_precision.hpp"
+	"./ext/matrix_float2x4.hpp"
+	"./ext/matrix_float2x4_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat2x4.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x4.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat2x4.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/mat3x2.hpp
+	"./ext/matrix_double3x2.hpp"
+	"./ext/matrix_double3x2_precision.hpp"
+	"./ext/matrix_float3x2.hpp"
+	"./ext/matrix_float3x2_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat3x2.hpp
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x2.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat3x2.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/mat3x3.hpp
+	"./ext/matrix_double3x3.hpp"
+	"./ext/matrix_double3x3_precision.hpp"
+	"./ext/matrix_float3x3.hpp"
+	"./ext/matrix_float3x3_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat3x3.hpp
+	"type_vec3.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x3.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat3x3.inl
+	"../matrix.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/mat3x4.hpp
+	"./ext/matrix_double3x4.hpp"
+	"./ext/matrix_double3x4_precision.hpp"
+	"./ext/matrix_float3x4.hpp"
+	"./ext/matrix_float3x4_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat3x4.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x4.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat3x4.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/mat4x2.hpp
+	"./ext/matrix_double4x2.hpp"
+	"./ext/matrix_double4x2_precision.hpp"
+	"./ext/matrix_float4x2.hpp"
+	"./ext/matrix_float4x2_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat4x2.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x2.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat4x2.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double4x2_precision.hpp
+	"../detail/type_mat4x2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float4x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/mat4x3.hpp
+	"./ext/matrix_double4x3.hpp"
+	"./ext/matrix_double4x3_precision.hpp"
+	"./ext/matrix_float4x3.hpp"
+	"./ext/matrix_float4x3_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat4x3.hpp
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x3.inl"
+
+1547217808 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat4x3.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/mat4x4.hpp
+	"./ext/matrix_double4x4.hpp"
+	"./ext/matrix_double4x4_precision.hpp"
+	"./ext/matrix_float4x4.hpp"
+	"./ext/matrix_float4x4_precision.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat4x4.hpp
+	"type_vec4.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat4x4.inl
+	"../matrix.hpp"
+	"type_mat4x4_simd.inl"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_mat4x4_simd.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+	"func_matrix_simd.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/geometric.hpp
+	"detail/type_vec3.hpp"
+	"detail/func_geometric.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_geometric.inl
+	"../exponential.hpp"
+	"../common.hpp"
+	"func_geometric_simd.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/exponential.hpp
+	"detail/type_vec1.hpp"
+	"detail/type_vec2.hpp"
+	"detail/type_vec3.hpp"
+	"detail/type_vec4.hpp"
+	<cmath>
+	"detail/func_exponential.inl"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_vec1.hpp
+	"qualifier.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_vec1.inl
+	"./compute_vector_relational.hpp"
+
+1533836822 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_exponential.inl
+	"../vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cmath>
+	<cassert>
+	"func_exponential_simd.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/vector_relational.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"detail/func_vector_relational.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_vector_relational.inl
+	"func_vector_relational_simd.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_vector_relational_simd.inl
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/_vectorize.hpp
+
+1533836822 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_exponential_simd.inl
+	"../simd/exponential.h"
+
+1531749970 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/simd/exponential.h
+	"platform.h"
+
+1554148948 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/common.hpp
+	"detail/qualifier.hpp"
+	"detail/_fixes.hpp"
+	"detail/func_common.inl"
+
+1551452968 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_common.inl
+	"../vector_relational.hpp"
+	"compute_common.hpp"
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+	"func_common_simd.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/compute_common.hpp
+	"setup.hpp"
+	<limits>
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_common_simd.inl
+	"../simd/common.h"
+	<immintrin.h>
+
+1552483510 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/simd/common.h
+	"platform.h"
+
+1525713784 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_geometric_simd.inl
+	"../simd/geometric.h"
+
+1525713784 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/simd/geometric.h
+	"common.h"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_matrix_simd.inl
+	"type_mat4x4.hpp"
+	"../geometric.hpp"
+	"../simd/matrix.h"
+	<cstring>
+
+1525713784 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/simd/matrix.h
+	"geometric.h"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_double2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_float2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/trigonometric.hpp
+	"detail/setup.hpp"
+	"detail/qualifier.hpp"
+	"detail/func_trigonometric.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+	"func_trigonometric_simd.inl"
+
+1464703462 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_trigonometric_simd.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/packing.hpp
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float4.hpp"
+	"detail/func_packing.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_packing.inl
+	"../common.hpp"
+	"type_half.hpp"
+	"func_packing_simd.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_half.hpp
+	"setup.hpp"
+	"type_half.inl"
+
+1547217808 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_half.inl
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_packing_simd.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/integer.hpp
+	"detail/qualifier.hpp"
+	"common.hpp"
+	"vector_relational.hpp"
+	"detail/func_integer.inl"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_integer.inl
+	"_vectorize.hpp"
+	<intrin.h>
+	<limits>
+	"func_integer_simd.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/func_integer_simd.inl
+	"../simd/integer.h"
+
+1525713784 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/simd/integer.h
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtc/matrix_transform.hpp
+	"../mat4x4.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../ext/matrix_projection.hpp"
+	"../ext/matrix_clip_space.hpp"
+	"../ext/matrix_transform.hpp"
+	"matrix_transform.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_projection.hpp
+	"../gtc/constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+	"matrix_projection.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtc/constants.hpp
+	"../ext/scalar_constants.hpp"
+	"constants.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/scalar_constants.hpp
+	"../detail/setup.hpp"
+	"scalar_constants.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/scalar_constants.inl
+	<limits>
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtc/constants.inl
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_projection.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_clip_space.hpp
+	"../ext/scalar_constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"matrix_clip_space.inl"
+
+1554148948 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_clip_space.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_transform.hpp
+	"../gtc/constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+	"matrix_transform.inl"
+
+1554148948 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/matrix_transform.inl
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtc/matrix_transform.inl
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+
+1554145306 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtx/quaternion.hpp
+	"../glm.hpp"
+	"../gtc/constants.hpp"
+	"../gtc/quaternion.hpp"
+	"../ext/quaternion_exponential.hpp"
+	"../gtx/norm.hpp"
+	"quaternion.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtc/quaternion.hpp
+	"../gtc/constants.hpp"
+	"../gtc/matrix_transform.hpp"
+	"../ext/vector_relational.hpp"
+	"../ext/quaternion_common.hpp"
+	"../ext/quaternion_float.hpp"
+	"../ext/quaternion_float_precision.hpp"
+	"../ext/quaternion_double.hpp"
+	"../ext/quaternion_double_precision.hpp"
+	"../ext/quaternion_relational.hpp"
+	"../ext/quaternion_geometric.hpp"
+	"../ext/quaternion_trigonometric.hpp"
+	"../ext/quaternion_transform.hpp"
+	"../detail/type_mat3x3.hpp"
+	"../detail/type_mat4x4.hpp"
+	"../detail/type_vec3.hpp"
+	"../detail/type_vec4.hpp"
+	"quaternion.inl"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_relational.hpp
+	"../detail/qualifier.hpp"
+	"vector_relational.inl"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/vector_relational.inl
+	"../vector_relational.hpp"
+	"../common.hpp"
+	"../detail/qualifier.hpp"
+	"../detail/type_float.hpp"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_float.hpp
+	"setup.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_common.hpp
+	"../ext/scalar_constants.hpp"
+	"../ext/quaternion_geometric.hpp"
+	"../common.hpp"
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	<limits>
+	"quaternion_common.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_geometric.hpp
+	"../geometric.hpp"
+	"../exponential.hpp"
+	"../ext/vector_relational.hpp"
+	"quaternion_geometric.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_geometric.inl
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_common.inl
+	"quaternion_common_simd.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_common_simd.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_float.hpp
+	"../detail/type_quat.hpp"
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_quat.hpp
+	"../detail/type_mat3x3.hpp"
+	"../detail/type_mat4x4.hpp"
+	"../detail/type_vec3.hpp"
+	"../detail/type_vec4.hpp"
+	"../ext/vector_relational.hpp"
+	"../ext/quaternion_relational.hpp"
+	"../gtc/constants.hpp"
+	"../gtc/matrix_transform.hpp"
+	"type_quat.inl"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_relational.hpp
+	"../vector_relational.hpp"
+	"quaternion_relational.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_relational.inl
+
+1541010242 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_quat.inl
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	"../ext/quaternion_geometric.hpp"
+	<limits>
+	"type_quat_simd.inl"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/detail/type_quat_simd.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_float_precision.hpp
+	"../detail/type_quat.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_double.hpp
+	"../detail/type_quat.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_double_precision.hpp
+	"../detail/type_quat.hpp"
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_trigonometric.hpp
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	"scalar_constants.hpp"
+	"vector_relational.hpp"
+	<limits>
+	"quaternion_trigonometric.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_trigonometric.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_transform.hpp
+	"../common.hpp"
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"quaternion_transform.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_transform.inl
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtc/quaternion.inl
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"../exponential.hpp"
+	"epsilon.hpp"
+	<limits>
+	"quaternion_simd.inl"
+
+1531749970 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtc/epsilon.hpp
+	"../detail/setup.hpp"
+	"../detail/qualifier.hpp"
+	"epsilon.inl"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtc/epsilon.inl
+	"../vector_relational.hpp"
+	"../common.hpp"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtc/quaternion_simd.inl
+
+1537194752 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_exponential.hpp
+	"../common.hpp"
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"../ext/scalar_constants.hpp"
+	"quaternion_exponential.inl"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/ext/quaternion_exponential.inl
+
+1554143842 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtx/norm.hpp
+	"../geometric.hpp"
+	"../gtx/quaternion.hpp"
+	"norm.inl"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtx/norm.inl
+	"../detail/qualifier.hpp"
+
+1535549572 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtx/quaternion.inl
+	<limits>
+	"../gtc/constants.hpp"
+
+1554145344 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtx/transform.hpp
+	"../glm.hpp"
+	"../gtc/matrix_transform.hpp"
+	"transform.inl"
+
+1533836824 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/glm/gtx/transform.inl
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan.h
+	"vk_platform.h"
+	"vulkan_core.h"
+	"vulkan_android.h"
+	<zircon/types.h>
+	"vulkan_fuchsia.h"
+	"vulkan_ios.h"
+	"vulkan_macos.h"
+	"vulkan_metal.h"
+	"vulkan_vi.h"
+	<wayland-client.h>
+	"vulkan_wayland.h"
+	<windows.h>
+	"vulkan_win32.h"
+	<xcb/xcb.h>
+	"vulkan_xcb.h"
+	<X11/Xlib.h>
+	"vulkan_xlib.h"
+	<X11/Xlib.h>
+	<X11/extensions/Xrandr.h>
+	"vulkan_xlib_xrandr.h"
+	<ggp_c/vulkan_types.h>
+	"vulkan_ggp.h"
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vk_platform.h
+	<stddef.h>
+	<stdint.h>
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_core.h
+	"vk_platform.h"
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_android.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_fuchsia.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_ios.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_macos.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_metal.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_vi.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_wayland.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_win32.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_xcb.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_xlib.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_xlib_xrandr.h
+
+1564168255 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vulkan/vulkan_ggp.h
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/libzip/zip.h
+	<zipconf.h>
+	<stdio.h>
+	<sys/types.h>
+	<time.h>
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/libzip/zipconf.h
+	<stdint.h>
+
+1565766085 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GraphicsUtils.h
+	<vector>
+	"ResourcesManager.h"
+
+1565766232 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Texture.h
+
+1565767683 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Shader.h
+
+1530863121 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/InputSystem.cpp
+	"../include/InputSystem.h"
+
+1565837034 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/InputSystem.h
+	"Definitions.h"
+	<cstring>
+
+1565766576 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GraphicsUtils.cpp
+	"../include/GraphicsUtils.h"
+	"stb_image.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1569914128 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GameScreen.cpp
+	"../include/GameScreen.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GameScreen.h
+	"Screen.h"
+	"GameModel.h"
+	"GameView.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Screen.h
+
+1565766085 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GameModel.h
+	"Model.h"
+	"Entity.h"
+	"InputSystem.h"
+	"GraphicsManager.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Model.h
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Entity.h
+	<string>
+	"Definitions.h"
+
+1565846277 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GraphicsManager.h
+	"Definitions.h"
+	"Sprite.h"
+	"UIObject.h"
+	"Renderer.h"
+	"Text.h"
+	"OS_ANDROID.h"
+	"TargetConditionals.h"
+	"OS_GLFW.h"
+	"OS_iOS.h"
+	"OS_GLFW.h"
+	<list>
+	<algorithm>
+
+1568879289 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Renderer.h
+	<stdexcept>
+	<set>
+	"vulkan/vulkan.h"
+	"ResourcesManager.h"
+	"Drawable.h"
+	"Texture.h"
+	"Text.h"
+
+1565846227 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Text.h
+	"Font.h"
+	"TextureAtlas.h"
+	"Shader.h"
+
+1565766095 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Font.h
+	"ResourcesManager.h"
+	"OS_ANDROID.h"
+	"TargetConditionals.h"
+	"OS_GLFW.h"
+	"OS_GLFW.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/OS_ANDROID.h
+	<memory>
+	<cstdlib>
+	<cstring>
+	<jni.h>
+	<errno.h>
+	<cassert>
+	<EGL/egl.h>
+	<GLES3/gl3.h>
+	<GLES3/gl3ext.h>
+	<android/sensor.h>
+	<android/log.h>
+	<android_native_app_glue.h>
+	<stdio.h>
+	<stdlib.h>
+	"Definitions.h"
+	"Graphics.h"
+
+1569833117 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/OS_GLFW.h
+	<vector>
+	<windows.h>
+	"vulkan/vulkan.h"
+	"GLFW/glfw3.h"
+	<stdio.h>
+	<stdlib.h>
+	"stb_image.h"
+	"Definitions.h"
+	"GraphicsManager.h"
+	"InputSystem.h"
+
+1565139007 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/GLFW/glfw3.h
+	<stddef.h>
+	<stdint.h>
+	<vulkan/vulkan.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+	<GLES2/gl2.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl3.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl31.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl32.h>
+	<GLES2/gl2ext.h>
+	<OpenGL/gl3.h>
+	<OpenGL/gl3ext.h>
+	<GL/glcorearb.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glext.h>
+	<GL/glu.h>
+
+1565837387 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Sprite.h
+	"Drawable.h"
+	"Entity.h"
+	"Animation.h"
+	"GraphicElement.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Animation.h
+	<vector>
+	<string>
+	"TextureAtlas.h"
+	"Shader.h"
+	"Drawable.h"
+
+1565766521 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GraphicElement.h
+
+1565837334 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/UIObject.h
+	"Drawable.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GameView.h
+	"View.h"
+	"TextureAtlas.h"
+	"Sprite.h"
+	"Text.h"
+	"Button.h"
+	"GameModel.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/View.h
+	"Screen.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Button.h
+	"UIObject.h"
+
+1567074919 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/ResourcesManager.cpp
+	"../include/ResourcesManager.h"
+
+1565766829 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/SoundManager.cpp
+	"../include/SoundManager.h"
+	<iostream>
+	<fstream>
+
+1565766851 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/SoundManager.h
+	<AL/al.h>
+	<AL/alc.h>
+	"SoundObject.h"
+	<map>
+	<string>
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/AL/al.h
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/AL/alc.h
+
+1565767237 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/SoundObject.h
+	<AL/al.h>
+	<AL/alc.h>
+	<vorbis/codec.h>
+	<ogg/ogg.h>
+	<vorbis/vorbisfile.h>
+	<cstdio>
+	<vector>
+	"ResourcesManager.h"
+	"OS_ANDROID.h"
+	"TargetConditionals.h"
+	"OS_GLFW.h"
+	"OS_iOS.h"
+	"OS_GLFW.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vorbis/codec.h
+	<ogg/ogg.h>
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/ogg/ogg.h
+	<stddef.h>
+	<ogg/os_types.h>
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/ogg/os_types.h
+	<stdint.h>
+	<sys/types.h>
+	<sys/types.h>
+	<inttypes.h>
+	<sys/types.h>
+	<inttypes.h>
+	<ogg/config_types.h>
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/ogg/config_types.h
+	<inttypes.h>
+	<stdint.h>
+	<sys/types.h>
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/external/vorbis/vorbisfile.h
+	<stdio.h>
+	"codec.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/OS_iOS.h
+	<memory>
+	<cstdlib>
+	<cstring>
+	<errno.h>
+	<cassert>
+	<stdio.h>
+	<stdlib.h>
+	"Definitions.h"
+	"Graphics.h"
+	<sys/time.h>
+
+1565766834 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/SoundObject.cpp
+	"../include/SoundObject.h"
+	<iostream>
+	<fstream>
+
+1565767324 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GameModel.cpp
+	"../include/GameModel.h"
+	<algorithm>
+
+1530863121 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Sprite.cpp
+	"../include/Sprite.h"
+
+1569834155 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GGEGame.cpp
+	"../include/GGEGame.h"
+
+1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GGEGame.h
+	"Definitions.h"
+	"OS_ANDROID.h"
+	"TargetConditionals.h"
+	"OS_GLFW.h"
+	"OS_iOS.h"
+	"OS_GLFW.h"
+	<windows.h>
+	<sys/time.h>
+	"GameScreen.h"
+
+1530863121 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/UIObject.cpp
+	"../include/UIObject.h"
+
+1565767165 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Font.cpp
+	"../include/Font.h"
+
+1569869463 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/OS_GLFW.cpp
+	"../include/OS_GLFW.h"
+	<algorithm>
+
+1565852946 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GraphicsManager.cpp
+	"../include/GraphicsManager.h"
+
+1565846846 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GameView.cpp
+	"../include/GameView.h"
+
+1570086215 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Renderer.cpp
+	"../include/Renderer.h"
+	<iostream>
+
+1569833127 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/main.cpp
+	"include/GGEGame.h"
+
