@@ -58,6 +58,7 @@ namespace GGE
             void setCursorPosition(int x, int y);
             void toggleFullScreen();
             inline bool isFullScreen() {return fullScreen; };
+            inline void waitEvents() { glfwWaitEvents(); }
 
             Point getWindowSize();
             void updateMouseByJoystick(float delta);

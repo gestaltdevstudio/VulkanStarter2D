@@ -11,43 +11,46 @@ namespace GGE
     void GameView::initView()
     {
 
-//        ta = new TextureAtlas();
-//
-//        const resourceFile *rfMenuAtlas = ResourcesManager::getInstance()->loadCompressedFile("game.atlas");
-//        const resourceFile *rfMenuImage = ResourcesManager::getInstance()->loadCompressedFile("game.png");
-//        ta->loadTextureAtlas(rfMenuAtlas, rfMenuImage);
-//        delete rfMenuImage;
-//        delete rfMenuAtlas;
-//
+        ta = new TextureAtlas();
+
+        const resourceFile *rfMenuAtlas = ResourcesManager::getInstance()->loadCompressedFile("game.atlas");
+        const resourceFile *rfMenuImage = ResourcesManager::getInstance()->loadCompressedFile("game.png");
+        ta->loadTextureAtlas(rfMenuAtlas, rfMenuImage);
+        delete rfMenuImage;
+        delete rfMenuAtlas;
+
 //        sh = new Shader();
 //        const resourceFile *rfVertShader = ResourcesManager::getInstance()->loadCompressedFile("shader.vert");
 //        const resourceFile *rfFragShader = ResourcesManager::getInstance()->loadCompressedFile("shader.frag");
-////        sh->setShaderID(GraphicsUtils::loadShaders(rfVertShader, rfFragShader));
-////        if (!sh->getShaderID())
-////            return;
-//
+//        sh->setShaderID(GraphicsUtils::loadShaders(rfVertShader, rfFragShader));
+//        if (!sh->getShaderID())
+//            return;
+
 //        delete rfVertShader;
 //        delete rfFragShader;
-//
-//        playerSprite = new Sprite();
-//        Animation *animation = new Animation();
-//        std::vector<std::string> frames;
-//        frames.push_back("dogAnim2");
-//        frames.push_back("dogAnim3");
-//        frames.push_back("dogAnim4");
-//        frames.push_back("dogAnim5");
-//        frames.push_back("dogAnim6");
-//        frames.push_back("dogAnim7");
-//        frames.push_back("dogAnim8");
-//        frames.push_back("dogAnim9");
-//        animation->loadFrames(ta, sh, 1.0/8, frames);
-//        playerSprite->addAnimation("Idle", animation);
-//        playerSprite->setCurrentAnimationName("Idle", ANIM_LOOP_PINGPONG);
-//        playerSprite->setShader(sh);
-//        playerSprite->setIsVisible(true);
-//        playerSprite->setEntity(gameModel->getPlayer());
-//        GraphicsManager::getInstance()->addSprite("test", playerSprite);
-//
+
+        playerSprite = new Sprite("Player");
+        Animation *animation = new Animation();
+        std::vector<std::string> frames;
+        frames.push_back("dogAnim2");
+        frames.push_back("dogAnim3");
+        frames.push_back("dogAnim4");
+        frames.push_back("dogAnim5");
+        frames.push_back("dogAnim6");
+        frames.push_back("dogAnim7");
+        frames.push_back("dogAnim8");
+        frames.push_back("dogAnim9");
+        animation->loadFrames(ta, 1.0/8, frames);
+        playerSprite->addAnimation("Idle", animation);
+        playerSprite->setCurrentAnimationName("Idle", ANIM_LOOP_PINGPONG);
+        playerSprite->setShader(sh);
+        playerSprite->setIsVisible(true);
+        playerSprite->setEntity(gameModel->getPlayer());
+        playerSprite->setRotation(80.f);
+        playerSprite->setX(400);
+        playerSprite->setY(100);
+        GraphicsManager::getInstance()->addSprite("test", playerSprite);
+
 //        s2 = new Sprite();
 //        s2->loadRegion("bone", ta);
 //        s2->setShader(sh);
@@ -181,11 +184,11 @@ namespace GGE
     void GameView::finishView()
     {
 
-//        delete playerSprite;
+        delete playerSprite;
 //        delete s2;
 //        delete sh;
 //        delete textSh;
-//        delete ta;
+        delete ta;
 //        delete f;
 //        delete t;
 //#if !defined(GGE_DESKTOP)

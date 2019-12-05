@@ -14,7 +14,7 @@ namespace GGE
 	void GraphicsManager::initGraphics()
 	{
 
-        renderer = new Renderer();
+        renderer = new Renderer(1000);
 
 	}
 
@@ -22,34 +22,34 @@ namespace GGE
 	{
         renderer->onRenderStart();
 
-//         for(std::list<GraphicElement*>::iterator it = graphicElements.begin(); it != graphicElements.end(); ++it)
-//         {
-//
-//            Sprite *sprite = NULL;
+        for(std::list<GraphicElement*>::iterator it = graphicElements.begin(); it != graphicElements.end(); ++it)
+        {
+
+            Sprite *sprite = NULL;
 //            Text *text = NULL;
 //            UIObject *uiObject = NULL;
-//            sprite = dynamic_cast<Sprite*>(*it);
-//            if (sprite)
-//            {
-//                if (sprite->isVisible()) {
-//
-//                    Drawable *drawable;
-//                    if (!sprite->getCurrentAnimationName().empty())
-//                    {
-//                        if (!animationsPaused) {
-//                            sprite->updateCurrentAnimation(deltaTime);
-//                        }
-//                        drawable = sprite->getCurrentAnimation()->getCurrentDrawable(sprite->getElapsedTime(), sprite->getAnimationPlayMode());
-//                    }
-//                    else
-//                    {
-//                        drawable = reinterpret_cast<Drawable*>(sprite);
-//                    }
-//
-//                    renderer->renderTexture(sprite->getX(), sprite->getY(), drawable);
-//
-//                }
-//            }
+            sprite = dynamic_cast<Sprite*>(*it);
+            if (sprite)
+            {
+                if (sprite->isVisible()) {
+
+                    Drawable *drawable;
+                    if (!sprite->getCurrentAnimationName().empty())
+                    {
+                        if (!animationsPaused) {
+                            sprite->updateCurrentAnimation(deltaTime);
+                        }
+                        drawable = sprite->getCurrentAnimation()->getCurrentDrawable(sprite->getElapsedTime(), sprite->getAnimationPlayMode());
+                    }
+                    else
+                    {
+                        drawable = reinterpret_cast<Drawable*>(sprite);
+                    }
+
+                    renderer->renderDrawable(drawable);
+
+                }
+            }
 //            else
 //            {
 //                text = dynamic_cast<Text*>(*it);
@@ -66,11 +66,13 @@ namespace GGE
 //                    }
 //                }
 //            }
-//
-//        }
+
+        }
 
         renderer->onRenderFinish();
     }
+
+
 
     void GraphicsManager::addSprite(std::string objectName, Sprite *_object)
     {

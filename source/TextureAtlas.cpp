@@ -1,5 +1,8 @@
 #include "../include/TextureAtlas.h"
 
+#include "../include/GraphicsManager.h"
+#include <string.h>
+
 namespace GGE
 {
 
@@ -87,7 +90,7 @@ namespace GGE
         }
 
 
-//        texture = GraphicsUtils::loadImage(atlasImage);
+        texture = GraphicsManager::getInstance()->getRenderer()->createTextureImage(atlasImage);
 
         return NULL;
     }
@@ -114,6 +117,7 @@ namespace GGE
         }
 
         regions.clear();
+        delete texture;
 
     }
 

@@ -25,6 +25,7 @@ namespace GGE
         gameView->initView();
         accumulator = 0;
         OS::getInstance()->setRunning(true);
+        GraphicsManager::getInstance()->getRenderer()->prepare();
     }
 
     void GameScreen::render(float deltaTime)

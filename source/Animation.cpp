@@ -6,10 +6,8 @@
 namespace GGE
 {
 
-
     Animation::Animation()
     {
-        elapsedTime = 0;
     }
 
     Animation::~Animation()
@@ -18,27 +16,26 @@ namespace GGE
         {
                 Drawable* drawable = frames[j];
                 frames[j] = 0;
-                delete drawable;
+                if (drawable)
+                    delete drawable;
         }
     }
 
-    void Animation::loadFrames(TextureAtlas *_textureAtlas, Shader *_shader, float _frameDuration, std::vector<std::string> _framesNames)
+    void Animation::loadFrames(TextureAtlas *_textureAtlas, float _frameDuration, std::vector<std::string> _framesNames)
     {
 
-        shader = _shader;
         textureAtlas = _textureAtlas;
         frameDuration = _frameDuration;
         for(std::vector<std::string>::iterator it = _framesNames.begin(); it != _framesNames.end(); ++it) {
             std::string name = *it;
             Drawable *drawable = new Drawable();
             drawable->loadRegion(name, textureAtlas);
-            drawable->setShader(shader);
             frames.push_back(drawable);
         }
 
     }
 
-    Drawable* Animation::getCurrentDrawable(AnimationPlayMode playMode)
+    Drawable* Animation::getCurrentDrawable(float elapsedTime, AnimationPlayMode playMode)
     {
         unsigned int frameIndex = (int) (elapsedTime / frameDuration);
         switch(playMode)

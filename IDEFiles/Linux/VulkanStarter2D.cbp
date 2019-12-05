@@ -78,6 +78,7 @@
 		<Unit filename="../../include/Model.h" />
 		<Unit filename="../../include/OS_GLFW.h" />
 		<Unit filename="../../include/Renderer.h" />
+		<Unit filename="../../include/RendererBatch.h" />
 		<Unit filename="../../include/ResourcesManager.h" />
 		<Unit filename="../../include/Screen.h" />
 		<Unit filename="../../include/Shader.h" />
@@ -90,6 +91,7 @@
 		<Unit filename="../../include/UIObject.h" />
 		<Unit filename="../../include/View.h" />
 		<Unit filename="../../main.cpp" />
+		<Unit filename="../../source/Animation.cpp" />
 		<Unit filename="../../source/Drawable.cpp" />
 		<Unit filename="../../source/Font.cpp" />
 		<Unit filename="../../source/GGEGame.cpp" />
@@ -101,9 +103,12 @@
 		<Unit filename="../../source/InputSystem.cpp" />
 		<Unit filename="../../source/OS_GLFW.cpp" />
 		<Unit filename="../../source/Renderer.cpp" />
+		<Unit filename="../../source/RendererBatch.cpp" />
 		<Unit filename="../../source/ResourcesManager.cpp" />
 		<Unit filename="../../source/SoundManager.cpp" />
 		<Unit filename="../../source/SoundObject.cpp" />
+		<Unit filename="../../source/Sprite.cpp" />
+		<Unit filename="../../source/TextureAtlas.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

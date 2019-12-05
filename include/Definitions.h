@@ -33,12 +33,14 @@
 #define FIXED_ASPECT_RATIO 1.777777777f
 #endif
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
+#ifndef GGE_PI
+#define GGE_PI 3.14159265358979323846f
 #endif
 
 #define SCREEN_X 1920
 #define SCREEN_Y 1080
+//#define SCREEN_X 480
+//#define SCREEN_Y 270
 
 #define NUMBER_OF_JOYSTICKS 4
 
@@ -75,6 +77,15 @@ namespace GGE
         float x;
         float y;
     };
+
+    struct Vector4
+    {
+        float r;
+        float g;
+        float b;
+        float a;
+    };
+
 
     struct Point {
         int x;

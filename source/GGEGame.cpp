@@ -119,6 +119,7 @@ namespace GGE
     void Game::initGraphics()
     {
         GraphicsManager::getInstance()->initGraphics();
+        GraphicsManager::getInstance()->getRenderer()->createBigBuffers();
     }
 
     void Game::initInputSystem()

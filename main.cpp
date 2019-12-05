@@ -1,5 +1,3 @@
-
-#define GLFW_INCLUDE_VULKAN
 #include "include/GGEGame.h"
 
 int main()

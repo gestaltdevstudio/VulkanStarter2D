@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include "TextureAtlas.h"
-#include "Shader.h"
 #include "Drawable.h"
 
 namespace GGE
@@ -16,19 +15,16 @@ namespace GGE
         public:
             Animation();
             ~Animation();
-            void loadFrames(TextureAtlas *_textureAtlas, Shader *_shader, float _frameDuration, std::vector<std::string> _framesNames);
-
-
-            inline void update(float deltaTime) { elapsedTime += deltaTime; }
-            Drawable* getCurrentDrawable(AnimationPlayMode playMode);
+            void loadFrames(TextureAtlas *_textureAtlas, float _frameDuration, std::vector<std::string> _framesNames);
+            Drawable* getCurrentDrawable(float elapsedTime, AnimationPlayMode playMode);
+            inline float getFrameDuration() { return frameDuration; }
+            inline int getNumberOfFrames() { return frames.size(); }
 
 
         protected:
             float frameDuration;
             std::vector<Drawable*> frames;
             TextureAtlas *textureAtlas;
-            Shader *shader;
-            float elapsedTime;
 
 
     };

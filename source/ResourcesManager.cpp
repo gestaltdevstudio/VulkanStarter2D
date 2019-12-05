@@ -69,7 +69,7 @@ namespace GGE
     {
 
         long size;
-        std::ifstream File(("resources/" + to_string(cfileName)).c_str(), std::ifstream::binary);
+        std::ifstream File(("conf/" + to_string(cfileName)).c_str(), std::ifstream::binary);
         if(File.is_open())
         {
 

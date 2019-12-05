@@ -1,6 +1,8 @@
 #ifndef SHADER_H_INCLUDED
 #define SHADER_H_INCLUDED
 
+#include "vulkan/vulkan.h"
+
 namespace GGE
 {
 

@@ -38,6 +38,7 @@ namespace GGE
             inline bool isFlipedX() { return flipedX; }
             inline void setFlipedY(bool _flipedY) { flipedY = _flipedY; }
             inline bool isFlipedY() { return flipedY; }
+            inline Vector4 getColor() { return color; }
 
 
         protected:
@@ -52,6 +53,8 @@ namespace GGE
             bool visible;
             bool flipedX;
             bool flipedY;
+            std::vector<uint32_t> indices;
+            Vector4 color;
     //        GLuint uvbo;
     };
 }

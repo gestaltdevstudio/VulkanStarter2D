@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1565766418 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Drawable.cpp
+1575519914 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Drawable.cpp
 	"../include/Drawable.h"
 
-1565837618 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Drawable.h
+1574747912 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Drawable.h
 	"TextureAtlas.h"
 	"Shader.h"
 
-1565841237 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/TextureAtlas.h
+1573717611 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/TextureAtlas.h
 	"ResourcesManager.h"
 	<map>
 	"GraphicsUtils.h"
@@ -19,7 +19,7 @@
 	<fstream>
 	<zip.h>
 
-1569835554 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Definitions.h
+1575452469 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Definitions.h
 	<unistd.h>
 	<bitset>
 	<sstream>
@@ -960,14 +960,15 @@
 	<vector>
 	"ResourcesManager.h"
 
-1565766232 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Texture.h
+1574229619 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Texture.h
 
-1565767683 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Shader.h
+1571758921 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Shader.h
+	"vulkan/vulkan.h"
 
-1530863121 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/InputSystem.cpp
+1571425728 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/InputSystem.cpp
 	"../include/InputSystem.h"
 
-1565837034 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/InputSystem.h
+1571425714 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/InputSystem.h
 	"Definitions.h"
 	<cstring>
 
@@ -991,7 +992,7 @@
 	<intrin.h>
 	<arm_neon.h>
 
-1569914128 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GameScreen.cpp
+1575441725 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GameScreen.cpp
 	"../include/GameScreen.h"
 
 1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GameScreen.h
@@ -1013,7 +1014,7 @@
 	<string>
 	"Definitions.h"
 
-1565846277 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GraphicsManager.h
+1573718310 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GraphicsManager.h
 	"Definitions.h"
 	"Sprite.h"
 	"UIObject.h"
@@ -1027,7 +1028,7 @@
 	<list>
 	<algorithm>
 
-1568879289 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Renderer.h
+1575441659 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Renderer.h
 	<stdexcept>
 	<set>
 	"vulkan/vulkan.h"
@@ -1066,7 +1067,7 @@
 	"Definitions.h"
 	"Graphics.h"
 
-1569833117 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/OS_GLFW.h
+1573114208 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/OS_GLFW.h
 	<vector>
 	<windows.h>
 	"vulkan/vulkan.h"
@@ -1101,17 +1102,16 @@
 	<GL/glext.h>
 	<GL/glu.h>
 
-1565837387 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Sprite.h
+1575451900 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Sprite.h
 	"Drawable.h"
 	"Entity.h"
 	"Animation.h"
 	"GraphicElement.h"
 
-1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Animation.h
+1573535132 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Animation.h
 	<vector>
 	<string>
 	"TextureAtlas.h"
-	"Shader.h"
 	"Drawable.h"
 
 1565766521 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GraphicElement.h
@@ -1133,7 +1133,7 @@
 1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/Button.h
 	"UIObject.h"
 
-1567074919 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/ResourcesManager.cpp
+1574134731 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/ResourcesManager.cpp
 	"../include/ResourcesManager.h"
 
 1565766829 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/SoundManager.cpp
@@ -1213,10 +1213,11 @@
 	"../include/GameModel.h"
 	<algorithm>
 
-1530863121 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Sprite.cpp
+1573535287 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Sprite.cpp
 	"../include/Sprite.h"
+	"../include/GraphicsManager.h"
 
-1569834155 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GGEGame.cpp
+1575441907 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GGEGame.cpp
 	"../include/GGEGame.h"
 
 1530863121 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/GGEGame.h
@@ -1236,20 +1237,35 @@
 1565767165 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Font.cpp
 	"../include/Font.h"
 
-1569869463 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/OS_GLFW.cpp
+1571425721 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/OS_GLFW.cpp
 	"../include/OS_GLFW.h"
 	<algorithm>
 
-1565852946 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GraphicsManager.cpp
+1575364719 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GraphicsManager.cpp
 	"../include/GraphicsManager.h"
 
-1565846846 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GameView.cpp
+1575455116 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/GameView.cpp
 	"../include/GameView.h"
 
-1570086215 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Renderer.cpp
+1575519994 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Renderer.cpp
 	"../include/Renderer.h"
 	<iostream>
 
-1569833127 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/main.cpp
+1573099439 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/main.cpp
 	"include/GGEGame.h"
+
+1572636949 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/RendererBatch.cpp
+	"../include/RendererBatch.h"
+
+1571764949 /home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/include/RendererBatch.h
+	"TextureAtlas.h"
+
+1573535306 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/Animation.cpp
+	"../include/Animation.h"
+	<algorithm>
+
+1574228851 source:/home/czuber/DSV/implementacao/hybrid/VulkanStarter2D/source/TextureAtlas.cpp
+	"../include/TextureAtlas.h"
+	"../include/GraphicsManager.h"
+	<string.h>
 

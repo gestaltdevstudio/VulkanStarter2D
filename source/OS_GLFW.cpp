@@ -20,21 +20,21 @@ namespace GGE
             alert( "Error", "Failed to initialize window manager!" );
         }
 
-        keyConversion.insert(std::make_pair(GLFW_KEY_UP, GGE_UP));
-        keyConversion.insert(std::make_pair(GLFW_KEY_DOWN, GGE_DOWN));
-        keyConversion.insert(std::make_pair(GLFW_KEY_LEFT, GGE_LEFT));
-        keyConversion.insert(std::make_pair(GLFW_KEY_RIGHT, GGE_RIGHT));
-        keyConversion.insert(std::make_pair(GLFW_KEY_SPACE, GGE_SPACE));
+        keyConversion.insert(std::make_pair(GLFW_KEY_UP, KeyCode::GGE_UP));
+        keyConversion.insert(std::make_pair(GLFW_KEY_DOWN, KeyCode::GGE_DOWN));
+        keyConversion.insert(std::make_pair(GLFW_KEY_LEFT, KeyCode::GGE_LEFT));
+        keyConversion.insert(std::make_pair(GLFW_KEY_RIGHT, KeyCode::GGE_RIGHT));
+        keyConversion.insert(std::make_pair(GLFW_KEY_SPACE, KeyCode::GGE_SPACE));
 
 
-        keyConversion.insert(std::make_pair(GLFW_KEY_W, GGE_W));
-        keyConversion.insert(std::make_pair(GLFW_KEY_A, GGE_A));
-        keyConversion.insert(std::make_pair(GLFW_KEY_S, GGE_S));
-        keyConversion.insert(std::make_pair(GLFW_KEY_D, GGE_D));
-        keyConversion.insert(std::make_pair(GLFW_KEY_Q, GGE_Q));
-        keyConversion.insert(std::make_pair(GLFW_KEY_P, GGE_P));
+        keyConversion.insert(std::make_pair(GLFW_KEY_W, KeyCode::GGE_W));
+        keyConversion.insert(std::make_pair(GLFW_KEY_A, KeyCode::GGE_A));
+        keyConversion.insert(std::make_pair(GLFW_KEY_S, KeyCode::GGE_S));
+        keyConversion.insert(std::make_pair(GLFW_KEY_D, KeyCode::GGE_D));
+        keyConversion.insert(std::make_pair(GLFW_KEY_Q, KeyCode::GGE_Q));
+        keyConversion.insert(std::make_pair(GLFW_KEY_P, KeyCode::GGE_P));
 
-        keyConversion.insert(std::make_pair(GLFW_KEY_ESCAPE, GGE_ESCAPE));
+        keyConversion.insert(std::make_pair(GLFW_KEY_ESCAPE, KeyCode::GGE_ESCAPE));
 
         mouseCoord.x = mouseCoord.y = -SCREEN_X - 10;
 
