@@ -1,3 +1,6 @@
 /IDEFiles/Linux/bin
 /IDEFiles/Linux/obj
 /IDEFiles/Debugger
+/build
+/IDEFiles/Linux/*.depend
+/IDEFiles/Linux/*.layout

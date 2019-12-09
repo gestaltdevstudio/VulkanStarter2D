@@ -7,7 +7,8 @@
 #include "ResourcesManager.h"
 #include "Drawable.h"
 #include "Texture.h"
-#include "Text.h"
+#include "OS_GLFW.h"
+//#include "Text.h"
 
 namespace GGE
 {
@@ -85,7 +86,7 @@ namespace GGE
             Texture* createTexture(const resourceFile *fileBuffer);
             void onRenderStart();
 //            void renderTexture(float x, float y, Drawable *drawable);
-            void renderDrawable(Drawable* drawable);
+            void renderDrawable(TextureRegion* textureRegion, float x, float y, float scaleX, float scaleY, float rotation, bool isFlippedX, bool isFlippedY, Vector4* color);
             void renderText(Text *text);
             void onRenderFinish();
             void renderResize(Point windowSize);
@@ -96,6 +97,7 @@ namespace GGE
             VkResult CreateDebugUtilsMessengerEXT(VkInstance instance,
                                                   const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
             void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
+            void calculateViewportSize(Point &viewport);
 
         private:
             void createInstance();
@@ -210,6 +212,8 @@ namespace GGE
             uint16_t renderCalls;
 
             VkViewport viewport;
+            Point      viewportSize;
+            Point      viewportPosition;
 
 
             VkSemaphore *signalSemaphores;

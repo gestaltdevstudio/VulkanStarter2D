@@ -30,6 +30,7 @@ namespace GGE
 //        delete rfFragShader;
 
         playerSprite = new Sprite("Player");
+        playerSprite->loadRegion("dogAnim2", ta);
         Animation *animation = new Animation();
         std::vector<std::string> frames;
         frames.push_back("dogAnim2");
@@ -43,32 +44,30 @@ namespace GGE
         animation->loadFrames(ta, 1.0/8, frames);
         playerSprite->addAnimation("Idle", animation);
         playerSprite->setCurrentAnimationName("Idle", ANIM_LOOP_PINGPONG);
-        playerSprite->setShader(sh);
+//        playerSprite->setShader(sh);
         playerSprite->setIsVisible(true);
         playerSprite->setEntity(gameModel->getPlayer());
-        playerSprite->setRotation(80.f);
-        playerSprite->setX(400);
-        playerSprite->setY(100);
-        GraphicsManager::getInstance()->addSprite("test", playerSprite);
+//        playerSprite->setRotation(45.f);
+        playerSprite->setX(-SCREEN_X/2 + playerSprite->getTextureRegion()->width/2);
+        playerSprite->setY(SCREEN_Y/2 - playerSprite->getTextureRegion()->height/2);
+        GraphicsManager::getInstance()->addGraphicElement(playerSprite);
 
-//        s2 = new Sprite();
-//        s2->loadRegion("bone", ta);
-//        s2->setShader(sh);
-//        s2->setIsVisible(true);
-//        s2->setX(-200);
-//        s2->setY(300);
-//        GraphicsManager::getInstance()->addSprite("test2", s2);
-//
-//        exitButton = new Button();
-//        Drawable *d = new Drawable();
-//        d->loadRegion("exitButton", ta);
-//        d->setShader(sh);
-//        d->setIsVisible(true);
-//        exitButton->setDrawable(d);
-//        exitButton->setPosition(SCREEN_X/2 - exitButton->getDimension()->x/2,
-//                            SCREEN_Y/2 - exitButton->getDimension()->y/2);
-//
-//        GraphicsManager::getInstance()->addUIObject("Exit", exitButton);
+        s2 = new Sprite("Bone");
+        s2->loadRegion("bone", ta);
+        s2->setIsVisible(true);
+        s2->setX(-SCREEN_X/2 + s2->getTextureRegion()->width/2);
+        s2->setY(-SCREEN_Y/2 + s2->getTextureRegion()->height/2);
+        GraphicsManager::getInstance()->addGraphicElement(s2);
+
+        exitButton = new Button();
+        Drawable *d = new Drawable();
+        d->loadRegion("exitButton", ta);
+        d->setIsVisible(true);
+        exitButton->setDrawable(d);
+        exitButton->setPosition(SCREEN_X/2 - exitButton->getDimension()->x/2,
+                            -SCREEN_Y/2 + exitButton->getDimension()->y/2);
+
+        GraphicsManager::getInstance()->addGraphicElement(exitButton);
 //
 //#if !defined(GGE_DESKTOP)
 //        leftButton = new Button();
@@ -137,7 +136,7 @@ namespace GGE
     void GameView::step(float deltaTime)
     {
 
-//        Point mouseCoord = OS::getInstance()->getMouseCoord();
+        Point mouseCoord = OS::getInstance()->getMouseCoord();
 //
 //        playerSprite->setX(playerSprite->getEntity()->getPosition()->x);
 //        playerSprite->setY(playerSprite->getEntity()->getPosition()->y);
@@ -152,10 +151,10 @@ namespace GGE
 //        }
 //
 //
-//        if (exitButton->isClicked(mouseCoord))
-//        {
-//            OS::getInstance()->setRunning(false);
-//        }
+        if (exitButton->isClicked(mouseCoord))
+        {
+            OS::getInstance()->setRunning(false);
+        }
 //#if !defined(GGE_DESKTOP)
 //            if (leftButton->isClicked(OS::getInstance()->getInputCoord(LEFT_HAND)))
 //            {

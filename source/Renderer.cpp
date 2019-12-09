@@ -7,7 +7,6 @@ namespace GGE
 
     Renderer::Renderer(uint16_t maxDrawables)
     {
-
         totalVBOSize = maxDrawables * 6 * 2;
 //        Vertex oneVertex;
 //        oneVertex.pos= {0,0};
@@ -443,72 +442,71 @@ namespace GGE
         endSingleTimeCommands(commandBuffer);
     }
 
-    void Renderer::renderDrawable(Drawable* drawable)
+    void Renderer::renderDrawable(TextureRegion* textureRegion, float x, float y, float scaleX, float scaleY, float rotation, bool isFlippedX, bool isFlippedY, Vector4* color)
     {
 
-        if (drawable->getTextureAtlas()->texture->getTextureImageView() != textureImageView)
+        if (textureRegion->textureAtlas->texture->getTextureImageView() != textureImageView)
         {
-            switchTexture(drawable->getTextureAtlas()->texture->getTextureImageView());
+            switchTexture(textureRegion->textureAtlas->texture->getTextureImageView());
         }
         else if (renderIndex >= totalVBOSize)
         {
             flush();
         }
 
-        AtlasRegion *atlasRegion = drawable->getAtlasRegion();
-        TextureAtlas *textureAtlas = drawable->getTextureAtlas();
+        TextureAtlas *textureAtlas = textureRegion->textureAtlas;
 
-        glm::mat4 modelMatrix = glm::translate(glm::mat4(1), glm::vec3((float) drawable->getX() * viewport.x / SCREEN_X,
-                                                          (float) drawable->getY() * viewport.y / SCREEN_Y,
+        glm::mat4 modelMatrix = glm::translate(glm::mat4(1), glm::vec3((float) x * viewportSize.x / SCREEN_X,
+                                                          (float) y * viewportSize.y / SCREEN_Y,
                                                           0))
-                                * glm::rotate(glm::mat4(1.0f), (float)drawable->getRotation() * GGE_PI / 180.f, glm::vec3(0,0,1))
-                                * glm::scale(glm::vec3((float) (drawable->isFlipedX() ? -1 : 1) * drawable->getScaleX(),
-                                                       (float) (drawable->isFlipedY() ? -1 : 1) * drawable->getScaleY(),
+                                * glm::rotate(glm::mat4(1.0f), (float)rotation * GGE_PI / 180.f, glm::vec3(0,0,1))
+                                * glm::scale(glm::vec3((float) (isFlippedX ? -1 : 1) * scaleX * viewportSize.x / SCREEN_X,
+                                                       (float) (isFlippedY ? -1 : 1) * scaleY * viewportSize.y / SCREEN_Y,
                                            0));
 //        glm::mat4 modelMatrix = glm::mat4(1.0f);
 //        glm::mat4 mvp = projectionMatrix * viewMatrix * modelMatrix;
 
-        glm::vec4 auxVec3 = { (float) -atlasRegion->width/2, (float) -atlasRegion->height/2, 0.0f, 1.0f};
+        glm::vec4 auxVec3 = { (float) -textureRegion->width/2, (float) -textureRegion->height/2, 0.0f, 1.0f};
         glm::vec4 auxVec4 = modelMatrix * auxVec3;
-        glm::vec4 color = {drawable->getColor().r, drawable->getColor().g, drawable->getColor().b, drawable->getColor().a};
+        glm::vec4 colorToApply = {color->r, color->g, color->b, color->a};
 
         Vertex v1, v2, v3, v4;
         v1.pos = { auxVec4.x, auxVec4.y};
-        v1.color = color;
+        v1.color = colorToApply;
 //        vertices[renderIndex].pos =  vertices[renderIndex].pos;
 //        v1.texCoord = {0.0f, 0.0f};
-        v1.texCoord = {(float) atlasRegion->x / textureAtlas->width,                         ((float) atlasRegion->y / textureAtlas->height)};
+        v1.texCoord = {(float) textureRegion->x / textureAtlas->width,                         ((float) textureRegion->y / textureAtlas->height)};
 
 
-        auxVec3 = {atlasRegion->width/2, -atlasRegion->height/2, 0, 1.0f};
+        auxVec3 = {textureRegion->width/2, -textureRegion->height/2, 0, 1.0f};
         auxVec4 = modelMatrix * auxVec3;
 
 
         v2.pos = { auxVec4.x, auxVec4.y};
-        v2.color = color;
+        v2.color = colorToApply;
 //        vertices[renderIndex+1].pos *= modelMatrix;
 //        v2.texCoord = {1.0f, 0.0f};
-        v2.texCoord = {(float) (atlasRegion->x + atlasRegion->width) / textureAtlas->width,  ((float) atlasRegion->y / textureAtlas->height)};
+        v2.texCoord = {(float) (textureRegion->x + textureRegion->width) / textureAtlas->width,  ((float) textureRegion->y / textureAtlas->height)};
 
 
-        auxVec3 = {atlasRegion->width/2, atlasRegion->height/2, 0, 1.0f};
+        auxVec3 = {textureRegion->width/2, textureRegion->height/2, 0, 1.0f};
         auxVec4 = modelMatrix * auxVec3;
 
         v3.pos = { auxVec4.x, auxVec4.y};
-        v3.color = color;
+        v3.color = colorToApply;
 //        vertices[renderIndex+2].pos *= modelMatrix;
 //        v3.texCoord = {1.0f, 1.0f};
-        v3.texCoord = {(float) (atlasRegion->x + atlasRegion->width) / textureAtlas->width,  (float) (atlasRegion->y + atlasRegion->height) / textureAtlas->height};
+        v3.texCoord = {(float) (textureRegion->x + textureRegion->width) / textureAtlas->width,  (float) (textureRegion->y + textureRegion->height) / textureAtlas->height};
 
 
-        auxVec3 = {-atlasRegion->width/2, atlasRegion->height/2, 0, 1.0f};
+        auxVec3 = {-textureRegion->width/2, textureRegion->height/2, 0, 1.0f};
         auxVec4 = modelMatrix * auxVec3;
 
         v4.pos = { auxVec4.x, auxVec4.y};
-        v4.color = color;
+        v4.color = colorToApply;
 //        vertices[renderIndex+3].pos *= modelMatrix;
 //        v4.texCoord = {0.0f, 1.0f};
-        v4.texCoord = {(float) atlasRegion->x / textureAtlas->width,                         (float) (atlasRegion->y + atlasRegion->height) / textureAtlas->height};
+        v4.texCoord = {(float) textureRegion->x / textureAtlas->width,                         (float) (textureRegion->y + textureRegion->height) / textureAtlas->height};
 
         vertices.push_back(v1);
         vertices.push_back(v2);
@@ -523,7 +521,7 @@ namespace GGE
 //};
 
 
-        uint16_t indicesOffset = indices.size();
+        uint16_t indicesOffset = vertices.size()-4;
 
         indices.push_back(indicesOffset);
         indices.push_back(indicesOffset+1);
@@ -564,6 +562,18 @@ namespace GGE
         vkUnmapMemory(device, uniformBuffersMemory[currentImage]);
     }
 
+    void Renderer::calculateViewportSize(Point &viewport)
+    {
+        if (viewport.x / FIXED_ASPECT_RATIO < viewport.y)
+        {
+            viewport.y = (int) (viewport.x / FIXED_ASPECT_RATIO);
+        }
+        else
+        {
+            viewport.x = (int) (viewport.y * FIXED_ASPECT_RATIO);
+        }
+    }
+
     void Renderer::onRenderFinish()
     {
         if (renderIndex > 0 && vertices.size()>0)
@@ -596,11 +606,11 @@ namespace GGE
     void Renderer::renderResize(Point windowSize)
 	{
         framebufferResized = true;
-//        viewportSize = windowSize;
-//        GraphicsUtils::calculateViewportSize(viewportSize);
-//
-//        viewportPosition.x = windowSize.x / 2 - viewportSize.x/2;
-//        viewportPosition.y = windowSize.y /2 - viewportSize.y/2;
+        viewportSize = windowSize;
+        calculateViewportSize(viewportSize);
+
+        viewportPosition.x = 0;//windowSize.x / 2 - viewportSize.x/2;
+        viewportPosition.y = 0;//-1 * (windowSize.y /2 - viewportSize.y/2);
 //        glViewport(viewportPosition.x, viewportPosition.y, (GLsizei)viewportSize.x, (GLsizei)viewportSize.y);
 //        glEnable(GL_SCISSOR_TEST);
 //        glScissor(viewportPosition.x, viewportPosition.y, (GLsizei)viewportSize.x, (GLsizei)viewportSize.y);
@@ -780,6 +790,10 @@ namespace GGE
         VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
         VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
         VkExtent2D extent = chooseSwapExtent(swapChainSupport.capabilities);
+//
+//        extent = { viewportSize.x, viewportSize.y};
+//        printf("%d %d \n", extent.width, extent.height);
+//        printf("VP %d %d \n", viewportSize.x, viewportSize.y);
 
         uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;
         if (swapChainSupport.capabilities.maxImageCount > 0 && imageCount > swapChainSupport.capabilities.maxImageCount) {
@@ -851,7 +865,7 @@ namespace GGE
         if (capabilities.currentExtent.width != UINT32_MAX) {
             return capabilities.currentExtent;
         } else {
-            VkExtent2D actualExtent = {SCREEN_X, SCREEN_Y};
+            VkExtent2D actualExtent = {(uint32_t)viewportSize.x, (uint32_t)viewportSize.y};
 
             actualExtent.width = std::max(capabilities.minImageExtent.width, std::min(capabilities.maxImageExtent.width, actualExtent.width));
             actualExtent.height = std::max(capabilities.minImageExtent.height, std::min(capabilities.maxImageExtent.height, actualExtent.height));
@@ -1100,17 +1114,19 @@ namespace GGE
         inputAssembly.primitiveRestartEnable = VK_FALSE;
 
         viewport = {};
-//        viewport.x = 0.0f;
-//        viewport.y = 0.0f;
+
         viewport.x = 0.0f;
         viewport.y = 0.0f;
+//        viewport.x = viewportPosition.x;
+//        viewport.y = viewportPosition.y;
         viewport.width = (float) swapChainExtent.width;
         viewport.height = (float) swapChainExtent.height;
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
 
         VkRect2D scissor = {};
-        scissor.offset = {0, 0};
+        scissor.offset = { 0, 0};
+//        VkExtent2D ex = { viewportSize.x, viewportSize.y };
         scissor.extent = swapChainExtent;
 
         VkPipelineViewportStateCreateInfo viewportState = {};
@@ -1267,7 +1283,7 @@ namespace GGE
             renderPassInfo.renderArea.offset = {0, 0};
             renderPassInfo.renderArea.extent = swapChainExtent;
 
-            VkClearValue clearColor = {0.0f, 0.0f, 0.0f, 1.0f};
+            VkClearValue clearColor = {0.0f, 0.0f, 0.5f, 1.0f};
             renderPassInfo.clearValueCount = 1;
             renderPassInfo.pClearValues = &clearColor;
 

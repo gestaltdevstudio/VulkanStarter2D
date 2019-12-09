@@ -51,7 +51,7 @@ namespace GGE
         }while (strcmp( lineHeader, "repeat:" ) != 0);
 
 
-        AtlasRegion *region = NULL;
+        TextureRegion *region = NULL;
         char* name;
         while( file != NULL)
         {
@@ -65,7 +65,7 @@ namespace GGE
                     free(name);
                 }
                 name = (char*) calloc(128, sizeof(char));
-                region = new AtlasRegion();
+                region = new TextureRegion();
                 sscanf(file, "%s", name);
             }
             if (strncmp(lineHeader, "xy:", strlen("xy:")) == 0)
@@ -76,6 +76,8 @@ namespace GGE
             {
                 sscanf(file, "  size: %d, %d", &region->width, &region->height);
             }
+
+            region->textureAtlas = this;
 
             file = strtok ( NULL,"\r\n");
 
@@ -108,10 +110,10 @@ namespace GGE
         free(filter1);
         free(filter2);
 
-        std::map<std::string, AtlasRegion*>::iterator iter;
+        std::map<std::string, TextureRegion*>::iterator iter;
         for (iter = regions.begin(); iter != regions.end(); ++iter)
         {
-            AtlasRegion *region = static_cast<AtlasRegion*>(iter->second);
+            TextureRegion *region = static_cast<TextureRegion*>(iter->second);
             iter->second = NULL;
             delete region;
         }

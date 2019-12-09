@@ -29,8 +29,8 @@ namespace GGE
         if (_drawable)
         {
             drawable = _drawable;
-            dimension->x = drawable->getAtlasRegion()->width;
-            dimension->y = drawable->getAtlasRegion()->height;
+            dimension->x = drawable->getTextureRegion()->width;
+            dimension->y = drawable->getTextureRegion()->height;
         }
     }
 

@@ -9,9 +9,9 @@ namespace GGE
         scaleX = scaleY = 1.0f;
         x = y = 0.0f;
 //        uvbo = 0;
-        flipedX = flipedY = false;
+        flippedX = flippedY = false;
 		rotation = 0;
-		color = {1.0f,1.0f,1.0f,1.0f};
+		color = new Vector4{1.0f,1.0f,1.0f,1.0f};
     }
 
     Drawable::~Drawable()
@@ -24,8 +24,9 @@ namespace GGE
     {
         if (_textureAtlas->regions.find(regionName) != _textureAtlas->regions.end())
         {
-            textureAtlas = _textureAtlas;
-            atlasRegion = static_cast<AtlasRegion*>(textureAtlas->regions.at(regionName));
+
+            textureRegion = static_cast<TextureRegion*>(_textureAtlas->regions.at(regionName));
+            textureRegion->textureAtlas = _textureAtlas;
 
 //            if (uvbo)
 //                glDeleteBuffers(1, &uvbo);

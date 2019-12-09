@@ -3,11 +3,12 @@
 
 #include "TextureAtlas.h"
 #include "Shader.h"
+#include "GraphicElement.h"
 
 namespace GGE
 {
 
-    class Drawable
+    class Drawable : public GraphicElement
     {
 
         public:
@@ -19,26 +20,25 @@ namespace GGE
             inline float getY() { return y; };
             inline float getScaleX() { return scaleX; };
             inline float getScaleY() { return scaleY; };
-            inline Shader *getShader() { return shader; };
-            inline AtlasRegion* getAtlasRegion() { return atlasRegion; }
-            inline TextureAtlas* getTextureAtlas() { return textureAtlas; }
+//            inline Shader *getShader() { return shader; };
+            inline TextureRegion* getTextureRegion() { return textureRegion; }
             inline bool isVisible() { return visible; }
 
             inline void setX(float _x) { x = _x; };
             inline void setY(float _y) { y = _y; };
             inline void setScaleX(float _scaleX) { scaleX = _scaleX; };
             inline void setScaleY(float _scaleY) { scaleY = _scaleY; };
-            inline void setShader(Shader *_shader ) { shader = _shader; };
+//            inline void setShader(Shader *_shader ) { shader = _shader; };
 
             inline void setIsVisible(bool _visible) { visible = _visible; }
     //        inline GLuint getUVBuffer() { return uvbo; }
             inline void setRotation(float r) { rotation = r;}
             inline float getRotation() { return rotation; }
-            inline void setFlipedX(bool _flipedX) { flipedX = _flipedX; }
-            inline bool isFlipedX() { return flipedX; }
-            inline void setFlipedY(bool _flipedY) { flipedY = _flipedY; }
-            inline bool isFlipedY() { return flipedY; }
-            inline Vector4 getColor() { return color; }
+            inline void setFlippedX(bool _flippedX) { flippedX = _flippedX; }
+            inline bool isFlippedX() { return flippedX; }
+            inline void setFlippedY(bool _flippedY) { flippedY = _flippedY; }
+            inline bool isFlippedY() { return flippedY; }
+            inline Vector4* getColor() { return color; }
 
 
         protected:
@@ -47,14 +47,13 @@ namespace GGE
             float scaleX;
             float scaleY;
             float rotation;
-            Shader *shader;
-            AtlasRegion *atlasRegion;
-            TextureAtlas *textureAtlas;
+//            Shader *shader;
+            TextureRegion *textureRegion;
             bool visible;
-            bool flipedX;
-            bool flipedY;
-            std::vector<uint32_t> indices;
-            Vector4 color;
+            bool flippedX;
+            bool flippedY;
+//            std::vector<uint32_t> indices;
+            Vector4 *color;
     //        GLuint uvbo;
     };
 }

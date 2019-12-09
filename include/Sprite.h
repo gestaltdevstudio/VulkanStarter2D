@@ -9,7 +9,7 @@
 namespace GGE
 {
 
-    class Sprite : public Drawable, public GraphicElement
+    class Sprite : public Drawable
     {
         public:
             Sprite(std::string _name);

@@ -6,7 +6,7 @@ namespace GGE
 
     GraphicsManager::GraphicsManager()
 	{
-	    sprites.empty();
+	    graphicElements.empty();
 	    animationsPaused = false;
 
 	}
@@ -29,25 +29,37 @@ namespace GGE
 //            Text *text = NULL;
 //            UIObject *uiObject = NULL;
             sprite = dynamic_cast<Sprite*>(*it);
+            Drawable *drawable = NULL;
+            drawable = dynamic_cast<Drawable*>(*it);
             if (sprite)
             {
                 if (sprite->isVisible()) {
 
-                    Drawable *drawable;
                     if (!sprite->getCurrentAnimationName().empty())
                     {
                         if (!animationsPaused) {
                             sprite->updateCurrentAnimation(deltaTime);
                         }
-                        drawable = sprite->getCurrentAnimation()->getCurrentDrawable(sprite->getElapsedTime(), sprite->getAnimationPlayMode());
+                        renderer->renderDrawable(sprite->getCurrentAnimation()->getCurrentTextureRegion(sprite->getElapsedTime(), sprite->getAnimationPlayMode()),
+                        sprite->getX(), sprite->getY(), sprite->getScaleX(), sprite->getScaleY(), sprite->getRotation(), sprite->isFlippedX(), sprite->isFlippedY(),
+                        sprite->getColor());
                     }
                     else
                     {
-                        drawable = reinterpret_cast<Drawable*>(sprite);
+                        renderer->renderDrawable(sprite->getTextureRegion(),
+                        sprite->getX(), sprite->getY(), sprite->getScaleX(), sprite->getScaleY(), sprite->getRotation(), sprite->isFlippedX(), sprite->isFlippedY(),
+                        sprite->getColor());
                     }
 
-                    renderer->renderDrawable(drawable);
 
+                }
+            }
+            else if (drawable)
+            {
+                if (drawable->isVisible()) {
+                    renderer->renderDrawable(drawable->getTextureRegion(),
+                    drawable->getX(), drawable->getY(), drawable->getScaleX(), drawable->getScaleY(), drawable->getRotation(), drawable->isFlippedX(), drawable->isFlippedY(),
+                    drawable->getColor());
                 }
             }
 //            else
@@ -69,57 +81,88 @@ namespace GGE
 
         }
 
+        for(std::list<GraphicElement*>::iterator it = graphicElements.begin(); it != graphicElements.end(); ++it)
+        {
+
+            UIObject *uiObject = NULL;
+//            Text *text = NULL;
+//            UIObject *uiObject = NULL;
+            uiObject = dynamic_cast<UIObject*>(*it);
+
+            if (uiObject)
+            {
+                if (uiObject->getDrawable()->isVisible()) {
+                    renderer->renderDrawable(uiObject->getDrawable()->getTextureRegion(),
+                    uiObject->getPosition()->x, uiObject->getPosition()->y, uiObject->getDrawable()->getScaleX(),
+                    uiObject->getDrawable()->getScaleY(), uiObject->getDrawable()->getRotation(), uiObject->getDrawable()->isFlippedX(), uiObject->getDrawable()->isFlippedY(),
+                    uiObject->getDrawable()->getColor());
+                }
+            }
+
+        }
+
+
         renderer->onRenderFinish();
     }
 
+//
+//
+//    void GraphicsManager::addSprite(std::string objectName, Sprite *_object)
+//    {
+//         sprites.insert(std::make_pair(objectName, _object));
+//         graphicElements.push_back(_object);
+//
+//    }
+//
+//    void GraphicsManager::removeSprite(std::string objectName)
+//    {
+//        if (sprites.find(objectName) != sprites.end())
+//        {
+//            sprites.erase(objectName);
+//            graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), sprites[objectName]), graphicElements.end());
+//        }
+//    }
+//
+//    void GraphicsManager::addText(std::string objectName, Text *_object)
+//    {
+//         texts.insert(std::make_pair(objectName, _object));
+//         graphicElements.push_back(_object);
+//
+//    }
+//
+//    void GraphicsManager::removeText(std::string objectName)
+//    {
+//        if (texts.find(objectName) != texts.end())
+//        {
+//            texts.erase(objectName);
+//            graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), texts[objectName]), graphicElements.end());
+//        }
+//    }
+//
+//    void GraphicsManager::addUIObject(std::string objectName, UIObject *_object)
+//    {
+//         uiObjects.insert(std::make_pair(objectName, _object));
+//         graphicElements.push_back(_object);
+//
+//    }
+//
+//    void GraphicsManager::removeUIObject(std::string objectName)
+//    {
+//        if (uiObjects.find(objectName) != uiObjects.end())
+//        {
+//            uiObjects.erase(objectName);
+//            graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), texts[objectName]), graphicElements.end());
+//        }
+//    }
 
-
-    void GraphicsManager::addSprite(std::string objectName, Sprite *_object)
+    void GraphicsManager::addGraphicElement(GraphicElement *graphicElement)
     {
-         sprites.insert(std::make_pair(objectName, _object));
-         graphicElements.push_back(_object);
-
+         graphicElements.push_back(graphicElement);
     }
 
-    void GraphicsManager::removeSprite(std::string objectName)
+    void GraphicsManager::removeGraphicElement(GraphicElement *graphicElement)
     {
-        if (sprites.find(objectName) != sprites.end())
-        {
-            sprites.erase(objectName);
-            graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), sprites[objectName]), graphicElements.end());
-        }
-    }
-
-    void GraphicsManager::addText(std::string objectName, Text *_object)
-    {
-         texts.insert(std::make_pair(objectName, _object));
-         graphicElements.push_back(_object);
-
-    }
-
-    void GraphicsManager::removeText(std::string objectName)
-    {
-        if (texts.find(objectName) != texts.end())
-        {
-            texts.erase(objectName);
-            graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), texts[objectName]), graphicElements.end());
-        }
-    }
-
-    void GraphicsManager::addUIObject(std::string objectName, UIObject *_object)
-    {
-         uiObjects.insert(std::make_pair(objectName, _object));
-         graphicElements.push_back(_object);
-
-    }
-
-    void GraphicsManager::removeUIObject(std::string objectName)
-    {
-        if (uiObjects.find(objectName) != uiObjects.end())
-        {
-            uiObjects.erase(objectName);
-            graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), texts[objectName]), graphicElements.end());
-        }
+        graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), graphicElement), graphicElements.end());
     }
 
     void GraphicsManager::sortSpritesbyZOrder()

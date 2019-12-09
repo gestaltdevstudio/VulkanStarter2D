@@ -86,7 +86,7 @@ namespace GGE
 
 
             glfwSetJoystickCallback(joystick_callback);
-			glfwSetWindowAspectRatio(window, 4, 3);
+//			glfwSetWindowAspectRatio(window, 16, 9);
 
             glfwSetMouseButtonCallback(window, mouse_button_callback);
 			glfwSetFramebufferSizeCallback(window, frameBufferSizeCallbak);
@@ -280,14 +280,14 @@ namespace GGE
 
         Point windowSize = getWindowSize();
         Point viewportSize = windowSize;
-//        GraphicsUtils::calculateViewportSize(viewportSize);
+        GraphicsManager::getInstance()->getRenderer()->calculateViewportSize(viewportSize);
         Point p;
         p.x = (int) point.x;
         p.y = (int) point.y;
         p.x = (int) (p.x - (windowSize.x / 2 - viewportSize.x / 2)) * SCREEN_X / viewportSize.x;
         p.y = (int) (p.y - (windowSize.y / 2 - viewportSize.y / 2)) * SCREEN_Y / viewportSize.y;
         p.x -= SCREEN_X/2;
-        p.y = SCREEN_Y - p.y - SCREEN_Y/2;
+        p.y -= SCREEN_Y/2;
 
         return p;
     }

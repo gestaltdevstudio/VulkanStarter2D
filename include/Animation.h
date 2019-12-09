@@ -16,15 +16,14 @@ namespace GGE
             Animation();
             ~Animation();
             void loadFrames(TextureAtlas *_textureAtlas, float _frameDuration, std::vector<std::string> _framesNames);
-            Drawable* getCurrentDrawable(float elapsedTime, AnimationPlayMode playMode);
+            TextureRegion* getCurrentTextureRegion(float elapsedTime, AnimationPlayMode playMode);
             inline float getFrameDuration() { return frameDuration; }
             inline int getNumberOfFrames() { return frames.size(); }
 
 
         protected:
             float frameDuration;
-            std::vector<Drawable*> frames;
-            TextureAtlas *textureAtlas;
+            std::vector<TextureRegion*> frames;
 
 
     };

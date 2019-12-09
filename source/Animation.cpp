@@ -14,28 +14,25 @@ namespace GGE
     {
         for (unsigned int j=0;j<frames.size();j++)
         {
-                Drawable* drawable = frames[j];
+                TextureRegion* textureRegion = frames[j];
                 frames[j] = 0;
-                if (drawable)
-                    delete drawable;
+                if (textureRegion)
+                    delete textureRegion;
         }
     }
 
     void Animation::loadFrames(TextureAtlas *_textureAtlas, float _frameDuration, std::vector<std::string> _framesNames)
     {
-
-        textureAtlas = _textureAtlas;
         frameDuration = _frameDuration;
         for(std::vector<std::string>::iterator it = _framesNames.begin(); it != _framesNames.end(); ++it) {
             std::string name = *it;
-            Drawable *drawable = new Drawable();
-            drawable->loadRegion(name, textureAtlas);
-            frames.push_back(drawable);
+            TextureRegion *textureRegion = _textureAtlas->regions.at(name);
+            frames.push_back(textureRegion);
         }
 
     }
 
-    Drawable* Animation::getCurrentDrawable(float elapsedTime, AnimationPlayMode playMode)
+    TextureRegion* Animation::getCurrentTextureRegion(float elapsedTime, AnimationPlayMode playMode)
     {
         unsigned int frameIndex = (int) (elapsedTime / frameDuration);
         switch(playMode)

@@ -4,7 +4,7 @@
 #include "View.h"
 #include "TextureAtlas.h"
 #include "Sprite.h"
-#include "Text.h"
+//#include "Text.h"
 #include "Button.h"
 #include "GameModel.h"
 
@@ -23,12 +23,12 @@ namespace GGE
         protected:
             GameModel *gameModel;
             TextureAtlas *ta;
-            Shader *sh;
+//            Shader *sh;
             Sprite *playerSprite;
             Sprite *s2;
             Shader *textSh;
-            Font *f;
-            Text *t;
+//            Font *f;
+//            Text *t;
             Button *exitButton;
 
 #if !defined(GGE_DESKTOP)
