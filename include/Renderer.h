@@ -3,6 +3,8 @@
 
 #include <stdexcept>
 #include <set>
+#include <optional>
+#include <array>
 #include "vulkan/vulkan.h"
 #include "ResourcesManager.h"
 #include "Drawable.h"

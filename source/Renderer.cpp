@@ -101,6 +101,8 @@ namespace GGE
         createCommandBuffers();
 
         createSyncObjects();
+
+		OS::getInstance()->resizeWindow();
     }
 
     void Renderer::createBigBuffers(uint32_t bufferTotalSize)

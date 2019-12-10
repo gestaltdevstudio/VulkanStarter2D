@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
 set (CMAKE_CXX_STANDARD 17)
+
 project (StarterVulkan2D)
 
 set(CPP_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -112,6 +113,11 @@ add_executable(StarterVulkan2D MACOSX_BUNDLE ${SOURCES} ${RSC_FILES})
 else()
 add_executable(StarterVulkan2D ${SOURCES})
 endif()
+                  
+ADD_LIBRARY(libvulkan STATIC IMPORTED)
+if (MSVC)
+SET_TARGET_PROPERTIES(libvulkan PROPERTIES IMPORTED_LOCATION ${CPP_DIR}/libsWin/debug/vulkan-1.lib)
+endif (MSVC)
 
 if (APPLE)
   target_link_libraries (StarterVulkan2D glfw ${COCOA_LIBRARY} ${OPENGL_LIBRARY} ${IOKIT_LIBRARY} ${COREVIDEO_LIBRARY} ${OPENAL_LIBRARY} z bz2 libzip libvorbisfile libvorbis libogg)
@@ -123,5 +129,5 @@ elseif (UNIX)
 endif ()
 
 if (MSVC)
-  target_link_libraries (StarterVulkan2D glu32.lib opengl32.lib libzip libvorbis libopenal libogg zlib glfw )
+  target_link_libraries (StarterVulkan2D libvulkan libzip libvorbis libopenal libogg zlib glfw )  
 endif (MSVC)
