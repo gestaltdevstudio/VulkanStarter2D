@@ -23,7 +23,8 @@
 #elif __APPLE__
  #include "TargetConditionals.h"
  #if TARGET_OS_OSX
-  #include <glad/glad.h>
+  //#include <glad/glad.h>
+#include "vulkan/vulkan.h"
  #else
   #include <OpenGLES/ES3/gl.h>
  #endif

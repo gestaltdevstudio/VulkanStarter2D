@@ -64,7 +64,7 @@ namespace GGE
 //        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 //        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #if __APPLE__
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+//        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
         GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 
@@ -74,7 +74,7 @@ namespace GGE
 		glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 		glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
-#if defined(__WIN32__)
+#if !defined(__linux__)
 		window = glfwCreateWindow(mode->width, mode->height, windowName.c_str(), monitor, NULL);
 #else
 		window = glfwCreateWindow(SCREEN_X, SCREEN_Y, windowName.c_str(), NULL, NULL);
@@ -96,7 +96,7 @@ namespace GGE
 
 //            glfwSwapInterval(1);
 
-#if !defined(__WIN32__)
+#if defined(__linux__)
             fullScreen = false;
             toggleFullScreen();
 #endif

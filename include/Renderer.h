@@ -222,7 +222,7 @@ namespace GGE
 
             bool framebufferResized = false;
 
-#ifdef DEBUG
+#if defined(DEBUG) //&& !(__APPLE__)
             const bool enableValidationLayers = true;
 #else
             const bool enableValidationLayers = false;
