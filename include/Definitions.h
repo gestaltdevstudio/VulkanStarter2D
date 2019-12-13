@@ -2,7 +2,7 @@
 #define DEFINITIONS_H_INCLUDED
 
 
-#if !defined(__WIN32__)    
+#if !defined(__WIN32__)
 #include<unistd.h>
 #else
 #define NOMINMAX

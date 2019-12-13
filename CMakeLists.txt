@@ -5,18 +5,19 @@ project (StarterVulkan2D)
 
 set(CPP_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-file(COPY ${CPP_DIR}/conf DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ResourcesPath/)
-file(COPY ${CPP_DIR}/libsOSX/vulkan DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ResourcesPath/)
 
-IF(APPLE)
+if(APPLE)
+ file(COPY ${CPP_DIR}/conf DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ResourcesPath/)
+ file(COPY ${CPP_DIR}/libsOSX/vulkan DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/ResourcesPath/)
 
    FIND_LIBRARY(COCOA_LIBRARY Cocoa )
    FIND_LIBRARY(IOKIT_LIBRARY IOKit )
    FIND_LIBRARY(COREVIDEO_LIBRARY CoreVideo )
    FIND_LIBRARY(OPENAL_LIBRARY OpenAL )
 
-ENDIF (APPLE)
-
+else()
+  file(COPY ${CPP_DIR}/conf DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()
 
 if (MSVC)
   file(COPY ${CPP_DIR}/libsWin/libogg-0.dll ${CPP_DIR}/libsWin/LibVorbis.dll
