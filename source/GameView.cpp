@@ -47,6 +47,7 @@ namespace GGE
 //        playerSprite->setShader(sh);
         playerSprite->setIsVisible(true);
         playerSprite->setEntity(gameModel->getPlayer());
+        playerSprite->setFlippedX(true);
 //        playerSprite->setRotation(45.f);
         playerSprite->setX(-SCREEN_X/2 + playerSprite->getTextureRegion()->width/2);
         playerSprite->setY(SCREEN_Y/2 - playerSprite->getTextureRegion()->height/2);
@@ -114,21 +115,27 @@ namespace GGE
 //        delete rfTextVertShader;
 //        delete rfTextFragShader;
 //
-//        f = new Font();
-//        const resourceFile *fontFile = ResourcesManager::getInstance()->loadCompressedFile("pressStart2P.fnt");
-//        f->loadFont(fontFile);
+        f = new Font();
+        const resourceFile *fontFile = ResourcesManager::getInstance()->loadCompressedFile("pressStart2P.fnt");
+        f->loadFont(fontFile);
 //
-//        t = new Text();
-//        t->initText("Text", f, textSh, "pressStart2P", ta, 0, 0);
-//        t->setText("nsaefOUGH BFSoyjua.,PfAf");
-//        t->setPosition(-400, -100);
+        t = new Text();
+        t->initText("Text", f, "pressStart2P", ta, 0, 0);
+        t->setText("nsaefOUGH BF Soyjua.,PfAf");
+//        t->setX(-400);
+//        t->setY(-100);
 //        t->setScaleX(1.5);
 //        t->setScaleY(1.5);
-////        GraphicsManager::getInstance()->addText(t->getName(), t);
-//        t->setVisible(true);
+//        t->setFlippedX(true);
+//        t->setFlippedY(true);
+        t->updateText();
+        t->setRotation(-45);
+        t->setTextAlign(TEXT_ALIGN_CENTER);
+        GraphicsManager::getInstance()->addGraphicElement(t);
+        t->setIsVisible(true);
 //
 //
-//        delete fontFile;
+        delete fontFile;
 
 
     }
@@ -188,7 +195,7 @@ namespace GGE
 //        delete sh;
 //        delete textSh;
         delete ta;
-//        delete f;
+        delete f;
 //        delete t;
 //#if !defined(GGE_DESKTOP)
 //        delete leftButton;

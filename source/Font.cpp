@@ -1,5 +1,6 @@
 #include "../include/Font.h"
 
+#include <string.h>
 
 namespace GGE
 {

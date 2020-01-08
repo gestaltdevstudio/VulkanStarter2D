@@ -81,6 +81,14 @@ namespace GGE
         float y;
     };
 
+    struct Rectangle
+    {
+        float x;
+        float y;
+        float w;
+        float h;
+    };
+
     struct Vector4
     {
         float r;

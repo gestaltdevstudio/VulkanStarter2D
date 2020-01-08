@@ -26,11 +26,12 @@ namespace GGE
         {
 
             Sprite *sprite = NULL;
-//            Text *text = NULL;
 //            UIObject *uiObject = NULL;
             sprite = dynamic_cast<Sprite*>(*it);
             Drawable *drawable = NULL;
             drawable = dynamic_cast<Drawable*>(*it);
+            Text *text = NULL;
+            text = dynamic_cast<Text*>(*it);
             if (sprite)
             {
                 if (sprite->isVisible()) {
@@ -53,6 +54,21 @@ namespace GGE
 
 
                 }
+            }
+            else if (text)
+            {
+                if (text && text->isVisible())
+                {
+                    renderer->renderText(text);
+                }
+//                else
+//                {
+//                    uiObject = dynamic_cast<UIObject*>(*it);
+//                    if (uiObject && uiObject->isVisible())
+//                    {
+//                        renderer->renderTexture(uiObject->getPosition().x, uiObject->getPosition().y, uiObject->getDrawable());
+//                    }
+//                }
             }
             else if (drawable)
             {

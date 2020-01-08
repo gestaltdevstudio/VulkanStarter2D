@@ -27,8 +27,8 @@ namespace GGE
             Sprite *playerSprite;
             Sprite *s2;
             Shader *textSh;
-//            Font *f;
-//            Text *t;
+            Font *f;
+            Text *t;
             Button *exitButton;
 
 #if !defined(GGE_DESKTOP)

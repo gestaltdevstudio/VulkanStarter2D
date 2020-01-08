@@ -100,7 +100,7 @@ namespace GGE
     resourceFile* ResourcesManager::loadCompressedFile(const char* cFileName)
     {
 
-#if defined(DEBUG)
+#if 1 //defined(DEBUG)
         return loadFile(cFileName);
 #endif
         zip_file *f = zip_fopen(zipFile, cFileName, 0);

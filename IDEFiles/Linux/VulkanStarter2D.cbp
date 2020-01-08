@@ -55,7 +55,7 @@
 		</Compiler>
 		<Linker>
 			<Add option="-pthread -no-pie" />
-			<Add library="../../libsLinux/libvulkan.so.1" />
+			<Add library="../../libsLinux/libvulkan.so" />
 			<Add library="X11" />
 			<Add library="Xxf86vm" />
 			<Add library="Xinerama" />
@@ -109,6 +109,7 @@
 		<Unit filename="../../source/SoundManager.cpp" />
 		<Unit filename="../../source/SoundObject.cpp" />
 		<Unit filename="../../source/Sprite.cpp" />
+		<Unit filename="../../source/Text.cpp" />
 		<Unit filename="../../source/TextureAtlas.cpp" />
 		<Unit filename="../../source/UIObject.cpp" />
 		<Extensions>

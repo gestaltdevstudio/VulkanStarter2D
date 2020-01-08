@@ -444,7 +444,7 @@ namespace GGE
         endSingleTimeCommands(commandBuffer);
     }
 
-    void Renderer::renderDrawable(TextureRegion* textureRegion, float x, float y, float scaleX, float scaleY, float rotation, bool isFlippedX, bool isFlippedY, Vector4* color)
+    void Renderer::renderDrawable(const TextureRegion* textureRegion, float x, float y, float scaleX, float scaleY, float rotation, bool isFlippedX, bool isFlippedY, Vector4* color)
     {
 
         if (textureRegion->textureAtlas->texture->getTextureImageView() != textureImageView)
@@ -535,6 +535,85 @@ namespace GGE
         renderIndex+=6;
     }
 
+    void Renderer::renderText(Text *text)
+    {
+        if (text->getTextureAtlas()->texture->getTextureImageView() != textureImageView)
+        {
+            switchTexture(text->getTextureAtlas()->texture->getTextureImageView());
+        }
+        else if (renderIndex >= totalVBOSize)
+        {
+            flush();
+        }
+
+        glm::mat4 modelMatrix = glm::translate(glm::mat4(1), glm::vec3((float) text->getX() * viewportSize.x / SCREEN_X,
+                                                          (float) text->getY() * viewportSize.y / SCREEN_Y,
+                                                          0))
+                                * glm::rotate(glm::mat4(1.0f), (float)text->getRotation() * GGE_PI / 180.f, glm::vec3(0,0,1))
+                                * glm::scale(glm::vec3((float) (text->isFlippedX() ? -1 : 1) * text->getScaleX() * viewportSize.x / SCREEN_X,
+                                                       (float) (text->isFlippedY() ? -1 : 1) * text->getScaleY() * viewportSize.y / SCREEN_Y,
+                                           0));
+
+        glm::vec4 colorToApply = {text->getColor()->r, text->getColor()->g, text->getColor()->b, text->getColor()->a};
+
+        std::vector<CharInfo> v = text->getCharsInfo();
+        for (std::vector<CharInfo>::iterator it = v.begin(); it != v.end(); ++it)
+        {
+            CharInfo charInfo = *it;
+
+            Vertex v1, v2, v3, v4;
+            glm::vec4 auxVec3 = { charInfo.quad.x, charInfo.quad.y, 0.0f, 1.0f};
+            glm::vec4 auxVec4 = modelMatrix * auxVec3;
+
+            v1.pos = { auxVec4.x, auxVec4.y};
+            v1.color = colorToApply;
+            v1.texCoord = {charInfo.clip.x, charInfo.clip.y};
+
+
+            auxVec3 = { charInfo.quad.x + charInfo.quad.w, charInfo.quad.y, 0.0f, 1.0f};
+            auxVec4 = modelMatrix * auxVec3;
+
+            v2.pos = { auxVec4.x, auxVec4.y};
+            v2.color = colorToApply;
+            v2.texCoord = {charInfo.clip.x + charInfo.clip.w, charInfo.clip.y};
+
+
+            auxVec3 = { charInfo.quad.x + charInfo.quad.w, charInfo.quad.y + charInfo.quad.h, 0.0f, 1.0f};
+            auxVec4 = modelMatrix * auxVec3;
+
+            v3.pos = { auxVec4.x, auxVec4.y};
+            v3.color = colorToApply;
+            v3.texCoord = {charInfo.clip.x + charInfo.clip.w, charInfo.clip.y + charInfo.clip.h};
+
+
+            auxVec3 = { charInfo.quad.x, charInfo.quad.y + charInfo.quad.h, 0.0f, 1.0f};
+            auxVec4 = modelMatrix * auxVec3;
+
+            v4.pos = { auxVec4.x, auxVec4.y};
+            v4.color = colorToApply;
+            v4.texCoord = {charInfo.clip.x, charInfo.clip.y + charInfo.clip.h};
+
+
+            vertices.push_back(v1);
+            vertices.push_back(v2);
+            vertices.push_back(v3);
+            vertices.push_back(v4);
+
+            uint16_t indicesOffset = vertices.size()-4;
+
+            indices.push_back(indicesOffset);
+            indices.push_back(indicesOffset+1);
+            indices.push_back(indicesOffset+2);
+            indices.push_back(indicesOffset+2);
+            indices.push_back(indicesOffset+3);
+            indices.push_back(indicesOffset);
+
+
+            renderIndex+=6;
+        }
+
+    }
+
     void Renderer::switchTexture(VkImageView newTexture)
     {
         if (renderIndex > 0 && vertices.size() > 0)
@@ -580,6 +659,7 @@ namespace GGE
     {
         if (renderIndex > 0 && vertices.size()>0)
             flush();
+
         VkPresentInfoKHR presentInfo = {};
         presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 
@@ -1144,7 +1224,7 @@ namespace GGE
         rasterizer.rasterizerDiscardEnable = VK_FALSE;
         rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
         rasterizer.lineWidth = 1.0f;
-        rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
+        rasterizer.cullMode = VK_CULL_MODE_NONE;
         rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
         rasterizer.depthBiasEnable = VK_FALSE;
 

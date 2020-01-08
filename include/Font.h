@@ -2,16 +2,7 @@
 #define FONT_H_INCLUDED
 
 #include "ResourcesManager.h"
-#if defined(__ANDROID__)
-#include "OS_ANDROID.h"
-#elif __APPLE__
- #include "TargetConditionals.h"
- #if TARGET_OS_OSX
-  #include "OS_GLFW.h"
- #endif
-#else
- #include "OS_GLFW.h"
-#endif
+//#include "OS.h"
 
 namespace GGE
 {
@@ -37,22 +28,6 @@ namespace GGE
         public:
             Font();
             ~Font();
-//            std::string face;
-//            std::string face;
-//            int size;
-//            bool bold;
-//            bool italic;
-//            std::string charset;
-//            bool unicode;
-//            int stretchH;
-//            bool smooth;
-//            int aa; /// TODO Review if it's float
-//            int paddingUp;
-//            int paddingDown;
-//            int paddingLeft;
-//            int paddingRight;
-//            int spacingHorizontal;
-//            int spacingVertical;
             void loadFont(const resourceFile *fileBuffer);
             FontChar *fontChars;
             int textureWidth;
@@ -62,7 +37,6 @@ namespace GGE
         protected:
             int charCount;
             int originalSize;
-//            char* fileName;
 
     };
 
