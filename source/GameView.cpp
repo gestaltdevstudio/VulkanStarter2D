@@ -19,6 +19,14 @@ namespace GGE
         delete rfMenuImage;
         delete rfMenuAtlas;
 
+        ta2 = new TextureAtlas();
+
+        const resourceFile *rfMenuAtlas2 = ResourcesManager::getInstance()->loadCompressedFile("game2.atlas");
+        const resourceFile *rfMenuImage2 = ResourcesManager::getInstance()->loadCompressedFile("game2.png");
+        ta2->loadTextureAtlas(rfMenuAtlas2, rfMenuImage2);
+        delete rfMenuImage2;
+        delete rfMenuAtlas2;
+
 //        sh = new Shader();
 //        const resourceFile *rfVertShader = ResourcesManager::getInstance()->loadCompressedFile("shader.vert");
 //        const resourceFile *rfFragShader = ResourcesManager::getInstance()->loadCompressedFile("shader.frag");
@@ -53,8 +61,31 @@ namespace GGE
         playerSprite->setY(SCREEN_Y/2 - playerSprite->getTextureRegion()->height/2);
         GraphicsManager::getInstance()->addGraphicElement(playerSprite);
 
+        playerSprite2 = new Sprite("Player2");
+        playerSprite2->loadRegion("dogAnim2", ta);
+        Animation *animation2 = new Animation();
+        std::vector<std::string> frames2;
+        frames2.push_back("dogAnim2");
+        frames2.push_back("dogAnim3");
+        frames2.push_back("dogAnim4");
+        frames2.push_back("dogAnim5");
+        frames2.push_back("dogAnim6");
+        frames2.push_back("dogAnim7");
+        frames2.push_back("dogAnim8");
+        frames2.push_back("dogAnim9");
+        animation2->loadFrames(ta, 1.0/8, frames2);
+        playerSprite2->addAnimation("Idle", animation2);
+        playerSprite2->setCurrentAnimationName("Idle", ANIM_LOOP_PINGPONG);
+//        playerSprite->setShader(sh);
+        playerSprite2->setIsVisible(true);
+//        playerSprite2->setFlippedX(true);
+//        playerSprite->setRotation(45.f);
+        playerSprite2->setX(0);
+        playerSprite2->setY(0);
+        GraphicsManager::getInstance()->addGraphicElement(playerSprite2);
+
         s2 = new Sprite("Bone");
-        s2->loadRegion("bone", ta);
+        s2->loadRegion("bone", ta2);
         s2->setIsVisible(true);
         s2->setX(-SCREEN_X/2 + s2->getTextureRegion()->width/2);
         s2->setY(-SCREEN_Y/2 + s2->getTextureRegion()->height/2);
@@ -62,7 +93,7 @@ namespace GGE
 
         exitButton = new Button();
         Drawable *d = new Drawable();
-        d->loadRegion("exitButton", ta);
+        d->loadRegion("exitButton", ta2);
         d->setIsVisible(true);
         exitButton->setDrawable(d);
         exitButton->setPosition(SCREEN_X/2 - exitButton->getDimension()->x/2,
@@ -120,7 +151,7 @@ namespace GGE
         f->loadFont(fontFile);
 //
         t = new Text();
-        t->initText("Text", f, "pressStart2P", ta, 0, 0);
+        t->initText("Text", f, "pressStart2P", ta2, 0, 0);
         t->setText("nsaefOUGH BF Soyjua.,PfAf");
 //        t->setX(-400);
 //        t->setY(-100);
@@ -191,10 +222,12 @@ namespace GGE
     {
 
         delete playerSprite;
+        delete playerSprite2;
 //        delete s2;
 //        delete sh;
 //        delete textSh;
         delete ta;
+        delete ta2;
         delete f;
 //        delete t;
 //#if !defined(GGE_DESKTOP)

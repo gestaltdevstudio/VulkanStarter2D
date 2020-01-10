@@ -92,6 +92,7 @@ namespace GGE
 
     void Renderer::prepare()
     {
+
 //        createVertexBuffer();
 //        createIndexBuffer();
         createTextureSampler();
@@ -334,27 +335,12 @@ namespace GGE
 
     void Renderer::flush()
     {
-        VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size(); //sizeof(verticesToADD[0]) * verticesToADD.size();
 
-        void* data;
-        vkMapMemory(device, stagingBigBufferMemory, 0, bufferSize, 0, &data);
-            memcpy(data, vertices.data(), (size_t) bufferSize);
-        vkUnmapMemory(device, stagingBigBufferMemory);
+        RenderChunk renderChunk;
+        renderChunk.imageView = activeTexture->getTextureImageView();
+        renderChunk.indicesCount = indices.size();
 
-        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, 0, bufferSize);
-
-        VkDeviceSize indexBufferSize = sizeof(indices[0]) * indices.size(); //sizeof(verticesToADD[0]) * verticesToADD.size();
-
-        void* dataIndices;
-        vkMapMemory(device, stagingBigBufferMemory, 0, indexBufferSize, 0, &dataIndices);
-            memcpy(dataIndices, indices.data(), (size_t) indexBufferSize);
-        vkUnmapMemory(device, stagingBigBufferMemory);
-
-        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, bufferSize, indexBufferSize);
-
-
-        vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
-        createCommandBuffers();
+        renderChunks.push_back(renderChunk);
 
 //        createVertexBuffer();
 //        copyVertexBuffer();
@@ -384,51 +370,9 @@ namespace GGE
 //        createUniformBuffers();
 //        createDescriptorPool();
 
-
-        vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
-
-        VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
-
-        if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-            recreateSwapChain();
-            return;
-        } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
-            throw std::runtime_error("failed to acquire swap chain image!");
-        }
-
-        updateUniformBuffer(imageIndex);
-
-        if (imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
-            vkWaitForFences(device, 1, &imagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
-        }
-        imagesInFlight[imageIndex] = inFlightFences[currentFrame];
-
-
-        VkSubmitInfo submitInfo = {};
-        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-
-        VkSemaphore waitSemaphores[] = {imageAvailableSemaphores[currentFrame]};
-        VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-        submitInfo.waitSemaphoreCount = 1;
-        submitInfo.pWaitSemaphores = waitSemaphores;
-        submitInfo.pWaitDstStageMask = waitStages;
-
-        submitInfo.commandBufferCount = 1;
-        submitInfo.pCommandBuffers = &commandBuffers[imageIndex];
-
-        signalSemaphores = new VkSemaphore {renderFinishedSemaphores[currentFrame]};
-        submitInfo.signalSemaphoreCount = 1;
-        submitInfo.pSignalSemaphores = signalSemaphores;
-
-        vkResetFences(device, 1, &inFlightFences[currentFrame]);
-
-        if (vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
-            throw std::runtime_error("failed to submit draw command buffer!");
-        }
-
-        vertices.clear();
-        indices.clear();
-        renderIndex = 0;
+//        vertices.clear();
+//        indices.clear();
+//        renderIndex = 0;
 
     }
 
@@ -447,9 +391,9 @@ namespace GGE
     void Renderer::renderDrawable(const TextureRegion* textureRegion, float x, float y, float scaleX, float scaleY, float rotation, bool isFlippedX, bool isFlippedY, Vector4* color)
     {
 
-        if (textureRegion->textureAtlas->texture->getTextureImageView() != textureImageView)
+        if (textureRegion->textureAtlas->texture != activeTexture)
         {
-            switchTexture(textureRegion->textureAtlas->texture->getTextureImageView());
+            switchTexture(textureRegion->textureAtlas->texture);
         }
         else if (renderIndex >= totalVBOSize)
         {
@@ -537,9 +481,9 @@ namespace GGE
 
     void Renderer::renderText(Text *text)
     {
-        if (text->getTextureAtlas()->texture->getTextureImageView() != textureImageView)
+        if (text->getTextureAtlas()->texture != activeTexture)
         {
-            switchTexture(text->getTextureAtlas()->texture->getTextureImageView());
+            switchTexture(text->getTextureAtlas()->texture);
         }
         else if (renderIndex >= totalVBOSize)
         {
@@ -614,11 +558,11 @@ namespace GGE
 
     }
 
-    void Renderer::switchTexture(VkImageView newTexture)
+    void Renderer::switchTexture(Texture* newTexture)
     {
         if (renderIndex > 0 && vertices.size() > 0)
             flush();
-        textureImageView = newTexture;
+        activeTexture = newTexture;
 
 //        createUniformBuffers();
 //        createDescriptorSets();
@@ -660,6 +604,77 @@ namespace GGE
         if (renderIndex > 0 && vertices.size()>0)
             flush();
 
+
+        VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size(); //sizeof(verticesToADD[0]) * verticesToADD.size();
+
+        void* data;
+        vkMapMemory(device, stagingBigBufferMemory, 0, bufferSize, 0, &data);
+            memcpy(data, vertices.data(), (size_t) bufferSize);
+        vkUnmapMemory(device, stagingBigBufferMemory);
+
+        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, 0, bufferSize);
+
+        VkDeviceSize indexBufferSize = sizeof(indices[0]) * renderIndex; //sizeof(verticesToADD[0]) * verticesToADD.size();
+
+        void* dataIndices;
+        vkMapMemory(device, stagingBigBufferMemory, 0, indexBufferSize, 0, &dataIndices);
+            memcpy(dataIndices, indices.data(), (size_t) indexBufferSize);
+        vkUnmapMemory(device, stagingBigBufferMemory);
+
+        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, bufferSize, indexBufferSize);
+
+
+        vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
+        createCommandBuffers();
+
+        renderIndex = 0;
+        indices.clear();
+        vertices.clear();
+        renderChunks.clear();
+
+        vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
+
+        VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
+
+        if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+            recreateSwapChain();
+            return;
+        } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+            throw std::runtime_error("failed to acquire swap chain image!");
+        }
+
+        updateUniformBuffer(imageIndex);
+
+        if (imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
+            vkWaitForFences(device, 1, &imagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
+        }
+        imagesInFlight[imageIndex] = inFlightFences[currentFrame];
+
+
+        VkSubmitInfo submitInfo = {};
+        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+        VkSemaphore waitSemaphores[] = {imageAvailableSemaphores[currentFrame]};
+        VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+        submitInfo.waitSemaphoreCount = 1;
+        submitInfo.pWaitSemaphores = waitSemaphores;
+        submitInfo.pWaitDstStageMask = waitStages;
+
+        submitInfo.commandBufferCount = 1;
+        submitInfo.pCommandBuffers = &commandBuffers[imageIndex];
+
+        signalSemaphores = new VkSemaphore {renderFinishedSemaphores[currentFrame]};
+        submitInfo.signalSemaphoreCount = 1;
+        submitInfo.pSignalSemaphores = signalSemaphores;
+
+        vkResetFences(device, 1, &inFlightFences[currentFrame]);
+
+        if (vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
+            throw std::runtime_error("failed to submit draw command buffer!");
+        }
+
+
+
         VkPresentInfoKHR presentInfo = {};
         presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 
@@ -672,7 +687,7 @@ namespace GGE
 
         presentInfo.pImageIndices = &imageIndex;
 
-        VkResult result = vkQueuePresentKHR(presentQueue, &presentInfo);
+        result = vkQueuePresentKHR(presentQueue, &presentInfo);
 
         if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
             framebufferResized = false;
@@ -682,7 +697,6 @@ namespace GGE
         }
 
         currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
-
     }
 
     void Renderer::renderResize(Point windowSize)
@@ -1058,6 +1072,7 @@ namespace GGE
     }
 
     void Renderer::createDescriptorSets() {
+
         std::vector<VkDescriptorSetLayout> layouts(swapChainImages.size(), descriptorSetLayout);
         VkDescriptorSetAllocateInfo allocInfo = {};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
@@ -1065,41 +1080,47 @@ namespace GGE
         allocInfo.descriptorSetCount = static_cast<uint32_t>(swapChainImages.size());
         allocInfo.pSetLayouts = layouts.data();
 
-        descriptorSets.resize(swapChainImages.size());
-        if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets.data()) != VK_SUCCESS) {
-            throw std::runtime_error("failed to allocate descriptor sets!");
-        }
+        for (auto & tex : activeTextures)
+        {
+
+            descriptorSets[tex].resize(swapChainImages.size());
+            if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets[tex].data()) != VK_SUCCESS) {
+                throw std::runtime_error("failed to allocate descriptor sets!");
+            }
 //
-        for (size_t i = 0; i < swapChainImages.size(); i++) {
-            VkDescriptorBufferInfo bufferInfo = {};
-            bufferInfo.buffer = uniformBuffers[i];
-            bufferInfo.offset = 0;
-            bufferInfo.range = sizeof(UniformBufferObject);
+            for (size_t i = 0; i < swapChainImages.size(); i++) {
 
-            VkDescriptorImageInfo imageInfo = {};
-            imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            imageInfo.imageView = textureImageView;
-            imageInfo.sampler = textureSampler;
+                VkDescriptorBufferInfo bufferInfo = {};
+                bufferInfo.buffer = uniformBuffers[i];
+                bufferInfo.offset = 0;
+                bufferInfo.range = sizeof(UniformBufferObject);
 
-            std::array<VkWriteDescriptorSet, 2> descriptorWrites = {};
+                VkDescriptorImageInfo imageInfo = {};
+                imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                imageInfo.imageView = tex;
+                imageInfo.sampler = textureSampler;
 
-            descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-            descriptorWrites[0].dstSet = descriptorSets[i];
-            descriptorWrites[0].dstBinding = 0;
-            descriptorWrites[0].dstArrayElement = 0;
-            descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-            descriptorWrites[0].descriptorCount = 1;
-            descriptorWrites[0].pBufferInfo = &bufferInfo;
+                std::array<VkWriteDescriptorSet, 2> descriptorWrites = {};
 
-            descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-            descriptorWrites[1].dstSet = descriptorSets[i];
-            descriptorWrites[1].dstBinding = 1;
-            descriptorWrites[1].dstArrayElement = 0;
-            descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-            descriptorWrites[1].descriptorCount = 1;
-            descriptorWrites[1].pImageInfo = &imageInfo;
+                descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                descriptorWrites[0].dstSet = descriptorSets[tex][i];
+                descriptorWrites[0].dstBinding = 0;
+                descriptorWrites[0].dstArrayElement = 0;
+                descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                descriptorWrites[0].descriptorCount = 1;
+                descriptorWrites[0].pBufferInfo = &bufferInfo;
 
-            vkUpdateDescriptorSets(device, static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
+                descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                descriptorWrites[1].dstSet = descriptorSets[tex][i];
+                descriptorWrites[1].dstBinding = 1;
+                descriptorWrites[1].dstArrayElement = 0;
+                descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+                descriptorWrites[1].descriptorCount = 1;
+                descriptorWrites[1].pImageInfo = &imageInfo;
+
+                vkUpdateDescriptorSets(device, static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
+            }
+
         }
     }
 
@@ -1151,7 +1172,7 @@ namespace GGE
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
         poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
         poolInfo.pPoolSizes = poolSizes.data();
-        poolInfo.maxSets = static_cast<uint32_t>(swapChainImages.size());
+        poolInfo.maxSets = static_cast<uint32_t>(swapChainImages.size() * activeTextures.size());
 
         if (vkCreateDescriptorPool(device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
             throw std::runtime_error("failed to create descriptor pool!");
@@ -1377,15 +1398,18 @@ namespace GGE
                 VkDeviceSize offsets[] = {0};
                 vkCmdBindVertexBuffers(commandBuffers[i], 0, 1, vertexBuffers, offsets);
 
-                vkCmdBindIndexBuffer(commandBuffers[i], bigBuffer, static_cast<uint32_t>(vertices.size()) * sizeof(Vertex), VK_INDEX_TYPE_UINT16);
 //                vkCmdBindIndexBuffer(commandBuffers[i], indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+                uint16_t indicesOffset = 0;
+                for(auto&& renderChunk: renderChunks)
+                {
+                    vkCmdBindIndexBuffer(commandBuffers[i], bigBuffer, static_cast<uint32_t>(vertices.size()) * sizeof(Vertex) + (indicesOffset * sizeof(indices[0])), VK_INDEX_TYPE_UINT16);
+                    vkCmdBindDescriptorSets(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &descriptorSets[renderChunk.imageView][i], 0, nullptr);
 
-                vkCmdBindDescriptorSets(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &descriptorSets[i], 0, nullptr);
+    //                vkCmdDraw(commandBuffers[i], renderIndex, 1, 0, 0);
 
-//                vkCmdDraw(commandBuffers[i], renderIndex, 1, 0, 0);
-
-                vkCmdDrawIndexed(commandBuffers[i], static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
-
+                    vkCmdDrawIndexed(commandBuffers[i], renderChunk.indicesCount, 1, 0, 0, 0);
+                    indicesOffset += renderChunk.indicesCount;
+                }
 
             vkCmdEndRenderPass(commandBuffers[i]);
 
@@ -1621,6 +1645,7 @@ namespace GGE
     }
 
     Texture* Renderer::createTextureImage(const resourceFile* fileBuffer) {
+
         VkImage textureImage;
         VkDeviceMemory textureImageMemory;
         int texWidth, texHeight, texChannels;
@@ -1656,7 +1681,7 @@ namespace GGE
 
         vkDestroyBuffer(device, stagingBuffer, nullptr);
         vkFreeMemory(device, stagingBufferMemory, nullptr);
-        switchTexture(texture->getTextureImageView());
+        switchTexture(texture);
 
         return texture;
     }
@@ -1683,48 +1708,6 @@ namespace GGE
         }
 
         return imageView;
-    }
-
-    void Renderer::createIndexBuffer() {
-
-        indices = {
-            0, 1, 2, 2, 3, 0
-        };
-
-        VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
-
-//        VkBuffer stagingBuffer;
-//        VkDeviceMemory stagingBufferMemory;
-//        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingIndexBuffer, stagingIndexBufferMemory);
-
-        void* data;
-        vkMapMemory(device, stagingBigBufferMemory, 0, bufferSize, 0, &data);
-            memcpy(data, indices.data(), (size_t) bufferSize);
-        vkUnmapMemory(device, stagingBigBufferMemory);
-
-//        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, indexBuffer, indexBufferMemory);
-
-        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, sizeof(vertices[0]) * vertices.size(), bufferSize);
-
-//        vkDestroyBuffer(device, stagingBuffer, nullptr);
-//        vkFreeMemory(device, stagingBufferMemory, nullptr);
-    }
-
-
-    void Renderer::createVertexBuffer() {
-
-        VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
-//        VkDeviceSize bufferSize = totalVBOSize;
-
-        void* data;
-        vkMapMemory(device, stagingBigBufferMemory, 0, bufferSize, 0, &data);
-            memcpy(data, vertices.data(), (size_t) bufferSize);
-        vkUnmapMemory(device, stagingBigBufferMemory);
-
-//        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, bigBuffer, bigBufferMemory);
-
-        copyBuffer(stagingBigBuffer, bigBuffer, bufferSize);
-
     }
 
     void Renderer::copyVertexBuffer() {

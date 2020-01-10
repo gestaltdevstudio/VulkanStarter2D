@@ -55,6 +55,7 @@ namespace GGE
         {
 
             TextureRegion *atlasRegion= static_cast<TextureRegion*>(textureAtlas->regions.at(textureRegionName));
+            atlasRegion->textureAtlas = textureAtlas;
 
             textPrinted = textToPrint;
             int length = textPrinted.length();

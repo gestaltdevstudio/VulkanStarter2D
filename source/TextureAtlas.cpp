@@ -91,7 +91,6 @@ namespace GGE
                 free(name);
         }
 
-
         texture = GraphicsManager::getInstance()->getRenderer()->createTextureImage(atlasImage);
 
         return NULL;

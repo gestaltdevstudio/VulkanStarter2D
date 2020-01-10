@@ -68,6 +68,7 @@ namespace GGE
             void sortSpritesbyZOrder();
 
             inline Renderer* getRenderer() { return renderer; }
+            void             prepare();
 
         private:
 

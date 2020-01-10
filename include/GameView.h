@@ -22,9 +22,10 @@ namespace GGE
 
         protected:
             GameModel *gameModel;
-            TextureAtlas *ta;
+            TextureAtlas *ta, *ta2;
 //            Shader *sh;
             Sprite *playerSprite;
+            Sprite *playerSprite2;
             Sprite *s2;
             Shader *textSh;
             Font *f;

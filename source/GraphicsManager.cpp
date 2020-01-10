@@ -18,6 +18,45 @@ namespace GGE
 
 	}
 
+	void GraphicsManager::prepare()
+	{
+        renderer->activeTextures.clear();
+        for(std::list<GraphicElement*>::iterator it = graphicElements.begin(); it != graphicElements.end(); ++it)
+        {
+            Text *text = NULL;
+            text = dynamic_cast<Text*>(*it);
+            Drawable *drawable = NULL;
+            drawable = dynamic_cast<Drawable*>(*it);
+            UIObject *uiObject = NULL;
+            uiObject = dynamic_cast<UIObject*>(*it);
+
+            Texture* texture = NULL;
+
+            if (text)
+            {
+                texture = text->getTextureAtlas()->texture;
+            }
+            else if (drawable)
+            {
+                texture = drawable->getTextureRegion()->textureAtlas->texture;
+            }
+            else if (uiObject)
+            {
+                texture = uiObject->getDrawable()->getTextureRegion()->textureAtlas->texture;
+            }
+
+            if (std::find(renderer->activeTextures.begin(), renderer->activeTextures.end(), texture->getTextureImageView()) == renderer->activeTextures.end())
+            {
+                renderer->activeTextures.push_back(texture->getTextureImageView());
+            }
+            if (texture && renderer->activeTextures.empty())
+            {
+                renderer->activeTextures.push_back(texture->getTextureImageView());
+            }
+        }
+        renderer->prepare();
+	}
+
 	void GraphicsManager::doGraphics(float deltaTime)
 	{
         renderer->onRenderStart();

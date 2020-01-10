@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <set>
+#include <unordered_map>
 #include <optional>
 #include <array>
 #include "vulkan/vulkan.h"
@@ -14,7 +15,6 @@
 
 namespace GGE
 {
-
 
     struct Vertex {
         glm::vec2 pos;
@@ -77,6 +77,12 @@ namespace GGE
         alignas(16) glm::mat4 proj;
     };
 
+    struct RenderChunk
+    {
+        VkImageView imageView;
+        uint16_t    indicesCount;
+    };
+
     class Text;
 
     class Renderer
@@ -100,6 +106,7 @@ namespace GGE
                                                   const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
             void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
             void calculateViewportSize(Point &viewport);
+            std::vector<VkImageView> activeTextures;
 
         private:
             void createInstance();
@@ -126,12 +133,10 @@ namespace GGE
             void recreateSwapChain();
             void cleanupSwapChain();
 
-            void createVertexBuffer();
-            void createIndexBuffer();
             void copyVertexBuffer();
             void updateUniformBuffer(uint32_t currentImage);
             void flush();
-            void switchTexture(VkImageView newTexture);
+            void switchTexture(Texture* newTexture);
 
             void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
             void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
@@ -176,7 +181,6 @@ namespace GGE
 
             VkSampler textureSampler;
 
-
             VkBuffer stagingBigBuffer;
             VkDeviceMemory stagingBigBufferMemory;
 
@@ -190,15 +194,17 @@ namespace GGE
             VkPipelineLayout pipelineLayout;
             VkPipeline graphicsPipeline;
             VkDescriptorPool descriptorPool;
-            std::vector<VkDescriptorSet> descriptorSets;
-
+            std::unordered_map<VkImageView, std::vector<VkDescriptorSet>> descriptorSets;
+//            std::vector<VkDescriptorSet> descriptorSets;
+            std::vector<RenderChunk> renderChunks;
 
             std::vector<VkBuffer> uniformBuffers;
             std::vector<VkDeviceMemory> uniformBuffersMemory;
 
             std::vector<Vertex> vertices;
             std::vector<uint16_t> indices;
-            VkImageView textureImageView;
+//            VkImageView textureImageView;
+            Texture* activeTexture;
 
             VkCommandPool commandPool;
             std::vector<VkCommandBuffer> commandBuffers;
