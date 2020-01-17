@@ -7,9 +7,7 @@ namespace GGE
 
     OS::OS()
     {
-        context = EGL_NO_CONTEXT;
-        display = EGL_NO_DISPLAY;
-        surface = EGL_NO_SURFACE;
+
         handID[0]=-1;
         handID[1]=-1;
 
@@ -44,14 +42,15 @@ namespace GGE
     Point OS::calculateMousePoint(Point point)
     {
         Point windowSize = OS::getInstance()->getWindowSize();
-        Point viewportSize = Graphics::getInstance()->getViewportSize();
+        Point viewportSize = windowSize;
+        GraphicsManager::getInstance()->getRenderer()->calculateViewportSize(viewportSize);
         Point p;
         p.x = (int) point.x;
         p.y = (int) point.y;
         p.x = (int) (p.x - (windowSize.x / 2 - viewportSize.x / 2)) * SCREEN_X / viewportSize.x;
-        p.y = (int) (p.y - (windowSize.y / 2 - viewportSize.y / 2 )) * SCREEN_Y / viewportSize.y;
+        p.y = (int) (p.y - (windowSize.y / 2 - viewportSize.y / 2)) * SCREEN_Y / viewportSize.y;
         p.x -= SCREEN_X/2;
-        p.y = SCREEN_Y - p.y - SCREEN_Y/2;
+        p.y -= SCREEN_Y/2;
         return p;
     }
 
@@ -184,97 +183,10 @@ namespace GGE
         handID[RIGHT_HAND] = -1;
     }
 
-     static int engine_init_display(OS* engine) {
+    static int engine_init_display(OS* engine) {
 
-        const EGLint attribs[] = {
-                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-                EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-                EGL_BLUE_SIZE, 8,
-                EGL_GREEN_SIZE, 8,
-                EGL_RED_SIZE, 8,
-                EGL_DEPTH_SIZE, 24,
-                EGL_NONE
-        };
-        EGLint w, h;
-        EGLint numConfigs;
-        EGLConfig config;
-        EGLSurface surface;
-        EGLContext context;
-
-        EGLDisplay display = eglGetCurrentDisplay();
-
-        if (display == EGL_NO_DISPLAY) {
-
-            display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-
-            eglInitialize(display, 0, 0);
-
-            eglChooseConfig(display, attribs, NULL, 0, &numConfigs);
-            std::unique_ptr<EGLConfig[]> supportedConfigs(new EGLConfig[numConfigs]);
-            assert(supportedConfigs);
-            eglChooseConfig(display, attribs, supportedConfigs.get(), numConfigs, &numConfigs);
-            assert(numConfigs);
-            auto i = 0;
-            for (; i < numConfigs; i++) {
-                auto &cfg = supportedConfigs[i];
-                EGLint r, g, b, d;
-                if (eglGetConfigAttrib(display, cfg, EGL_RED_SIZE, &r) &&
-                    eglGetConfigAttrib(display, cfg, EGL_GREEN_SIZE, &g) &&
-                    eglGetConfigAttrib(display, cfg, EGL_BLUE_SIZE, &b) &&
-                    eglGetConfigAttrib(display, cfg, EGL_DEPTH_SIZE, &d) &&
-                    r == 8 && g == 8 && b == 8 && d == 0) {
-
-                    config = supportedConfigs[i];
-                    break;
-                }
-            }
-            if (i == numConfigs) {
-                config = supportedConfigs[0];
-            }
-
-        }
-
-        surface = engine->surface;
-        if (surface == EGL_NO_SURFACE) {
-            surface = eglCreateWindowSurface(display, config, engine->app->window, NULL);
-            if (surface == EGL_NO_SURFACE) {
-                LOGW("Unable to eglCreateWindowSurface");
-                return -1;
-            }
-        }
-
-        context = engine->context;
-        if (context == 0)
-        {
-
-            EGLint AttribList[] =
-                    {
-                            EGL_CONTEXT_CLIENT_VERSION, 3,
-                            EGL_NONE
-                    };
-
-            context = eglCreateContext(display, config, NULL, AttribList);
-            if (context == EGL_NO_CONTEXT)
-            {
-                LOGW("Unable to eglCreateContext");
-                return -1;
-            }
-
-        }
-
-        if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
-            LOGW("Unable to eglMakeCurrent");
-            return -1;
-        }
-
-        eglQuerySurface(display, surface, EGL_WIDTH, &w);
-        eglQuerySurface(display, surface, EGL_HEIGHT, &h);
-
-        engine->display = display;
-        engine->context = context;
-        engine->surface = surface;
-        engine->width = w;
-        engine->height = h;
+        engine->width = ANativeWindow_getWidth(engine->app->window);
+        engine->height = ANativeWindow_getHeight(engine->app->window);
         engine->setRunning(true);
         engine->setIsAlive(true);
         Point p;
@@ -283,53 +195,14 @@ namespace GGE
         engine->setInputCoord(1, p);
         engine->setTouchCoord(p);
 
-        auto opengl_info = { GL_VENDOR, GL_RENDERER, GL_VERSION, GL_EXTENSIONS };
-        for (auto name : opengl_info) {
-            auto info = glGetString(name);
-            LOGI("OpenGL Info: %s", info);
-        }
-
         engine->resizeWindow();
 
         return 0;
     }
 
-    static void engine_draw_frame(OS* engine) {
-        if (engine->display == NULL) {
-
-            return;
-        }
-
-        eglSwapBuffers(engine->display, engine->surface);
-    }
-
 
      static void engine_term_display(OS* engine) {
-        if (engine->killApp) {
-            if (engine->display != EGL_NO_DISPLAY) {
-                eglMakeCurrent(engine->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-                if (engine->context != EGL_NO_CONTEXT) {
-                    eglDestroyContext(engine->display, engine->context);
-                }
-                if (engine->surface != EGL_NO_SURFACE) {
-                    eglDestroySurface(engine->display, engine->surface);
-                }
-                eglTerminate(engine->display);
-            }
 
-            engine->display = EGL_NO_DISPLAY;
-            engine->surface = EGL_NO_SURFACE;
-            engine->context = EGL_NO_CONTEXT;
-        }
-        else
-        {
-            eglMakeCurrent(engine->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-            if (engine->surface != EGL_NO_SURFACE) {
-                eglDestroySurface(engine->display, engine->surface);
-                engine->surface = EGL_NO_SURFACE;
-            }
-
-        }
         engine->setIsAlive(false);
     }
 
@@ -340,7 +213,6 @@ namespace GGE
 
                 if (engine->app->window != NULL) {
                     engine_init_display(engine);
-                    engine_draw_frame(engine);
                 }
                 engine->killApp = false;
 
@@ -387,7 +259,7 @@ namespace GGE
 
     void OS::swapBuffer()
     {
-        engine_draw_frame(this);
+
     }
 
     float OS::getTime()
@@ -418,6 +290,25 @@ namespace GGE
 
     }
 
+    std::vector<const char*> OS::getRequiredExtensions(bool enableValidationLayers) {
+
+	std::vector<const char*> extensions = { VK_KHR_SURFACE_EXTENSION_NAME };
+	extensions.push_back(VK_KHR_ANDROID_SURFACE_EXTENSION_NAME);
+
+        if (enableValidationLayers) {
+            extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+        }
+
+        return extensions;
+    }
+
+    bool OS::createSurface(const VkInstance *instance, VkSurfaceKHR *surface)
+    {
+        VkAndroidSurfaceCreateInfoKHR info = { VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR };
+        info.window = app->window;
+        return (vkCreateAndroidSurfaceKHR(*instance, &info, nullptr, surface) == VK_SUCCESS);
+    }
+
     void OS::destroy()
     {
         alive = false;
@@ -436,6 +327,8 @@ namespace GGE
         Point windowSize;
         windowSize.x = width;
         windowSize.y = height;
+//        LOGI("width %d", width);
+//        LOGI("height %d", height);
         return windowSize;
     }
 
@@ -443,7 +336,7 @@ namespace GGE
     {
         Point windowSize = getWindowSize();
 
-        Graphics::getInstance()->renderResize(windowSize);
+        GraphicsManager::getInstance()->getRenderer()->renderResize(windowSize);
     }
 
 

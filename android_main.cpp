@@ -1,4 +1,4 @@
-#include "gpg/gpg.h"
+//#include "gpg/gpg.h"
 #include "include/GGEGame.h"
 
 void android_main(struct android_app* state) {

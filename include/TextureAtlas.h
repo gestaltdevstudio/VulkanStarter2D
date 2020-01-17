@@ -1,10 +1,10 @@
 #ifndef TEXTUREATLAS_H_INCLUDED
 #define TEXTUREATLAS_H_INCLUDED
 
+#include "Texture.h"
 #include "ResourcesManager.h"
 #include <map>
 #include "GraphicsUtils.h"
-#include "Texture.h"
 
 namespace GGE
 {

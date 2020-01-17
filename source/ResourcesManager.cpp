@@ -1,5 +1,11 @@
 #include "../include/ResourcesManager.h"
 
+#if defined(__ANDROID__)
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
+#include "../include/OS_ANDROID.h"
+#endif
+
 namespace GGE
 {
 
@@ -67,6 +73,33 @@ namespace GGE
 
     resourceFile* ResourcesManager::loadFile(const char* cfileName)
     {
+
+
+#if defined(__ANDROID__)
+        AAssetManager* mgr = OS::getInstance()->getAndroidApp()->activity->assetManager;
+        AAsset *asset = AAssetManager_open(mgr,("conf/" + to_string(cfileName)).c_str(), AASSET_MODE_BUFFER);
+        if (asset) {
+            uint64_t fileLength = AAsset_getLength(asset);
+
+
+            resourceFile *rf = new resourceFile();
+            rf->fileName = cfileName;
+            rf->size = fileLength;
+
+            rf->content = new char[fileLength + 1];
+
+            AAsset_read(asset, rf->content, fileLength);
+
+            rf->content[fileLength] = '\0';
+
+            AAsset_close(asset);
+
+            return rf;
+        } else
+        {
+            return NULL;
+        }
+#endif
 
         long size;
         std::ifstream File(("conf/" + to_string(cfileName)).c_str(), std::ifstream::binary);

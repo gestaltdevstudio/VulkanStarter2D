@@ -103,7 +103,6 @@
 		<Unit filename="../../source/GraphicsManager.cpp" />
 		<Unit filename="../../source/GraphicsUtils.cpp" />
 		<Unit filename="../../source/InputSystem.cpp" />
-		<Unit filename="../../source/OS_GLFW.cpp" />
 		<Unit filename="../../source/Renderer.cpp" />
 		<Unit filename="../../source/ResourcesManager.cpp" />
 		<Unit filename="../../source/SoundManager.cpp" />
@@ -112,6 +111,7 @@
 		<Unit filename="../../source/Text.cpp" />
 		<Unit filename="../../source/TextureAtlas.cpp" />
 		<Unit filename="../../source/UIObject.cpp" />
+		<Unit filename="../../source/desktop/OS_GLFW.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

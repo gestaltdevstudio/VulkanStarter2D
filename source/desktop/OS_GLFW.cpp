@@ -1,4 +1,4 @@
-#include "../include/OS_GLFW.h"
+#include "../../include/OS_GLFW.h"
 #if defined(__WIN32__)
 #include <algorithm>
 #endif
@@ -455,7 +455,7 @@ namespace GGE
     }
 
     bool OS::createSurface(const VkInstance *instance, VkSurfaceKHR * surface) {
-        return (glfwCreateWindowSurface(*instance, window,nullptr, surface) == VK_SUCCESS);
+        return (glfwCreateWindowSurface(*instance, window, nullptr, surface) == VK_SUCCESS);
     }
 
 

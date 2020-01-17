@@ -6,12 +6,26 @@
 #include <unordered_map>
 #include <optional>
 #include <array>
-#include "vulkan/vulkan.h"
 #include "ResourcesManager.h"
 #include "Drawable.h"
 #include "Texture.h"
-#include "OS_GLFW.h"
+
+#if defined(__ANDROID__)
+ #include "OS_ANDROID.h"
+ #include "vulkan_android/vulkan_wrapper.h"
+#elif __APPLE__
+ #include "TargetConditionals.h"
+ #if TARGET_OS_OSX
+  #include "OS_GLFW.h"
+ #else
+  #include "OS_iOS.h"
+ #endif
+#else
+ #include "OS_GLFW.h"
+#include "vulkan/vulkan.h"
+#endif
 #include "Text.h"
+#include "stb_image.h"
 
 namespace GGE
 {
@@ -107,6 +121,7 @@ namespace GGE
             void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
             void calculateViewportSize(Point &viewport);
             std::vector<VkImageView> activeTextures;
+            void recreateSwapChain();
 
         private:
             void createInstance();
@@ -130,7 +145,6 @@ namespace GGE
             VkImageView createTextureImageView(VkImage textureImage);
             VkImageView createImageView(VkImage image, VkFormat format); //, VkImageAspectFlags aspectFlags);
 
-            void recreateSwapChain();
             void cleanupSwapChain();
 
             void copyVertexBuffer();
@@ -161,7 +175,7 @@ namespace GGE
             VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
             VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
             VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
-            VkShaderModule createShaderModule(const std::vector<char>& code);
+            VkShaderModule createShaderModule(const resourceFile* code);
 
             VkInstance         instance;
             VkDebugUtilsMessengerEXT debugMessenger;
@@ -245,23 +259,23 @@ namespace GGE
 
             static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData);
 
-            static std::vector<char> readFile(const std::string& filename) {
-                std::ifstream file(filename, std::ios::ate | std::ios::binary);
-
-                if (!file.is_open()) {
-                    throw std::runtime_error("failed to open file!");
-                }
-
-                size_t fileSize = (size_t) file.tellg();
-                std::vector<char> buffer(fileSize);
-
-                file.seekg(0);
-                file.read(buffer.data(), fileSize);
-
-                file.close();
-
-                return buffer;
-            }
+//            static std::vector<char> readFile(const std::string& filename) {
+//                std::ifstream file(filename, std::ios::ate | std::ios::binary);
+//
+//                if (!file.is_open()) {
+//                    throw std::runtime_error("failed to open file!");
+//                }
+//
+//                size_t fileSize = (size_t) file.tellg();
+//                std::vector<char> buffer(fileSize);
+//
+//                file.seekg(0);
+//                file.read(buffer.data(), fileSize);
+//
+//                file.close();
+//
+//                return buffer;
+//            }
 
     };
 

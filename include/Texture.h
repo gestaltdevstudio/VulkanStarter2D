@@ -2,6 +2,12 @@
 #define TEXTURE_SDL_H_INCLUDED
 
 //#include <SDL.h>
+//#include "vulkan/vulkan.h"
+#if defined(__ANDROID__)
+ #include "vulkan_android/vulkan_wrapper.h"
+#else
+ #include "vulkan/vulkan.h"
+#endif
 
 namespace GGE
 {

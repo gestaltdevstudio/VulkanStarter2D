@@ -7,6 +7,11 @@ namespace GGE
 
     Renderer::Renderer(uint16_t maxDrawables)
     {
+
+#if defined(__ANDROID__)
+        InitVulkan();
+#endif
+
         totalVBOSize = maxDrawables * 6 * 2;
 //        Vertex oneVertex;
 //        oneVertex.pos= {0,0};
@@ -126,7 +131,9 @@ namespace GGE
             Point windowSize = OS::getInstance()->getWindowSize();
             width = windowSize.x;
             height = windowSize.y;
+#if !defined(__ANDROID__)
             OS::getInstance()->waitEvents();
+#endif // defined
         }
 
         vkDeviceWaitIdle(device);
@@ -918,7 +925,15 @@ namespace GGE
             createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
         }
 
-        createInfo.preTransform = swapChainSupport.capabilities.currentTransform;
+        VkSurfaceTransformFlagBitsKHR preTransform;
+        if (swapChainSupport.capabilities.supportedTransforms &
+            VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR) {
+            preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+        } else {
+            preTransform = swapChainSupport.capabilities.currentTransform;
+        }
+
+        createInfo.preTransform = preTransform;
         createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
         createInfo.presentMode = presentMode;
         createInfo.clipped = VK_TRUE;
@@ -1084,8 +1099,9 @@ namespace GGE
         {
 
             descriptorSets[tex].resize(swapChainImages.size());
-            if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets[tex].data()) != VK_SUCCESS) {
-                throw std::runtime_error("failed to allocate descriptor sets!");
+            VkResult r = vkAllocateDescriptorSets(device, &allocInfo, descriptorSets[tex].data());
+            if (r != VK_SUCCESS) {
+                throw std::runtime_error(to_string(r));
             }
 //
             for (size_t i = 0; i < swapChainImages.size(); i++) {
@@ -1164,15 +1180,15 @@ namespace GGE
     void Renderer::createDescriptorPool() {
         std::array<VkDescriptorPoolSize, 2> poolSizes = {};
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        poolSizes[0].descriptorCount = static_cast<uint32_t>(swapChainImages.size());
+        poolSizes[0].descriptorCount = static_cast<uint32_t>(swapChainImages.size()) * 200;
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        poolSizes[1].descriptorCount = static_cast<uint32_t>(swapChainImages.size());
+        poolSizes[1].descriptorCount = static_cast<uint32_t>(swapChainImages.size()) * 400;
 
         VkDescriptorPoolCreateInfo poolInfo = {};
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
         poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
         poolInfo.pPoolSizes = poolSizes.data();
-        poolInfo.maxSets = static_cast<uint32_t>(swapChainImages.size() * activeTextures.size());
+        poolInfo.maxSets = static_cast<uint32_t>(swapChainImages.size() * activeTextures.size() * 200);
 
         if (vkCreateDescriptorPool(device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
             throw std::runtime_error("failed to create descriptor pool!");
@@ -1180,11 +1196,17 @@ namespace GGE
     }
 
     void Renderer::createGraphicsPipeline() {
-        auto vertShaderCode = readFile("conf/defaultShaderVert.spv");
-        auto fragShaderCode = readFile("conf/defaultShaderFrag.spv");
 
-        VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
-        VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
+        resourceFile *rfv = ResourcesManager::getInstance()->loadCompressedFile("defaultShaderVert.spv");
+        resourceFile *rff = ResourcesManager::getInstance()->loadCompressedFile("defaultShaderFrag.spv");
+
+
+        VkShaderModule vertShaderModule = createShaderModule(rfv);
+        VkShaderModule fragShaderModule = createShaderModule(rff);
+
+
+        delete rfv;
+        delete rff;
 
         VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
         vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -1442,11 +1464,11 @@ namespace GGE
         }
     }
 
-    VkShaderModule Renderer::createShaderModule(const std::vector<char>& code) {
+    VkShaderModule Renderer::createShaderModule(const resourceFile* code) {
         VkShaderModuleCreateInfo createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-        createInfo.codeSize = code.size();
-        createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+        createInfo.codeSize = code->size;
+        createInfo.pCode = reinterpret_cast<const uint32_t*>(code->content);
 
         VkShaderModule shaderModule;
         if (vkCreateShaderModule(device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {

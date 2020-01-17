@@ -1,10 +1,10 @@
 #ifndef GRAPHICS_MANAGER_H_INCLUDED
 #define GRAPHICS_MANAGER_H_INCLUDED
 
+#include "Renderer.h"
 #include "Definitions.h"
 #include "Sprite.h"
 #include "UIObject.h"
-#include "Renderer.h"
 //#include "Text.h"
 #if defined(__ANDROID__)
  #include "OS_ANDROID.h"
@@ -48,7 +48,6 @@ namespace GGE
             void             initGraphics();
             void	         onRender(float deltaTime);
             void	 		 onRenderFinish();
-            void	 	 	 renderResize(Point windowSize);
             void             onSceneFinish();
             void             addGraphicElement(GraphicElement *graphicElement);
             void             removeGraphicElement(GraphicElement *graphicElement);

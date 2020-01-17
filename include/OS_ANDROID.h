@@ -9,9 +9,6 @@
 #include <errno.h>
 #include <cassert>
 
-#include <EGL/egl.h>
-#include <GLES3/gl3.h>
-#include <GLES3/gl3ext.h>
 #include <android/sensor.h>
 #include <android/log.h>
 #include <android_native_app_glue.h>
@@ -20,10 +17,10 @@
 #include <stdlib.h>
 
 #include "Definitions.h"
-#include "Graphics.h"
+#include "GraphicsManager.h"
 
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "starter", __VA_ARGS__))
-#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "starter", __VA_ARGS__))
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "VulkanStarter2D", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "VulkanStarter2D", __VA_ARGS__))
 
 enum MobileHand {
     LEFT_HAND = 0,
@@ -79,9 +76,6 @@ namespace GGE {
 
         Point calculateMousePoint(Point point);
 
-        EGLDisplay display;
-        EGLSurface surface;
-        EGLContext context;
         int32_t width;
         int32_t height;
 
@@ -93,6 +87,8 @@ namespace GGE {
         bool killApp;
         int handID[2];
         void resetTouchInput();
+    	std::vector<const char*> getRequiredExtensions(bool enableValidationLayers);
+        bool createSurface(const VkInstance *instance, VkSurfaceKHR *surface);
 
     private:
         static OS *instance;
