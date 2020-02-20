@@ -20,11 +20,9 @@ namespace GGE
             inline float getFrameDuration() { return frameDuration; }
             inline int getNumberOfFrames() { return frames.size(); }
 
-
         protected:
             float frameDuration;
             std::vector<TextureRegion*> frames;
-
 
     };
 

@@ -21,13 +21,15 @@ namespace GGE
             void step(float deltaTime);
 
         protected:
+            int runOnce = 0;
             GameModel *gameModel;
             TextureAtlas *ta, *ta2;
-//            Shader *sh;
+
             Sprite *playerSprite;
             Sprite *playerSprite2;
+            Animation *animation;
+            Animation *animation2;
             Sprite *s2;
-            Shader *textSh;
             Font *f;
             Text *t;
             Button *exitButton;

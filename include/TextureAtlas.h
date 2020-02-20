@@ -4,7 +4,6 @@
 #include "Texture.h"
 #include "ResourcesManager.h"
 #include <map>
-#include "GraphicsUtils.h"
 
 namespace GGE
 {

@@ -39,7 +39,7 @@ namespace GGE
         return calculateMousePoint(_return);
     }
 
-    Point OS::calculateMousePoint(Point point)
+    Point OS::calculateMousePoint(const Point &point)
     {
         Point windowSize = OS::getInstance()->getWindowSize();
         Point viewportSize = windowSize;
@@ -51,6 +51,7 @@ namespace GGE
         p.y = (int) (p.y - (windowSize.y / 2 - viewportSize.y / 2)) * SCREEN_Y / viewportSize.y;
         p.x -= SCREEN_X/2;
         p.y -= SCREEN_Y/2;
+        p.y *=-1;
         return p;
     }
 
@@ -183,7 +184,19 @@ namespace GGE
         handID[RIGHT_HAND] = -1;
     }
 
+    void OS::destroyRendererContext()
+    {
+        GraphicsManager::getInstance()->getRenderer()->destroyContext();
+    }
+
+    void OS::createRendererContext()
+    {
+        GraphicsManager::getInstance()->getRenderer()->createContext();
+    }
+
     static int engine_init_display(OS* engine) {
+
+//        engine->createRendererContext();
 
         engine->width = ANativeWindow_getWidth(engine->app->window);
         engine->height = ANativeWindow_getHeight(engine->app->window);
@@ -201,8 +214,9 @@ namespace GGE
     }
 
 
-     static void engine_term_display(OS* engine) {
-
+    static void engine_term_display(OS* engine)
+    {
+//        engine->destroyRendererContext();
         engine->setIsAlive(false);
     }
 
@@ -215,20 +229,27 @@ namespace GGE
                     engine_init_display(engine);
                 }
                 engine->killApp = false;
+                engine->lostFocus = false;
 
                 LOGI("APP_CMD_INIT_WINDOW");
+            break;
+
+            case APP_CMD_TERM_WINDOW:
+//                engine->swapBuffer();
+                engine_term_display(engine);
+                LOGI("APP_CMD_TERM_WINDOW");
             break;
 
             case APP_CMD_WINDOW_RESIZED:
             case APP_CMD_WINDOW_REDRAW_NEEDED:
             case APP_CMD_CONTENT_RECT_CHANGED:
             case APP_CMD_CONFIG_CHANGED:
-                if (engine->app->window != NULL && ((engine->width != ANativeWindow_getWidth(app->window)) || (engine->height != ANativeWindow_getHeight(app->window)))) {
-                    engine_handle_cmd(app, APP_CMD_TERM_WINDOW);
-                    engine_handle_cmd(app, APP_CMD_INIT_WINDOW);
-                }
+//                if (engine->app->window != NULL && ((engine->width != ANativeWindow_getWidth(app->window)) || (engine->height != ANativeWindow_getHeight(app->window)))) {
+//                    engine_handle_cmd(app, APP_CMD_TERM_WINDOW);
+//                    engine_handle_cmd(app, APP_CMD_INIT_WINDOW);
+//                }
                 engine->resizeWindow();
-//                LOGI("APP_CMD_CONFIG_CHANGED");
+                LOGI("APP_CMD_CONFIG_CHANGED");
             break;
 
             case APP_CMD_PAUSE:
@@ -237,16 +258,11 @@ namespace GGE
             break;
 
             case APP_CMD_RESUME:
-                engine->lostFocus = false;
+//                engine->lostFocus = false;
 //                LOGI("APP_CMD_RESUME");
             break;
-            case APP_CMD_TERM_WINDOW:
-
-                engine_term_display(engine);
-//                LOGI("APP_CMD_TERM_WINDOW");
-            break;
             case APP_CMD_GAINED_FOCUS:
-                engine->lostFocus = false;
+//                engine->lostFocus = false;
 //                LOGI("APP_CMD_GAINED_FOCUS");
             break;
             case APP_CMD_LOST_FOCUS:
@@ -254,12 +270,17 @@ namespace GGE
                 engine->lostFocus = true;
 //                LOGI("APP_CMD_LOST_FOCUS");
             break;
+//            case APP_CMD_STOP:
+//                ANativeActivity_finish(app->activity);
+////                LOGI("APP_CMD_LOST_FOCUS");
+//            break;
+
         }
     }
 
     void OS::swapBuffer()
     {
-
+        GraphicsManager::getInstance()->getRenderer()->swapBuffer();
     }
 
     float OS::getTime()
@@ -336,7 +357,10 @@ namespace GGE
     {
         Point windowSize = getWindowSize();
 
-        GraphicsManager::getInstance()->getRenderer()->renderResize(windowSize);
+        if (GraphicsManager::getInstance()->getRenderer() != NULL)
+        {
+            GraphicsManager::getInstance()->getRenderer()->renderResize(windowSize);
+        }
     }
 
 

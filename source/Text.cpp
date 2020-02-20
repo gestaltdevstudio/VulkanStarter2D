@@ -9,8 +9,6 @@ namespace GGE
 		textPrinted = "";
 		visible = false;
 		scaleX = scaleY = 1.0f;
-//        color.r = color.g = color.b = color.a = 1;
-//        position.x = position.y = 0;
         charsInfo.empty();
         textAlign = TEXT_ALIGN_LEFT;
     }
@@ -20,17 +18,20 @@ namespace GGE
     {
     }
 
-    void Text::setText(std::string _text)
+    void Text::setText(const std::string &_text)
     {
         if (_text.length() == 0 || _text.compare("") == 0)
         {
-            _text = " ";
+            textToPrint = " ";
         }
-        textToPrint = _text;
+        else
+        {
+            textToPrint = _text;
+        }
 
     };
 
-    void Text::initText(const char * _textName, Font *_textFont, std::string _textureRegionName, TextureAtlas* _textureAtlas, int _x, int _y)
+    void Text::initText(const char * _textName, Font *_textFont, const std::string &_textureRegionName, TextureAtlas* _textureAtlas, int _x, int _y)
     {
         if (_textureAtlas->regions.find(_textureRegionName) == _textureAtlas->regions.end())
         {
@@ -100,24 +101,14 @@ namespace GGE
 
                     float uv_x = (float) (atlasRegion->x + (float) fontChar.x) / textureAtlas->width;
                     float uv_y = (float) (atlasRegion->y + (float) fontChar.y) / textureAtlas->height;
-                    float yOffset = (float) fontChar.yoffset;// / font->textureWidth;
+                    float yOffset = (float) fontChar.yoffset;
                     float width = (float) fontChar.width / textureAtlas->width;
                     float height = (float) fontChar.height / textureAtlas->height;
 
-                    float vertexWidth = (float) fontChar.width;// / (float) font->textureWidth;
-                    float vertexHeight = (float) fontChar.height;// / (float) font->textureHeight;
-
-//                    glm::vec2 vertex_up_left    = glm::vec2( letterX                         , y - (vertexHeight * (textSize * scaleY)) - (yOffset * (textSize * scaleY)));
-//                    glm::vec2 vertex_up_right   = glm::vec2( letterX + (vertexWidth * (textSize * scaleX)), y - (vertexHeight * textSize * scaleY) - (yOffset * (textSize * scaleY)));
-//                    glm::vec2 vertex_down_right = glm::vec2( letterX + (vertexWidth * (textSize * scaleX)), y - (yOffset * (textSize * scaleY))   );
-//                    glm::vec2 vertex_down_left  = glm::vec2( letterX                         , y - (yOffset * (textSize * scaleY))   );
+                    float vertexWidth = (float) fontChar.width;
+                    float vertexHeight = (float) fontChar.height;
 
                     Rectangle quad;
-//
-//               glm::vec2 vertex_up_left    = glm::vec2( letterX                         , y - (vertexHeight * (textSize * scaleY)) - (yOffset * (textSize * scaleY)));
-//                glm::vec2 vertex_up_right   = glm::vec2( letterX + (vertexWidth * (textSize * scaleX)), y - (vertexHeight * textSize * scaleY) - (yOffset * (textSize * scaleY)));
-//                glm::vec2 vertex_down_right = glm::vec2( letterX + (vertexWidth * (textSize * scaleX)), y - (yOffset * (textSize * scaleY))   );
-//                glm::vec2 vertex_down_left  = glm::vec2( letterX                         , y - (yOffset * (textSize * scaleY))   );
 
                     quad.x = x - (xAlignOffset/2) + (letterX + fontChar.xoffset);
                     quad.y = lineBreakOffset + (y + (yOffset * scaleY));

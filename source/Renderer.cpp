@@ -1,6 +1,8 @@
 #include "../include/Renderer.h"
 
 #include <iostream>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 namespace GGE
 {
@@ -12,31 +14,32 @@ namespace GGE
         InitVulkan();
 #endif
 
+
+        viewportPosition.x = viewportPosition.y = 0;
         totalVBOSize = maxDrawables * 6 * 2;
-//        Vertex oneVertex;
-//        oneVertex.pos= {0,0};
-//        oneVertex.color = {1.0,1.0,1.0,1.0};
-//        oneVertex.texCoord = {0,0};
-//        vertices = {
-//    {{-170.5f, -170.5f}, {1.0f, 0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
-//    {{170.5f, -170.5f}, {1.0f, 1.0f, 1.0f, 0.5f}, {0.0f, 0.0f}},
-//    {{170.5f, 170.5f}, {1.0f, 1.0f, 1.0f, 0.5f}, {0.0f, 1.0f}},
-//    {{-170.5f, 170.5f}, {1.0f, 1.0f, 1.0f, 0.5f}, {1.0f, 1.0f}}
-//};
-//        vertices.push_back(oneVertex);
-//        vertices.push_back(oneVertex);
-//        vertices.push_back(oneVertex);
-//        vertices.push_back(oneVertex);
-//        vertices.push_back(oneVertex);
-//        vertices.push_back(oneVertex);
-        renderIndex = 0;
 
-
+        device = VK_NULL_HANDLE;
+        debugMessenger = VK_NULL_HANDLE;
         createInstance();
         setupDebugMessenger();
+
+    }
+
+    void Renderer::createContext()
+    {
+        renderIndex = 0;
+
+#if !defined(__ANDROID__)
         createSurface();
+#endif // defined
+
         pickPhysicalDevice();
+
+#if defined(__ANDROID__)
+        createSurface();
+#endif // defined
         createLogicalDevice();
+
         createSwapChain();
         createImageViews();
         createRenderPass();
@@ -45,61 +48,64 @@ namespace GGE
         createFramebuffers();
         createCommandPool();
 
-//        createDescriptorSetLayout();
-//        createGraphicsPipeline();
-//        createCommandPool();
-//        createFramebuffers();
-//        createTextureImage();
-//        createTextureImageView();
-//        createTextureSampler();
-//        loadModel();
-//        createVertexBuffer();
-//        createIndexBuffer();
-//        createUniformBuffers();
-//        createDescriptorPool();
-//        createDescriptorSets();
-//        createCommandBuffers();
-//        createSyncObjects();
+    }
+
+    void Renderer::destroyContext()
+    {
+
+        if (device != NULL && device != VK_NULL_HANDLE)
+        {
+
+            vkDeviceWaitIdle(device);
+            cleanupSwapChain();
+
+            vkDestroySampler(device, textureSampler, nullptr);
+
+            vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
+
+            vkDestroyBuffer(device, bigBuffer, nullptr);
+            vkFreeMemory(device, bigBufferMemory, nullptr);
+            vkDestroyBuffer(device, stagingBigBuffer, nullptr);
+            vkFreeMemory(device, stagingBigBufferMemory, nullptr);
+
+            for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+                vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
+                vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
+                vkDestroyFence(device, inFlightFences[i], nullptr);
+            }
+
+            vkDestroyCommandPool(device, commandPool, nullptr);
+
+            vkDestroyDevice(device, nullptr);
+
+            vkDestroySurfaceKHR(instance, surface, nullptr);
+
+        }
+
     }
 
     Renderer::~Renderer()
     {
-        vkDeviceWaitIdle(device);
-        cleanupSwapChain();
 
-        vkDestroySampler(device, textureSampler, nullptr);
-
-        vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
-
-        vkDestroyBuffer(device, bigBuffer, nullptr);
-        vkFreeMemory(device, bigBufferMemory, nullptr);
-        vkDestroyBuffer(device, stagingBigBuffer, nullptr);
-        vkFreeMemory(device, stagingBigBufferMemory, nullptr);
-
-        for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-            vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
-            vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
-            vkDestroyFence(device, inFlightFences[i], nullptr);
-        }
-
-        vkDestroyCommandPool(device, commandPool, nullptr);
-
-        vkDestroyDevice(device, nullptr);
+        destroyContext();
 
         if (enableValidationLayers) {
             DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
         }
 
-        vkDestroySurfaceKHR(instance, surface, nullptr);
         vkDestroyInstance(instance, nullptr);
-
     }
 
     void Renderer::prepare()
     {
 
-//        createVertexBuffer();
-//        createIndexBuffer();
+        renderIndex = 0;
+        indices.clear();
+        vertices.clear();
+        renderChunks.clear();
+
+        createBigBuffers();
+
         createTextureSampler();
         createUniformBuffers();
         createDescriptorPool();
@@ -107,8 +113,10 @@ namespace GGE
         createCommandBuffers();
 
         createSyncObjects();
+        indicesOld = 0;
 
 		OS::getInstance()->resizeWindow();
+
     }
 
     void Renderer::createBigBuffers(uint32_t bufferTotalSize)
@@ -119,7 +127,7 @@ namespace GGE
                         stagingBigBuffer, stagingBigBufferMemory);
 
 
-            createBuffer(bufferTotalSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT |
+            createBuffer(bufferTotalSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT |
                                           VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
                         bigBuffer, bigBufferMemory);
         }
@@ -247,12 +255,15 @@ namespace GGE
         std::vector<VkPhysicalDevice> devices(deviceCount);
         vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
+        physicalDevice = devices[0];
+#if !defined (__ANDROID__)
         for (const auto& device : devices) {
             if (isDeviceSuitable(device)) {
                 physicalDevice = device;
                 break;
             }
         }
+#endif
 
         if (physicalDevice == VK_NULL_HANDLE) {
             throw std::runtime_error("failed to find a suitable GPU!");
@@ -263,123 +274,21 @@ namespace GGE
     void Renderer::onRenderStart()
     {
 
-//        vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
-//
-//        VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
-//
-//        if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-//            recreateSwapChain();
-//            return;
-//        } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
-//            throw std::runtime_error("failed to acquire swap chain image!");
-//        }
-//
-//        updateUniformBuffer(imageIndex);
-//
-//        if (imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
-//            vkWaitForFences(device, 1, &imagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
-//        }
-//        imagesInFlight[imageIndex] = inFlightFences[currentFrame];
-//
-//        vertices.clear();
+        renderIndex = 0;
+        indices.clear();
+        vertices.clear();
+        renderChunks.clear();
 
-
-
-
-
-
-
-
-
-
-
-
-//        VkSubmitInfo submitInfo = {};
-//        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-//
-//        VkSemaphore waitSemaphores[] = {imageAvailableSemaphores[currentFrame]};
-//        VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-//        submitInfo.waitSemaphoreCount = 1;
-//        submitInfo.pWaitSemaphores = waitSemaphores;
-//        submitInfo.pWaitDstStageMask = waitStages;
-//
-//        submitInfo.commandBufferCount = 1;
-//        submitInfo.pCommandBuffers = &commandBuffers[imageIndex];
-//
-//        VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrame]};
-//        submitInfo.signalSemaphoreCount = 1;
-//        submitInfo.pSignalSemaphores = signalSemaphores;
-//
-//        vkResetFences(device, 1, &inFlightFences[currentFrame]);
-//
-//        if (vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
-//            throw std::runtime_error("failed to submit draw command buffer!");
-//        }
-
-//        VkPresentInfoKHR presentInfo = {};
-//        presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-//
-//        presentInfo.waitSemaphoreCount = 1;
-//        presentInfo.pWaitSemaphores = signalSemaphores;
-//
-//        VkSwapchainKHR swapChains[] = {swapChain};
-//        presentInfo.swapchainCount = 1;
-//        presentInfo.pSwapchains = swapChains;
-//
-//        presentInfo.pImageIndices = &imageIndex;
-//
-//        result = vkQueuePresentKHR(presentQueue, &presentInfo);
-//
-//        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
-//            framebufferResized = false;
-//            recreateSwapChain();
-//        } else if (result != VK_SUCCESS) {
-//            throw std::runtime_error("failed to present swap chain image!");
-//        }
-//
-//        currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
     }
 
     void Renderer::flush()
     {
 
         RenderChunk renderChunk;
-        renderChunk.imageView = activeTexture->getTextureImageView();
+        renderChunk.texture = activeTexture;
         renderChunk.indicesCount = indices.size();
 
         renderChunks.push_back(renderChunk);
-
-//        createVertexBuffer();
-//        copyVertexBuffer();
-
-//        recreateSwapChain();
-
-//        createSwapChain();
-//        createImageViews();
-//        createRenderPass();
-//        createGraphicsPipeline();
-//
-//        createFramebuffers();
-//
-//        createUniformBuffers();
-//        createDescriptorPool();
-//        if (descriptorPool)
-//            vkResetDescriptorPool(device, descriptorPool, nullptr);
-//        createDescriptorSets();
-//        createCommandBuffers();
-
-
-//        createSwapChain();
-//        createImageViews();
-//        createRenderPass();
-//        createGraphicsPipeline();
-//        createFramebuffers();
-//        createUniformBuffers();
-//        createDescriptorPool();
-
-//        vertices.clear();
-//        indices.clear();
-//        renderIndex = 0;
 
     }
 
@@ -410,14 +319,12 @@ namespace GGE
         TextureAtlas *textureAtlas = textureRegion->textureAtlas;
 
         glm::mat4 modelMatrix = glm::translate(glm::mat4(1), glm::vec3((float) x * viewportSize.x / SCREEN_X,
-                                                          (float) y * viewportSize.y / SCREEN_Y,
+                                                         -1 * (float) y * viewportSize.y / SCREEN_Y,
                                                           0))
                                 * glm::rotate(glm::mat4(1.0f), (float)rotation * GGE_PI / 180.f, glm::vec3(0,0,1))
                                 * glm::scale(glm::vec3((float) (isFlippedX ? -1 : 1) * scaleX * viewportSize.x / SCREEN_X,
                                                        (float) (isFlippedY ? -1 : 1) * scaleY * viewportSize.y / SCREEN_Y,
                                            0));
-//        glm::mat4 modelMatrix = glm::mat4(1.0f);
-//        glm::mat4 mvp = projectionMatrix * viewMatrix * modelMatrix;
 
         glm::vec4 auxVec3 = { (float) -textureRegion->width/2, (float) -textureRegion->height/2, 0.0f, 1.0f};
         glm::vec4 auxVec4 = modelMatrix * auxVec3;
@@ -426,10 +333,8 @@ namespace GGE
         Vertex v1, v2, v3, v4;
         v1.pos = { auxVec4.x, auxVec4.y};
         v1.color = colorToApply;
-//        vertices[renderIndex].pos =  vertices[renderIndex].pos;
-//        v1.texCoord = {0.0f, 0.0f};
-        v1.texCoord = {(float) textureRegion->x / textureAtlas->width,                         ((float) textureRegion->y / textureAtlas->height)};
 
+        v1.texCoord = {(float) textureRegion->x / textureAtlas->width,                         ((float) textureRegion->y / textureAtlas->height)};
 
         auxVec3 = {textureRegion->width/2, -textureRegion->height/2, 0, 1.0f};
         auxVec4 = modelMatrix * auxVec3;
@@ -437,8 +342,7 @@ namespace GGE
 
         v2.pos = { auxVec4.x, auxVec4.y};
         v2.color = colorToApply;
-//        vertices[renderIndex+1].pos *= modelMatrix;
-//        v2.texCoord = {1.0f, 0.0f};
+
         v2.texCoord = {(float) (textureRegion->x + textureRegion->width) / textureAtlas->width,  ((float) textureRegion->y / textureAtlas->height)};
 
 
@@ -447,8 +351,7 @@ namespace GGE
 
         v3.pos = { auxVec4.x, auxVec4.y};
         v3.color = colorToApply;
-//        vertices[renderIndex+2].pos *= modelMatrix;
-//        v3.texCoord = {1.0f, 1.0f};
+
         v3.texCoord = {(float) (textureRegion->x + textureRegion->width) / textureAtlas->width,  (float) (textureRegion->y + textureRegion->height) / textureAtlas->height};
 
 
@@ -457,21 +360,13 @@ namespace GGE
 
         v4.pos = { auxVec4.x, auxVec4.y};
         v4.color = colorToApply;
-//        vertices[renderIndex+3].pos *= modelMatrix;
-//        v4.texCoord = {0.0f, 1.0f};
+
         v4.texCoord = {(float) textureRegion->x / textureAtlas->width,                         (float) (textureRegion->y + textureRegion->height) / textureAtlas->height};
 
         vertices.push_back(v1);
         vertices.push_back(v2);
         vertices.push_back(v3);
         vertices.push_back(v4);
-
-//        vertices = {
-//    {{-64.0f, -64.0f}, {1.0f, 0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-//    {{64.0f, -64.0f}, {1.0f, 1.0f, 1.0f, 0.5f}, {1.0f, 0.0f}},
-//    {{64.0f, 64.0f}, {1.0f, 1.0f, 1.0f, 0.5f}, {1.0f, 1.0f}},
-//    {{-64.0f, 64.0f}, {1.0f, 1.0f, 1.0f, 0.5f}, {0.0f, 1.0f}}
-//};
 
 
         uint16_t indicesOffset = vertices.size()-4;
@@ -571,11 +466,6 @@ namespace GGE
             flush();
         activeTexture = newTexture;
 
-//        createUniformBuffers();
-//        createDescriptorSets();
-//        createCommandBuffers();
-//        createSyncObjects();
-
     }
 
     void Renderer::updateUniformBuffer(uint32_t currentImage)
@@ -585,8 +475,6 @@ namespace GGE
         ubo.view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         ubo.proj = glm::ortho(-(float)swapChainExtent.width/2, (float)swapChainExtent.width/2,
                                -(float)swapChainExtent.height/2, (float)swapChainExtent.height/2, -1.0f, 1.0f);
-//        glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float) swapChainExtent.height, 0.1f, 10.0f);
-//        ubo.proj[1][1] *= -1;
 
         void* data;
         vkMapMemory(device, uniformBuffersMemory[currentImage], 0, sizeof(ubo), 0, &data);
@@ -611,33 +499,40 @@ namespace GGE
         if (renderIndex > 0 && vertices.size()>0)
             flush();
 
+        VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
 
-        VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size(); //sizeof(verticesToADD[0]) * verticesToADD.size();
+        VkDeviceSize indexBufferSize = sizeof(indices[0]) * renderIndex;
 
         void* data;
         vkMapMemory(device, stagingBigBufferMemory, 0, bufferSize, 0, &data);
             memcpy(data, vertices.data(), (size_t) bufferSize);
         vkUnmapMemory(device, stagingBigBufferMemory);
 
-        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, 0, bufferSize);
-
-        VkDeviceSize indexBufferSize = sizeof(indices[0]) * renderIndex; //sizeof(verticesToADD[0]) * verticesToADD.size();
-
         void* dataIndices;
-        vkMapMemory(device, stagingBigBufferMemory, 0, indexBufferSize, 0, &dataIndices);
+        vkMapMemory(device, stagingBigBufferMemory, bufferSize, indexBufferSize, 0, &dataIndices);
             memcpy(dataIndices, indices.data(), (size_t) indexBufferSize);
         vkUnmapMemory(device, stagingBigBufferMemory);
 
-        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, bufferSize, indexBufferSize);
+        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, 0, bufferSize + indexBufferSize);
+//
+//        VkDeviceSize indexBufferSize = sizeof(indices[0]) * renderIndex;
+//
+//
+//        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, bufferSize, indexBufferSize);
 
 
-        vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
-        createCommandBuffers();
+//        if (indices.size() != indicesOld)
+//        {
+            vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
+            createCommandBuffers();
+            indicesOld = indices.size();
+//        }
 
-        renderIndex = 0;
-        indices.clear();
-        vertices.clear();
-        renderChunks.clear();
+
+    }
+
+    void Renderer::swapBuffer()
+    {
 
         vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
 
@@ -670,16 +565,17 @@ namespace GGE
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[imageIndex];
 
-        signalSemaphores = new VkSemaphore {renderFinishedSemaphores[currentFrame]};
+        VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrame]};
         submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores = signalSemaphores;
 
         vkResetFences(device, 1, &inFlightFences[currentFrame]);
 
-        if (vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
+        result = vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFences[currentFrame]);
+
+        if (result != VK_SUCCESS) {
             throw std::runtime_error("failed to submit draw command buffer!");
         }
-
 
 
         VkPresentInfoKHR presentInfo = {};
@@ -696,14 +592,18 @@ namespace GGE
 
         result = vkQueuePresentKHR(presentQueue, &presentInfo);
 
-        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
+        if (result == VK_ERROR_OUT_OF_DATE_KHR  || framebufferResized) {
             framebufferResized = false;
             recreateSwapChain();
+        } else if (result == VK_SUBOPTIMAL_KHR) {
+            // demo->swapchain is not as optimal as it could be, but the platform's
+            // presentation engine will still present the image correctly.
         } else if (result != VK_SUCCESS) {
             throw std::runtime_error("failed to present swap chain image!");
         }
 
         currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+
     }
 
     void Renderer::renderResize(Point windowSize)
@@ -711,14 +611,11 @@ namespace GGE
         framebufferResized = true;
         viewportSize = windowSize;
         calculateViewportSize(viewportSize);
+#if defined (__ANDROID__)
+        viewportPosition.x = -1 * (windowSize.x / 2 - viewportSize.x/2);
+        viewportPosition.y = windowSize.y /2 - viewportSize.y/2;
+#endif // defined
 
-        viewportPosition.x = 0;//windowSize.x / 2 - viewportSize.x/2;
-        viewportPosition.y = 0;//-1 * (windowSize.y /2 - viewportSize.y/2);
-//        glViewport(viewportPosition.x, viewportPosition.y, (GLsizei)viewportSize.x, (GLsizei)viewportSize.y);
-//        glEnable(GL_SCISSOR_TEST);
-//        glScissor(viewportPosition.x, viewportPosition.y, (GLsizei)viewportSize.x, (GLsizei)viewportSize.y);
-//        projectionMatrix = glm::ortho((float)- viewportSize.x/2, (float)viewportSize.x/2, (float)- viewportSize.y/2, (float)viewportSize.y/2, -1.0f, 1.0f);
-//        viewMatrix = glm::lookAt(glm::vec3(cameraPosition.x,cameraPosition.y,1), glm::vec3(0,0,0), glm::vec3(0,1,0));
 	}
 
     void Renderer::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) {
@@ -726,7 +623,6 @@ namespace GGE
         createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
         createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
         createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-//        createInfo.pUserData = OS::getInstance();
         createInfo.pfnUserCallback = debugCallback;
     }
 
@@ -787,6 +683,7 @@ namespace GGE
     }
 
     QueueFamilyIndices Renderer::findQueueFamilies(VkPhysicalDevice device) {
+
         QueueFamilyIndices indices;
 
         uint32_t queueFamilyCount = 0;
@@ -888,15 +785,13 @@ namespace GGE
     }
 
     void Renderer::createSwapChain() {
+
         SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice);
 
         VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
         VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
         VkExtent2D extent = chooseSwapExtent(swapChainSupport.capabilities);
-//
-//        extent = { viewportSize.x, viewportSize.y};
-//        printf("%d %d \n", extent.width, extent.height);
-//        printf("VP %d %d \n", viewportSize.x, viewportSize.y);
+
 
         uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;
         if (swapChainSupport.capabilities.maxImageCount > 0 && imageCount > swapChainSupport.capabilities.maxImageCount) {
@@ -938,8 +833,6 @@ namespace GGE
         createInfo.presentMode = presentMode;
         createInfo.clipped = VK_TRUE;
 
-//        createInfo.oldSwapchain = VK_NULL_HANDLE;
-
         if (vkCreateSwapchainKHR(device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
             throw std::runtime_error("failed to create swap chain!");
         }
@@ -963,6 +856,17 @@ namespace GGE
     }
 
     VkPresentModeKHR Renderer::chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) {
+
+#if defined (__ANDROID__)
+        VkPresentModeKHR mode = VK_PRESENT_MODE_FIFO_KHR;
+        for (const auto& availablePresentMode : availablePresentModes) {
+            if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
+                mode = availablePresentMode;
+            }
+        }
+        return mode;
+#endif
+
         for (const auto& availablePresentMode : availablePresentModes) {
             if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
                 return availablePresentMode;
@@ -985,40 +889,20 @@ namespace GGE
         }
     }
 
-    void Renderer::createImageViews() {
-
+    void Renderer::createImageViews()
+    {
 
         swapChainImageViews.resize(swapChainImages.size());
 
         for (uint32_t i = 0; i < swapChainImages.size(); i++) {
-            swapChainImageViews[i] = createImageView(swapChainImages[i], swapChainImageFormat);//, VK_IMAGE_ASPECT_COLOR_BIT);
+            swapChainImageViews[i] = createImageView(swapChainImages[i], swapChainImageFormat);
         }
-//
-//        swapChainImageViews.resize(swapChainImages.size());
-//
-//        for (size_t i = 0; i < swapChainImages.size(); i++) {
-//            VkImageViewCreateInfo createInfo = {};
-//            createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-//            createInfo.image = swapChainImages[i];
-//            createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-//            createInfo.format = swapChainImageFormat;
-//            createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-//            createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-//            createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-//            createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-//            createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-//            createInfo.subresourceRange.baseMipLevel = 0;
-//            createInfo.subresourceRange.levelCount = 1;
-//            createInfo.subresourceRange.baseArrayLayer = 0;
-//            createInfo.subresourceRange.layerCount = 1;
-//
-//            if (vkCreateImageView(device, &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS) {
-//                throw std::runtime_error("failed to create image views!");
-//            }
-//        }
+
     }
 
-    void Renderer::createRenderPass() {
+    void Renderer::createRenderPass()
+    {
+
         VkAttachmentDescription colorAttachment = {};
         colorAttachment.format = swapChainImageFormat;
         colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
@@ -1060,7 +944,9 @@ namespace GGE
         }
     }
 
-    void Renderer::createDescriptorSetLayout() {
+    void Renderer::createDescriptorSetLayout()
+    {
+
         VkDescriptorSetLayoutBinding uboLayoutBinding = {};
         uboLayoutBinding.binding = 0;
         uboLayoutBinding.descriptorCount = 1;
@@ -1094,6 +980,7 @@ namespace GGE
         allocInfo.descriptorPool = descriptorPool;
         allocInfo.descriptorSetCount = static_cast<uint32_t>(swapChainImages.size());
         allocInfo.pSetLayouts = layouts.data();
+        descriptorSets.clear();
 
         for (auto & tex : activeTextures)
         {
@@ -1103,7 +990,7 @@ namespace GGE
             if (r != VK_SUCCESS) {
                 throw std::runtime_error(to_string(r));
             }
-//
+
             for (size_t i = 0; i < swapChainImages.size(); i++) {
 
                 VkDescriptorBufferInfo bufferInfo = {};
@@ -1113,7 +1000,7 @@ namespace GGE
 
                 VkDescriptorImageInfo imageInfo = {};
                 imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-                imageInfo.imageView = tex;
+                imageInfo.imageView = tex->getTextureImageView();
                 imageInfo.sampler = textureSampler;
 
                 std::array<VkWriteDescriptorSet, 2> descriptorWrites = {};
@@ -1204,7 +1091,6 @@ namespace GGE
         VkShaderModule vertShaderModule = createShaderModule(rfv);
         VkShaderModule fragShaderModule = createShaderModule(rff);
 
-
         delete rfv;
         delete rff;
 
@@ -1240,10 +1126,8 @@ namespace GGE
 
         viewport = {};
 
-        viewport.x = 0.0f;
-        viewport.y = 0.0f;
-//        viewport.x = viewportPosition.x;
-//        viewport.y = viewportPosition.y;
+        viewport.x = viewportPosition.x;
+        viewport.y = viewportPosition.y;
         viewport.width = (float) swapChainExtent.width;
         viewport.height = (float) swapChainExtent.height;
         viewport.minDepth = 0.0f;
@@ -1251,7 +1135,7 @@ namespace GGE
 
         VkRect2D scissor = {};
         scissor.offset = { 0, 0};
-//        VkExtent2D ex = { viewportSize.x, viewportSize.y };
+
         scissor.extent = swapChainExtent;
 
         VkPipelineViewportStateCreateInfo viewportState = {};
@@ -1278,7 +1162,7 @@ namespace GGE
 
         VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
         colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-//        colorBlendAttachment.blendEnable = VK_FALSE;
+
         colorBlendAttachment.blendEnable = VK_TRUE;
         colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
         colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
@@ -1359,7 +1243,6 @@ namespace GGE
         VkCommandPoolCreateInfo poolInfo = {};
         poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
         poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
-//        poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
         if (vkCreateCommandPool(device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
             throw std::runtime_error("failed to create command pool!");
@@ -1395,7 +1278,6 @@ namespace GGE
         for (size_t i = 0; i < commandBuffers.size(); i++) {
             VkCommandBufferBeginInfo beginInfo = {};
             beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-//            beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 
             if (vkBeginCommandBuffer(commandBuffers[i], &beginInfo) != VK_SUCCESS) {
                 throw std::runtime_error("failed to begin recording command buffer!");
@@ -1420,14 +1302,11 @@ namespace GGE
                 VkDeviceSize offsets[] = {0};
                 vkCmdBindVertexBuffers(commandBuffers[i], 0, 1, vertexBuffers, offsets);
 
-//                vkCmdBindIndexBuffer(commandBuffers[i], indexBuffer, 0, VK_INDEX_TYPE_UINT32);
                 uint16_t indicesOffset = 0;
                 for(auto&& renderChunk: renderChunks)
                 {
                     vkCmdBindIndexBuffer(commandBuffers[i], bigBuffer, static_cast<uint32_t>(vertices.size()) * sizeof(Vertex) + (indicesOffset * sizeof(indices[0])), VK_INDEX_TYPE_UINT16);
-                    vkCmdBindDescriptorSets(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &descriptorSets[renderChunk.imageView][i], 0, nullptr);
-
-    //                vkCmdDraw(commandBuffers[i], renderIndex, 1, 0, 0);
+                    vkCmdBindDescriptorSets(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &descriptorSets[renderChunk.texture][i], 0, nullptr);
 
                     vkCmdDrawIndexed(commandBuffers[i], renderChunk.indicesCount, 1, 0, 0, 0);
                     indicesOffset += renderChunk.indicesCount;
@@ -1446,6 +1325,7 @@ namespace GGE
         renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
         imagesInFlight.resize(swapChainImages.size(), VK_NULL_HANDLE);
+        imagesInFlight.clear();
 
 
         VkSemaphoreCreateInfo semaphoreInfo = {};
@@ -1670,6 +1550,7 @@ namespace GGE
 
         VkImage textureImage;
         VkDeviceMemory textureImageMemory;
+
         int texWidth, texHeight, texChannels;
         stbi_uc* pixels = stbi_load_from_memory((unsigned char*)fileBuffer->content, fileBuffer->size, &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
         VkDeviceSize imageSize = texWidth * texHeight * 4;
@@ -1709,7 +1590,7 @@ namespace GGE
     }
 
     VkImageView Renderer::createTextureImageView(VkImage textureImage) {
-        return createImageView(textureImage, VK_FORMAT_R8G8B8A8_UNORM);//, VK_IMAGE_ASPECT_COLOR_BIT);
+        return createImageView(textureImage, VK_FORMAT_R8G8B8A8_UNORM);
     }
 
     VkImageView Renderer::createImageView(VkImage image, VkFormat format) {

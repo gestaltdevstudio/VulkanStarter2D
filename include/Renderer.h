@@ -93,7 +93,7 @@ namespace GGE
 
     struct RenderChunk
     {
-        VkImageView imageView;
+        Texture     *texture;
         uint16_t    indicesCount;
     };
 
@@ -107,12 +107,13 @@ namespace GGE
             ~Renderer();
             Texture* createTexture(const resourceFile *fileBuffer);
             void onRenderStart();
-//            void renderTexture(float x, float y, Drawable *drawable);
+
             void renderDrawable(const TextureRegion* textureRegion, float x, float y, float scaleX, float scaleY, float rotation, bool isFlippedX, bool isFlippedY, Vector4* color);
             void renderText(Text *text);
             void onRenderFinish();
+            void swapBuffer();
             void renderResize(Point windowSize);
-            void createBigBuffers(uint32_t bufferTotalSize = 128 * 1024 * 1024);
+            void createBigBuffers(uint32_t bufferTotalSize = 128 * 1024);
             void prepare();
             Texture* createTextureImage(const resourceFile* fileBuffer);
 
@@ -120,8 +121,10 @@ namespace GGE
                                                   const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
             void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
             void calculateViewportSize(Point &viewport);
-            std::vector<VkImageView> activeTextures;
+            std::vector<Texture*> activeTextures;
             void recreateSwapChain();
+            void createContext();
+            void destroyContext();
 
         private:
             void createInstance();
@@ -143,7 +146,7 @@ namespace GGE
             void createCommandBuffers();
             void createSyncObjects();
             VkImageView createTextureImageView(VkImage textureImage);
-            VkImageView createImageView(VkImage image, VkFormat format); //, VkImageAspectFlags aspectFlags);
+            VkImageView createImageView(VkImage image, VkFormat format);
 
             void cleanupSwapChain();
 
@@ -208,8 +211,8 @@ namespace GGE
             VkPipelineLayout pipelineLayout;
             VkPipeline graphicsPipeline;
             VkDescriptorPool descriptorPool;
-            std::unordered_map<VkImageView, std::vector<VkDescriptorSet>> descriptorSets;
-//            std::vector<VkDescriptorSet> descriptorSets;
+            std::unordered_map<Texture*, std::vector<VkDescriptorSet>> descriptorSets;
+
             std::vector<RenderChunk> renderChunks;
 
             std::vector<VkBuffer> uniformBuffers;
@@ -217,7 +220,7 @@ namespace GGE
 
             std::vector<Vertex> vertices;
             std::vector<uint16_t> indices;
-//            VkImageView textureImageView;
+
             Texture* activeTexture;
 
             VkCommandPool commandPool;
@@ -238,11 +241,10 @@ namespace GGE
             Point      viewportPosition;
 
 
-            VkSemaphore *signalSemaphores;
-
             bool framebufferResized = false;
+            uint16_t indicesOld;
 
-#if defined(DEBUG) //&& !(__APPLE__)
+#if defined(DEBUG)
             const bool enableValidationLayers = true;
 #else
             const bool enableValidationLayers = false;
@@ -258,24 +260,6 @@ namespace GGE
             const size_t MAX_FRAMES_IN_FLIGHT = 2;
 
             static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData);
-
-//            static std::vector<char> readFile(const std::string& filename) {
-//                std::ifstream file(filename, std::ios::ate | std::ios::binary);
-//
-//                if (!file.is_open()) {
-//                    throw std::runtime_error("failed to open file!");
-//                }
-//
-//                size_t fileSize = (size_t) file.tellg();
-//                std::vector<char> buffer(fileSize);
-//
-//                file.seekg(0);
-//                file.read(buffer.data(), fileSize);
-//
-//                file.close();
-//
-//                return buffer;
-//            }
 
     };
 

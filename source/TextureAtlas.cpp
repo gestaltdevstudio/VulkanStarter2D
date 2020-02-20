@@ -81,7 +81,6 @@ namespace GGE
 
             file = strtok ( NULL,"\r\n");
 
-
         }
 
         if (region)

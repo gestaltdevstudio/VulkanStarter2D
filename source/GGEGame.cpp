@@ -19,7 +19,7 @@ namespace GGE
     {
         initResources();
         initSO();
-        //        Graphics::getInstance()->setDebugMode(true);
+
         initGraphics();
         initInputSystem();
 
@@ -27,7 +27,7 @@ namespace GGE
         addScreen("Game", gameScreen);
         activeScreen = gameScreen;
         activeScreen->show();
-        focused = true;
+        focused = false;
     }
 
     void Game::gameLoop()
@@ -36,12 +36,12 @@ namespace GGE
         deltaTime = nowTime - lastTime;
         lastTime = nowTime;
         checkFocused();
+        OS::getInstance()->checkInputEvent();
 
         if (focused)
         {
-            OS::getInstance()->swapBuffer();
-            OS::getInstance()->checkInputEvent();
             activeScreen->render(deltaTime);
+            OS::getInstance()->swapBuffer();
 
         }
 
@@ -66,6 +66,9 @@ namespace GGE
             if (focused == true)
             {
                 activeScreen->pause();
+#if defined(__ANDROID__)
+                GraphicsManager::getInstance()->getRenderer()->destroyContext();
+#endif
             }
             focused = false;
 
@@ -79,7 +82,7 @@ namespace GGE
         }
     }
 
-    void Game::changeScreen(std::string screenName)
+    void Game::changeScreen(const std::string &screenName)
     {
 
         activeScreen->finish();
@@ -118,8 +121,7 @@ namespace GGE
 
     void Game::initGraphics()
     {
-        GraphicsManager::getInstance()->initGraphics();
-        GraphicsManager::getInstance()->getRenderer()->createBigBuffers();
+        GraphicsManager::getInstance()->reset();
     }
 
     void Game::initInputSystem()
@@ -152,12 +154,12 @@ namespace GGE
         InputSystem::getInstance()->destroy();
     }
 
-    void Game::addScreen(std::string name, Screen *_screen)
+    void Game::addScreen(const std::string &name, Screen *_screen)
     {
         screens.insert(std::make_pair(name, _screen));
     }
 
-    void Game::removeScreen(std::string name)
+    void Game::removeScreen(const std::string &name)
     {
         if (screens.find(name) != screens.end())
             screens.erase(name);

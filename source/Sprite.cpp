@@ -5,7 +5,7 @@
 namespace GGE
 {
 
-    Sprite::Sprite(std::string _name)
+    Sprite::Sprite(const std::string &_name)
     {
         playMode = ANIM_NORMAL;
         elapsedTime = 0;
@@ -25,7 +25,7 @@ namespace GGE
         return animation->getNumberOfFrames() - 1 < frameNumber;
     }
 
-    void Sprite::setCurrentAnimationName(std::string _animationName, AnimationPlayMode _playMode)
+    void Sprite::setCurrentAnimationName(const std::string &_animationName, AnimationPlayMode _playMode)
     {
         currentAnimationName = _animationName;
         playMode = _playMode;

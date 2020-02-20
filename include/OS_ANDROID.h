@@ -51,7 +51,7 @@ namespace GGE {
         bool isOnFocus();
         const Point getMouseCoord();
         float getTime();
-        inline void setMouseCoord(Point p) { mouseCoord = p; }
+        inline void setMouseCoord(const Point &p) { mouseCoord = p; }
         int alert(const char *lpCaption, const char *lpText);
 
         inline void setRunning(bool _yn) { running = _yn; }
@@ -64,17 +64,18 @@ namespace GGE {
 
         void setAndroidApp(struct android_app *_app);
         inline struct android_app *getAndroidApp() { return app; }
-        inline void setInputCoord(int index, Point p) {
+        inline void setInputCoord(int index, const Point &p) {
             if (index > -1 && index < 2)
-                inputCoord[index] = p;}
+                inputCoord[index] = p;
+        }
 
-        inline void setTouchCoord(Point p) { touchCoord = p;}
+        inline void setTouchCoord(const Point &p) { touchCoord = p;}
 
         inline Point getInputCoord(int index) { return inputCoord[index]; }
 
         Point getWindowSize();
 
-        Point calculateMousePoint(Point point);
+        Point calculateMousePoint(const Point &point);
 
         int32_t width;
         int32_t height;
@@ -89,6 +90,8 @@ namespace GGE {
         void resetTouchInput();
     	std::vector<const char*> getRequiredExtensions(bool enableValidationLayers);
         bool createSurface(const VkInstance *instance, VkSurfaceKHR *surface);
+        void destroyRendererContext();
+        void createRendererContext();
 
     private:
         static OS *instance;

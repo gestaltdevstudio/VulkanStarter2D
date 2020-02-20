@@ -6,16 +6,14 @@ namespace GGE
 
     GraphicsManager::GraphicsManager()
 	{
-	    graphicElements.empty();
-	    animationsPaused = false;
+        renderer = new Renderer(1000);
 
 	}
 
-	void GraphicsManager::initGraphics()
+	void GraphicsManager::reset()
 	{
-
-        renderer = new Renderer(1000);
-
+	    graphicElements.clear();
+	    animationsPaused = false;
 	}
 
 	void GraphicsManager::prepare()
@@ -45,13 +43,13 @@ namespace GGE
                 texture = uiObject->getDrawable()->getTextureRegion()->textureAtlas->texture;
             }
 
-            if (std::find(renderer->activeTextures.begin(), renderer->activeTextures.end(), texture->getTextureImageView()) == renderer->activeTextures.end())
+            if (std::find(renderer->activeTextures.begin(), renderer->activeTextures.end(), texture) == renderer->activeTextures.end())
             {
-                renderer->activeTextures.push_back(texture->getTextureImageView());
+                renderer->activeTextures.push_back(texture);
             }
             if (texture && renderer->activeTextures.empty())
             {
-                renderer->activeTextures.push_back(texture->getTextureImageView());
+                renderer->activeTextures.push_back(texture);
             }
         }
         renderer->prepare();
@@ -65,7 +63,7 @@ namespace GGE
         {
 
             Sprite *sprite = NULL;
-//            UIObject *uiObject = NULL;
+
             sprite = dynamic_cast<Sprite*>(*it);
             Drawable *drawable = NULL;
             drawable = dynamic_cast<Drawable*>(*it);
@@ -100,14 +98,7 @@ namespace GGE
                 {
                     renderer->renderText(text);
                 }
-//                else
-//                {
-//                    uiObject = dynamic_cast<UIObject*>(*it);
-//                    if (uiObject && uiObject->isVisible())
-//                    {
-//                        renderer->renderTexture(uiObject->getPosition().x, uiObject->getPosition().y, uiObject->getDrawable());
-//                    }
-//                }
+
             }
             else if (drawable)
             {
@@ -117,22 +108,6 @@ namespace GGE
                     drawable->getColor());
                 }
             }
-//            else
-//            {
-//                text = dynamic_cast<Text*>(*it);
-//                if (text && text->isVisible())
-//                {
-//                    renderer->renderText(text);
-//                }
-//                else
-//                {
-//                    uiObject = dynamic_cast<UIObject*>(*it);
-//                    if (uiObject && uiObject->isVisible())
-//                    {
-//                        renderer->renderTexture(uiObject->getPosition().x, uiObject->getPosition().y, uiObject->getDrawable());
-//                    }
-//                }
-//            }
 
         }
 
@@ -140,8 +115,6 @@ namespace GGE
         {
 
             UIObject *uiObject = NULL;
-//            Text *text = NULL;
-//            UIObject *uiObject = NULL;
             uiObject = dynamic_cast<UIObject*>(*it);
 
             if (uiObject)
@@ -160,56 +133,6 @@ namespace GGE
         renderer->onRenderFinish();
     }
 
-//
-//
-//    void GraphicsManager::addSprite(std::string objectName, Sprite *_object)
-//    {
-//         sprites.insert(std::make_pair(objectName, _object));
-//         graphicElements.push_back(_object);
-//
-//    }
-//
-//    void GraphicsManager::removeSprite(std::string objectName)
-//    {
-//        if (sprites.find(objectName) != sprites.end())
-//        {
-//            sprites.erase(objectName);
-//            graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), sprites[objectName]), graphicElements.end());
-//        }
-//    }
-//
-//    void GraphicsManager::addText(std::string objectName, Text *_object)
-//    {
-//         texts.insert(std::make_pair(objectName, _object));
-//         graphicElements.push_back(_object);
-//
-//    }
-//
-//    void GraphicsManager::removeText(std::string objectName)
-//    {
-//        if (texts.find(objectName) != texts.end())
-//        {
-//            texts.erase(objectName);
-//            graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), texts[objectName]), graphicElements.end());
-//        }
-//    }
-//
-//    void GraphicsManager::addUIObject(std::string objectName, UIObject *_object)
-//    {
-//         uiObjects.insert(std::make_pair(objectName, _object));
-//         graphicElements.push_back(_object);
-//
-//    }
-//
-//    void GraphicsManager::removeUIObject(std::string objectName)
-//    {
-//        if (uiObjects.find(objectName) != uiObjects.end())
-//        {
-//            uiObjects.erase(objectName);
-//            graphicElements.erase(std::remove(graphicElements.begin(), graphicElements.end(), texts[objectName]), graphicElements.end());
-//        }
-//    }
-
     void GraphicsManager::addGraphicElement(GraphicElement *graphicElement)
     {
          graphicElements.push_back(graphicElement);
@@ -227,9 +150,9 @@ namespace GGE
 
 	void GraphicsManager::destroy()
 	{
-
         delete renderer;
-
+        delete instance;
+        instance = NULL;
 	}
 
 }

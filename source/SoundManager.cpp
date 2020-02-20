@@ -37,7 +37,7 @@ namespace GGE
         alcCloseDevice( device );
     }
 
-    void SoundManager::playSound(std::string soundName, float volume, ALfloat sourcePos[], ALfloat sourceOri[], ALfloat sourceVel[], bool loop, bool startAgain){
+    void SoundManager::playSound(const std::string &soundName, float volume, ALfloat sourcePos[], ALfloat sourceOri[], ALfloat sourceVel[], bool loop, bool startAgain){
 
         SoundObject *sound = soundObjects.at(soundName);
 
@@ -61,7 +61,7 @@ namespace GGE
         }
     }
 
-    void SoundManager::stopSound(std::string soundName)
+    void SoundManager::stopSound(const std::string &soundName)
     {
         SoundObject *sound = soundObjects.at(soundName);
         if (sound)
@@ -70,7 +70,7 @@ namespace GGE
         }
     }
 
-    void SoundManager::pauseSound(std::string soundName)
+    void SoundManager::pauseSound(const std::string &soundName)
     {
         SoundObject *sound = soundObjects.at(soundName);
         if (sound)
@@ -80,7 +80,7 @@ namespace GGE
     }
 
 
-    void SoundManager::resumeSound(std::string soundName)
+    void SoundManager::resumeSound(const std::string &soundName)
     {
         SoundObject *sound = soundObjects.at(soundName);
         ALint state;
@@ -91,7 +91,7 @@ namespace GGE
 
     }
 
-    void SoundManager::playMusic(std::string soundName, float volume, bool loop){
+    void SoundManager::playMusic(const std::string &soundName, float volume, bool loop){
 
         ALfloat sourcePos[] =  {0.0,0.0,0.0};
         ALfloat sourceOri[] =  {0.0, 0.0, -1.0, 0.0, 1.0, 0.0};
@@ -108,7 +108,7 @@ namespace GGE
         alListenerfv(AL_ORIENTATION, listenerOri);
     }
 
-    bool SoundManager::isPlaying(std::string soundName)
+    bool SoundManager::isPlaying(const std::string &soundName)
     {
         SoundObject *sound = soundObjects.at(soundName);
         ALint state;
@@ -122,7 +122,7 @@ namespace GGE
         instance = NULL;
     }
 
-    void SoundManager::addSoundObject(std::string objectName, SoundObject *sound)
+    void SoundManager::addSoundObject(const std::string &objectName, SoundObject *sound)
     {
         soundObjects.insert(std::make_pair(objectName, sound));
     }

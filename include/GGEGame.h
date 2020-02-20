@@ -13,7 +13,7 @@
  #endif
 #else
  #include "OS_GLFW.h"
-#endif  
+#endif
 #if defined(__WIN32__)
 #include <windows.h>
 #else
@@ -42,11 +42,11 @@ namespace GGE
         void            finishResources();
         void            finishInputSystem();
         void            checkFocused();
-        void            changeScreen(std::string screenName);
+        void            changeScreen(const std::string &screenName);
 
-        void            addScreen(std::string name, Screen* _screen);
-        void            removeScreen(std::string name);
-        
+        void            addScreen(const std::string &name, Screen* _screen);
+        void            removeScreen(const std::string &name);
+
         void            beforeGameLoop();
         void            gameLoop();
         void            afterGameLoop();

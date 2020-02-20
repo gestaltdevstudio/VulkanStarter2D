@@ -34,7 +34,7 @@ namespace GGE
                return OS::instance;
             }
             void destroy();
-            void createWindow(std::string windowName, int _width, int _height, bool _fullScreen);
+            void createWindow(const std::string &windowName, int _width, int _height, bool _fullScreen);
             void checkInputEvent();
             void procEvent();
             void swapBuffer();
@@ -53,7 +53,7 @@ namespace GGE
             inline int getJoystickCount() {return joystickCount;};
             inline bool isJoystickPresent(int joy) { return glfwJoystickPresent(joy) != GLFW_FALSE;};
             inline void setRunning(bool _yn) {running = _yn;}
-            std::string getJoystickName(int joy);
+            std::string getJoystickName(int joy) const;
             JoystickMap getJoystickMap(int joy);
             void setCursorPosition(int x, int y);
             void toggleFullScreen();

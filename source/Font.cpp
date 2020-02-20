@@ -12,9 +12,7 @@ namespace GGE
 
     Font::~Font()
     {
-
         free(fontChars);
-
     }
 
     void Font::loadFont(const resourceFile *fileBuffer)
@@ -26,8 +24,7 @@ namespace GGE
         char lineHeader[130];
         int n;
 
-
-            sscanf(file, "%s", lineHeader);
+        sscanf(file, "%s", lineHeader);
 
         if (strncmp(lineHeader, "info", strlen("info")) == 0)
         {
@@ -59,7 +56,7 @@ namespace GGE
 
         if (charCount == 0)
         {
-//            OS::getInstance()->alert("Error reading Font File", "");
+            return;
         }
         else
         {
@@ -80,7 +77,6 @@ namespace GGE
                     fontChars[fc.id] = fc;
 
                 }
-
 
                 file = strtok ( NULL,"\r\n");
 

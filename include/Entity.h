@@ -11,16 +11,18 @@ namespace GGE
     {
 
         public:
-            inline Entity(std::string _name) { name = _name; rotation = 0;
-				position = (Vector2*) malloc(sizeof(Vector2));
-				previousPosition = (Vector2*) malloc(sizeof(Vector2));
-				nextPosition = (Vector2*) malloc(sizeof(Vector2));
-				dimension = (Vector2*) malloc(sizeof(Vector2));
+            inline Entity(const std::string &_name)
+            {
+                name = _name; rotation = 0;
+                position = (Vector2*) malloc(sizeof(Vector2));
+                previousPosition = (Vector2*) malloc(sizeof(Vector2));
+                nextPosition = (Vector2*) malloc(sizeof(Vector2));
+                dimension = (Vector2*) malloc(sizeof(Vector2));
 
-				position->x = position->y = 0;
-		previousPosition->x = previousPosition->y = 0;
-		nextPosition->x = nextPosition->y = 0;
-		};
+                position->x = position->y = 0;
+                previousPosition->x = previousPosition->y = 0;
+                nextPosition->x = nextPosition->y = 0;
+            };
             inline ~Entity()
             {
                 if (position)
@@ -40,7 +42,7 @@ namespace GGE
             inline void setPosition(float _x, float _y) { position->x = _x; position->y = _y;}
             inline void setDimension(float _x, float _y) { dimension->x = _x; dimension->y = _y; }
             inline void setRotation(float _rotation) { rotation= _rotation; };
-            inline std::string getName() { return name; };
+            inline std::string getName() const { return name; };
             inline void setPreviousPosition(float x, float y) { previousPosition->x = x; previousPosition->y = y; }
             inline Vector2* getPreviousPosition() { return previousPosition; }
             inline void setNextPosition(float x, float y) { nextPosition->x = x; nextPosition->y = y; }

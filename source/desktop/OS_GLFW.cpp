@@ -51,7 +51,7 @@ namespace GGE
         instance = NULL;
 	}
 
-	void OS::createWindow(std::string windowName, int _width, int _height, bool _fullScreen)
+	void OS::createWindow(const std::string &windowName, int _width, int _height, bool _fullScreen)
 	{
 		restoreWidth = _width;
 		restoreHeight = _height;
@@ -116,6 +116,7 @@ namespace GGE
 
     void OS::swapBuffer()
     {
+        GraphicsManager::getInstance()->getRenderer()->swapBuffer();
 //		glfwSwapBuffers(window);
 		glfwPollEvents();
 //        fflush(stdout);
@@ -143,7 +144,7 @@ namespace GGE
         return _return;
     }
 
-    std::string OS::getJoystickName(int joy)
+    std::string OS::getJoystickName(int joy) const
     {
         return to_string(glfwGetJoystickName(joy));
     }
@@ -288,6 +289,7 @@ namespace GGE
         p.y = (int) (p.y - (windowSize.y / 2 - viewportSize.y / 2)) * SCREEN_Y / viewportSize.y;
         p.x -= SCREEN_X/2;
         p.y -= SCREEN_Y/2;
+        p.y *= -1;
 
         return p;
     }

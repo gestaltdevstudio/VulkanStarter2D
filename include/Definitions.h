@@ -16,21 +16,8 @@
 #include<glm/gtx/quaternion.hpp>
 #include<glm/gtx/transform.hpp>
 #include <glm/gtx/norm.hpp>
-#if defined(__ANDROID__)
- #include <GLES/gl.h>
- #include <GLES3/gl3.h>
- #include <GLES3/gl3ext.h>
-#elif __APPLE__
- #include "TargetConditionals.h"
- #if TARGET_OS_OSX
-  //#include <glad/glad.h>
+
 #include "vulkan/vulkan.h"
- #else
-  #include <OpenGLES/ES3/gl.h>
- #endif
-#else
- #include "vulkan/vulkan.h"
-#endif
 
 #ifndef FIXED_ASPECT_RATIO
 #define FIXED_ASPECT_RATIO 1.777777777f
@@ -111,8 +98,6 @@ namespace GGE
         GAME_ENDED = 4,
         MAIN_MENU = 5,
         GAME_SETTINGS = 6
-    //	SELECT_DIFFICULT = 7,
-    //	SELECT_VERSUS_MODE = 8
     };
 
     enum AnimationPlayMode {

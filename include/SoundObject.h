@@ -6,7 +6,6 @@
 #include <vorbis/codec.h>
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
-//#include <AL/alut.h>
 #include <cstdio>
 #include <vector>
 #include "ResourcesManager.h"
@@ -34,7 +33,7 @@ namespace GGE
             SoundObject();
             ~SoundObject();
             void loadSound(bool spatialization, const resourceFile *rf);
-//            void playSound(float volume, ALfloat sourcePos[], ALfloat sourceOri[], ALfloat sourceVel[], bool loop);
+
             void loadOGG(const resourceFile *rf, std::vector<char> &buffer, ALenum &format, ALsizei &freq);
             inline ALuint getSoundSource() { return soundSource; }
 
@@ -42,8 +41,8 @@ namespace GGE
             ALuint soundBuffer;
             ALuint soundSource;
             ALint state;
-            ALenum format;                          // The sound data format
-            ALsizei freq;                           // The frequency of the sound data
+            ALenum format;
+            ALsizei freq;
             size_t null_read(void *ptr, size_t size, size_t nmemb, void* datasource);
             int null_seek(void* datasource, ogg_int64_t offset, int whence);
             int null_close(void* datasource);

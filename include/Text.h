@@ -38,27 +38,18 @@ namespace GGE
 
         public:
             Text();
-            ~Text();
-            void initText(const char * _textName, Font *_textFont, std::string _textureRegionName, TextureAtlas* _textureAtlas, int _x, int _y);
+            virtual ~Text();
+            void initText(const char * _textName, Font *_textFont, const std::string &_textureRegionName, TextureAtlas* _textureAtlas, int _x, int _y);
 
-            void setText(std::string _text);
+            void setText(const std::string &_text);
 
-//            inline void setPosition(int _x, int _y) {position.x = _x; position.y = _y; updateText(); };
-//            inline void setScaleX(float _x) { scaleX = _x; updateText(); }
-//            inline void setScaleY(float _y) { scaleY = _y; updateText(); }
-//            inline void setVisible(bool _visible) { visible = _visible; updateText(); }
-//            inline bool isVisible() { return visible; }
-            inline std::string getName() { return textName; }
+            inline std::string getName() const { return textName; }
 
-//            inline Point getPosition() { return position; }
-//            inline float getScaleX() { return scaleX; }
-//            inline float getScaleY() { return scaleY; }
             inline Font* getFont() { return font; }
             inline TextureAtlas* getTextureAtlas() { return textureAtlas; }
-            inline std::string getTextureRegionName() { return textureRegionName; }
+            inline std::string getTextureRegionName() const { return textureRegionName; }
             inline std::vector<CharInfo> getCharsInfo() { return charsInfo; }
-//            inline void setColor(Vector4 _color) { color = _color; }
-//            inline Vector4 getColor() { return color; }
+
             inline void setTextAlign(TextAlign _textAlign) { textAlign = _textAlign; updateText(); }
             inline TextAlign getTextAlign() { return textAlign; }
 
@@ -69,17 +60,17 @@ namespace GGE
             TextAlign               textAlign;
             std::string             textName;
             float                   textSize;
-//            float                   scaleX, scaleY;
+
             Font                    *font;
 			std::string             textToPrint;
 			std::string             textPrinted;
             Texture                 *texture;
-//            Vector4                 color;
+
 
             std::vector<CharInfo>   charsInfo;
             std::string             textureRegionName;
             TextureAtlas            *textureAtlas;
-//            Point                   position;
+
             bool                    visible;
 
 

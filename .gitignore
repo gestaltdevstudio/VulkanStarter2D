@@ -5,7 +5,14 @@
 /IDEFiles/Linux/*.depend
 /IDEFiles/Linux/*.layout
 /android/.gradle
+/android/gradle
 /android/.externalNativeBuild
 /android/build
 /android/assets
+
+.idea/
 .vs
+*.iml
+local.properties
+gradlew*
+

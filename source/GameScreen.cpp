@@ -7,6 +7,10 @@ namespace GGE
     {
         fixedDeltaTime = 0.016;
 
+        gameModel = new GameModel();
+        gameView = new GameView(this, gameModel);
+
+        gameModel->initModel();
     }
 
     GameScreen::~GameScreen()
@@ -17,15 +21,9 @@ namespace GGE
     void GameScreen::initScreen()
     {
 
-
-        gameModel = new GameModel();
-        gameView = new GameView(this, gameModel);
-
-        gameModel->initModel();
         gameView->initView();
         accumulator = 0;
         OS::getInstance()->setRunning(true);
-        GraphicsManager::getInstance()->prepare();
     }
 
     void GameScreen::render(float deltaTime)
@@ -60,24 +58,39 @@ namespace GGE
     void GameScreen::show()
     {
 
+#if defined (GGE_DESKTOP)
+        GraphicsManager::getInstance()->getRenderer()->createContext();
         initScreen();
-
+        GraphicsManager::getInstance()->prepare();
+#endif
     }
 
     void GameScreen::pause()
     {
-
+#if defined (__ANDROID__)
+        GraphicsManager::getInstance()->reset();
+        gameView->finishView();
+#endif
     }
 
     void GameScreen::resume()
     {
+
+#if defined (__ANDROID__)
+        GraphicsManager::getInstance()->getRenderer()->createContext();
+        initScreen();
+        GraphicsManager::getInstance()->prepare();
+#endif
 
     }
 
     void GameScreen::finish()
     {
 
+#if defined (GGE_DESKTOP)
+        GraphicsManager::getInstance()->reset();
         gameView->finishView();
+#endif
         gameModel->finishModel();
 
         delete gameView;

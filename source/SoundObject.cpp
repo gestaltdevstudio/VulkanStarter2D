@@ -32,8 +32,9 @@ namespace GGE
                   (long (*)(void *))                            null_tell
                 };
 
-    SoundObject::SoundObject(){
-      // General
+    SoundObject::SoundObject()
+    {
+
     }
 
     SoundObject::~SoundObject(){

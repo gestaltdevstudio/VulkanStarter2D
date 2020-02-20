@@ -75,14 +75,12 @@
 		<Unit filename="../../include/GameView.h" />
 		<Unit filename="../../include/GraphicElement.h" />
 		<Unit filename="../../include/GraphicsManager.h" />
-		<Unit filename="../../include/GraphicsUtils.h" />
 		<Unit filename="../../include/InputSystem.h" />
 		<Unit filename="../../include/Model.h" />
 		<Unit filename="../../include/OS_GLFW.h" />
 		<Unit filename="../../include/Renderer.h" />
 		<Unit filename="../../include/ResourcesManager.h" />
 		<Unit filename="../../include/Screen.h" />
-		<Unit filename="../../include/Shader.h" />
 		<Unit filename="../../include/SoundManager.h" />
 		<Unit filename="../../include/SoundObject.h" />
 		<Unit filename="../../include/Sprite.h" />
@@ -101,7 +99,6 @@
 		<Unit filename="../../source/GameScreen.cpp" />
 		<Unit filename="../../source/GameView.cpp" />
 		<Unit filename="../../source/GraphicsManager.cpp" />
-		<Unit filename="../../source/GraphicsUtils.cpp" />
 		<Unit filename="../../source/InputSystem.cpp" />
 		<Unit filename="../../source/Renderer.cpp" />
 		<Unit filename="../../source/ResourcesManager.cpp" />

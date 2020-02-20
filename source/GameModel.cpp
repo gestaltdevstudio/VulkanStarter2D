@@ -17,14 +17,10 @@ namespace GGE
         player = new Entity("Player");
         player->setDimension(80, 170);
         player->setPosition(-SCREEN_X/2 + 200, 300);
-//        GraphicsManager::getInstance()->addEntity(player);
-
 
         floor = new Entity("Floor");
         floor->setDimension(1920, 150);
         floor->setPosition(0, -SCREEN_Y/2 + floor->getDimension()->y/2);
-//        Graphics::getInstance()->addEntity(floor);
-
 
         playerVelocity.x = playerVelocity.y = 0;
 
@@ -157,7 +153,6 @@ namespace GGE
 
     void GameModel::finishModel()
     {
-
         delete player;
         delete floor;
 

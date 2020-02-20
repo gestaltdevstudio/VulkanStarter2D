@@ -8,7 +8,7 @@
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         <activity android:name="com.gds.vulkanStarter2D.VulkanStarter2DActivity"
             android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize">
             <meta-data android:name="android.app.lib_name"
                 android:value="VulkanStarter2D" />
             <intent-filter>

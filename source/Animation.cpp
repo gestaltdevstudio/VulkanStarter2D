@@ -12,13 +12,7 @@ namespace GGE
 
     Animation::~Animation()
     {
-        for (unsigned int j=0;j<frames.size();j++)
-        {
-                TextureRegion* textureRegion = frames[j];
-                frames[j] = 0;
-                if (textureRegion)
-                    delete textureRegion;
-        }
+
     }
 
     void Animation::loadFrames(TextureAtlas *_textureAtlas, float _frameDuration, std::vector<std::string> _framesNames)

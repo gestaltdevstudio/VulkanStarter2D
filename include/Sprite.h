@@ -12,12 +12,12 @@ namespace GGE
     class Sprite : public Drawable
     {
         public:
-            Sprite(std::string _name);
+            Sprite(const std::string &_name);
             virtual ~Sprite();
-            void setCurrentAnimationName(std::string _animationName, AnimationPlayMode _playMode);
-            inline std::string getCurrentAnimationName() { return currentAnimationName; }
+            void setCurrentAnimationName(const std::string &_animationName, AnimationPlayMode _playMode);
+            inline std::string getCurrentAnimationName() const { return currentAnimationName; }
             inline Animation* getCurrentAnimation() { return animations.at(currentAnimationName); };
-            inline void addAnimation(std::string animationName, Animation *animation) { animations.insert(std::make_pair(animationName, animation)); }
+            inline void addAnimation(const std::string &animationName, Animation *animation) { animations.insert(std::make_pair(animationName, animation)); }
             inline AnimationPlayMode getAnimationPlayMode() { return playMode; }
             inline void setEntity(Entity *_entity) { entity = _entity; }
             inline Entity* getEntity() { return entity; }
@@ -27,7 +27,7 @@ namespace GGE
             inline float getElapsedTime() { return elapsedTime; }
             inline void setZOrder(int _zOrder) { zOrder = _zOrder;}
             inline int getZOrder() { return zOrder; }
-            inline std::string getName() { return name; };
+            inline std::string getName() const { return name; };
 
 
         protected:

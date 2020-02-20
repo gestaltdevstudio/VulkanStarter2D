@@ -28,10 +28,8 @@ namespace GGE
                     if (textureImageMemory)vkFreeMemory(device, textureImageMemory, nullptr);
                 }
 
-            } // { if (sdlTexture) SDL_DestroyTexture(sdlTexture); sdlTexture = NULL; }
+            }
             inline VkImageView getTextureImageView() { return textureImageView; }
-//            inline void setSDLTexture(SDL_Texture *_sdlTexture) { sdlTexture = _sdlTexture; }
-//            inline SDL_Texture* getSDLTexture() { return sdlTexture; }
 
             VkDevice device;
             VkImage textureImage;
@@ -40,7 +38,6 @@ namespace GGE
 
 
         private:
-//            SDL_Texture     *sdlTexture;
 
 
     };
