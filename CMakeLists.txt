@@ -25,7 +25,7 @@ if (MSVC)
 endif (MSVC)
 
 include_directories(${CPP_DIR}/include ${CPP_DIR}/include/external/libzip ${CPP_DIR}/include/external)
-file(GLOB SOURCES "${CPP_DIR}/main.cpp" "${CPP_DIR}/source/*.cpp")
+file(GLOB SOURCES "${CPP_DIR}/main.cpp" "${CPP_DIR}/source/desktop/OS_GLFW.cpp" "${CPP_DIR}/source/*.cpp")
 
 if (UNIX AND NOT APPLE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -no-pie")
