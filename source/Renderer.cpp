@@ -104,6 +104,8 @@ namespace GGE
         vertices.clear();
         renderChunks.clear();
 
+        imagesInFlight.clear();
+
         createBigBuffers();
 
         createTextureSampler();
@@ -1325,7 +1327,6 @@ namespace GGE
         renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
         imagesInFlight.resize(swapChainImages.size(), VK_NULL_HANDLE);
-        //imagesInFlight.clear();
 
 
         VkSemaphoreCreateInfo semaphoreInfo = {};
