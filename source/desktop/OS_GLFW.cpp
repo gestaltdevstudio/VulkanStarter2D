@@ -84,7 +84,6 @@ namespace GGE
             glfwTerminate();
         } else {
 
-
             glfwSetJoystickCallback(joystick_callback);
 //			glfwSetWindowAspectRatio(window, 16, 9);
 
@@ -118,7 +117,6 @@ namespace GGE
     {
         GraphicsManager::getInstance()->getRenderer()->swapBuffer();
 //		glfwSwapBuffers(window);
-		glfwPollEvents();
 //        fflush(stdout);
     }
 
@@ -168,6 +166,8 @@ namespace GGE
         {
             running = false;
         }
+
+		glfwPollEvents();
     }
 
     Point OS::getWindowSize()
