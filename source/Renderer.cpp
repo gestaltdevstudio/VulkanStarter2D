@@ -27,7 +27,6 @@ namespace GGE
 
     void Renderer::createContext()
     {
-        renderIndex = 0;
 
 #if !defined(__ANDROID__)
         createSurface();
@@ -47,6 +46,7 @@ namespace GGE
         createGraphicsPipeline();
         createFramebuffers();
         createCommandPool();
+        vertextMappedMemory = VK_NULL_HANDLE;
 
     }
 
@@ -63,8 +63,12 @@ namespace GGE
 
             vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
 
-            vkDestroyBuffer(device, bigBuffer, nullptr);
-            vkFreeMemory(device, bigBufferMemory, nullptr);
+            vkUnmapMemory(device, stagingBigBufferMemory);
+            if (dedicatedDevice) {
+                vkDestroyBuffer(device, bigBuffer, nullptr);
+                vkFreeMemory(device, bigBufferMemory, nullptr);
+            }
+
             vkDestroyBuffer(device, stagingBigBuffer, nullptr);
             vkFreeMemory(device, stagingBigBufferMemory, nullptr);
 
@@ -125,13 +129,29 @@ namespace GGE
     {
         if (device)
         {
-            createBuffer(bufferTotalSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                        stagingBigBuffer, stagingBigBufferMemory);
+            VkBufferUsageFlags dedicatedUsageFlags = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+            VkMemoryPropertyFlags dedicatedPropertyFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+                                                           VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+
+            if (dedicatedDevice) {
+                createBuffer(bufferTotalSize,
+                             VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT |
+                             VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+                             bigBuffer, bigBufferMemory);
+            } else {
+#if defined(__ANDROID__)
+                dedicatedPropertyFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+                dedicatedUsageFlags = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+#else
+                dedicatedUsageFlags |= VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+#endif
+
+            }
+
+            createBuffer(bufferTotalSize, dedicatedUsageFlags, dedicatedPropertyFlags,
+                         stagingBigBuffer, stagingBigBufferMemory);
 
 
-            createBuffer(bufferTotalSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT |
-                                          VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-                        bigBuffer, bigBufferMemory);
         }
     }
 
@@ -258,6 +278,8 @@ namespace GGE
         vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
         physicalDevice = devices[0];
+
+
 #if !defined (__ANDROID__)
         for (const auto& device : devices) {
             if (isDeviceSuitable(device)) {
@@ -266,6 +288,15 @@ namespace GGE
             }
         }
 #endif
+
+        VkPhysicalDeviceProperties deviceProperties;
+        vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
+
+        dedicatedDevice = false;
+        if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+        {
+            dedicatedDevice = true;
+        }
 
         if (physicalDevice == VK_NULL_HANDLE) {
             throw std::runtime_error("failed to find a suitable GPU!");
@@ -301,7 +332,27 @@ namespace GGE
         copyRegion.size = size;
         copyRegion.srcOffset = srcOffset;
         copyRegion.dstOffset = dstOffset;
+
         vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
+//        vkCmd
+//
+//        VkBufferMemoryBarrier buffer_memory_barrier = {
+//          VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER,          // VkStructureType                        sType;
+//          nullptr,                                          // const void                            *pNext
+//          VK_ACCESS_MEMORY_WRITE_BIT,                       // VkAccessFlags                          srcAccessMask
+//          VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT,              // VkAccessFlags                          dstAccessMask
+//          VK_QUEUE_FAMILY_IGNORED,                          // uint32_t                               srcQueueFamilyIndex
+//          VK_QUEUE_FAMILY_IGNORED,                          // uint32_t                               dstQueueFamilyIndex
+//          dstBuffer,                       // VkBuffer                               buffer
+//          0,                                                // VkDeviceSize                           offset
+//          VK_WHOLE_SIZE                                     // VkDeviceSize                           size
+//        };
+//
+//        vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT,
+//                        VK_PIPELINE_STAGE_VERTEX_INPUT_BIT, 0,
+//                        0, nullptr,
+//                        1, &buffer_memory_barrier,
+//                        0, nullptr );
 
         endSingleTimeCommands(commandBuffer);
     }
@@ -505,30 +556,28 @@ namespace GGE
 
         VkDeviceSize indexBufferSize = sizeof(indices[0]) * renderIndex;
 
-        void* data;
-        vkMapMemory(device, stagingBigBufferMemory, 0, bufferSize, 0, &data);
-            memcpy(data, vertices.data(), (size_t) bufferSize);
-        vkUnmapMemory(device, stagingBigBufferMemory);
 
-        void* dataIndices;
-        vkMapMemory(device, stagingBigBufferMemory, bufferSize, indexBufferSize, 0, &dataIndices);
-            memcpy(dataIndices, indices.data(), (size_t) indexBufferSize);
-        vkUnmapMemory(device, stagingBigBufferMemory);
+        if (indices.size() != indicesOld)
+        {
+            if (vertextMappedMemory != VK_NULL_HANDLE)
+                vkUnmapMemory(device, stagingBigBufferMemory);
+            vkMapMemory(device, stagingBigBufferMemory, 0, bufferSize, 0, &vertextMappedMemory);
+        }
 
-        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, 0, bufferSize + indexBufferSize);
-//
-//        VkDeviceSize indexBufferSize = sizeof(indices[0]) * renderIndex;
-//
-//
-//        copyBufferRegion(stagingBigBuffer, bigBuffer, 0, bufferSize, indexBufferSize);
+        memcpy(vertextMappedMemory, vertices.data(), (size_t) bufferSize);
+        memcpy((void*)((size_t)vertextMappedMemory + bufferSize), indices.data(), (size_t) indexBufferSize);
+
+        if (dedicatedDevice) {
+            copyBufferRegion(stagingBigBuffer, bigBuffer, 0, 0, bufferSize + indexBufferSize);
+        }
 
 
-//        if (indices.size() != indicesOld)
-//        {
+        if (indices.size() != indicesOld)
+        {
             vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
             createCommandBuffers();
             indicesOld = indices.size();
-//        }
+        }
 
 
     }
@@ -1300,14 +1349,20 @@ namespace GGE
 
                 vkCmdBindPipeline(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
-                VkBuffer vertexBuffers[] = {bigBuffer};
+            VkBuffer temp;
+            if (dedicatedDevice) {
+                temp = bigBuffer;
+            } else {
+                temp = stagingBigBuffer;
+            }
+            VkBuffer vertexBuffers[] = {temp};
                 VkDeviceSize offsets[] = {0};
                 vkCmdBindVertexBuffers(commandBuffers[i], 0, 1, vertexBuffers, offsets);
 
                 uint16_t indicesOffset = 0;
                 for(auto&& renderChunk: renderChunks)
                 {
-                    vkCmdBindIndexBuffer(commandBuffers[i], bigBuffer, static_cast<uint32_t>(vertices.size()) * sizeof(Vertex) + (indicesOffset * sizeof(indices[0])), VK_INDEX_TYPE_UINT16);
+                    vkCmdBindIndexBuffer(commandBuffers[i], temp, static_cast<uint32_t>(vertices.size()) * sizeof(Vertex) + (indicesOffset * sizeof(indices[0])), VK_INDEX_TYPE_UINT16);
                     vkCmdBindDescriptorSets(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &descriptorSets[renderChunk.texture][i], 0, nullptr);
 
                     vkCmdDrawIndexed(commandBuffers[i], renderChunk.indicesCount, 1, 0, 0, 0);

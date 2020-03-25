@@ -113,7 +113,7 @@ namespace GGE
             void onRenderFinish();
             void swapBuffer();
             void renderResize(Point windowSize);
-            void createBigBuffers(uint32_t bufferTotalSize = 128 * 1024);
+            void createBigBuffers(uint32_t bufferTotalSize = 128 * 1024 * 1024);
             void prepare();
             Texture* createTextureImage(const resourceFile* fileBuffer);
 
@@ -127,6 +127,7 @@ namespace GGE
             void destroyContext();
 
         private:
+
             void createInstance();
             void setupDebugMessenger();
             void createSurface();
@@ -242,7 +243,12 @@ namespace GGE
 
 
             bool framebufferResized = false;
+            bool dedicatedDevice = false;
             uint16_t indicesOld;
+
+
+            void *vertextMappedMemory;
+            void *indicesMappedMemory;
 
 #if defined(DEBUG)
             const bool enableValidationLayers = true;

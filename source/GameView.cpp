@@ -50,25 +50,29 @@ namespace GGE
         playerSprite->setY(SCREEN_Y/2 - playerSprite->getTextureRegion()->height/2);
         GraphicsManager::getInstance()->addGraphicElement(playerSprite);
 
-        playerSprite2 = new Sprite("Player2");
-        playerSprite2->loadRegion("dogAnim2", ta);
-        animation2 = new Animation();
-        std::vector<std::string> frames2;
-        frames2.push_back("dogAnim2");
-        frames2.push_back("dogAnim3");
-        frames2.push_back("dogAnim4");
-        frames2.push_back("dogAnim5");
-        frames2.push_back("dogAnim6");
-        frames2.push_back("dogAnim7");
-        frames2.push_back("dogAnim8");
-        frames2.push_back("dogAnim9");
-        animation2->loadFrames(ta, 1.0/8, frames2);
-        playerSprite2->addAnimation("Idle", animation2);
-        playerSprite2->setCurrentAnimationName("Idle", ANIM_LOOP_PINGPONG);
-        playerSprite2->setIsVisible(true);
-        playerSprite2->setX(0);
-        playerSprite2->setY(0);
-        GraphicsManager::getInstance()->addGraphicElement(playerSprite2);
+        for (int i=0; i<1; i++) {
+
+            Sprite *ps = new Sprite("Player" + i);
+            ps->loadRegion("dogAnim2", ta);
+            animation2 = new Animation();
+            std::vector<std::string> frames2;
+            frames2.push_back("dogAnim2");
+            frames2.push_back("dogAnim3");
+            frames2.push_back("dogAnim4");
+            frames2.push_back("dogAnim5");
+            frames2.push_back("dogAnim6");
+            frames2.push_back("dogAnim7");
+            frames2.push_back("dogAnim8");
+            frames2.push_back("dogAnim9");
+            animation2->loadFrames(ta, 1.0/8, frames2);
+            ps->addAnimation("Idle", animation2);
+            ps->setCurrentAnimationName("Idle", ANIM_LOOP_PINGPONG);
+            ps->setIsVisible(true);
+            ps->setX(0);
+            ps->setY(0);
+            GraphicsManager::getInstance()->addGraphicElement(ps);
+            playerSprite2.push_back(ps);
+        }
 
         s2 = new Sprite("Bone");
         s2->loadRegion("bone", ta2);
@@ -182,7 +186,6 @@ namespace GGE
             }
 #endif
 
-//        if (runOnce++ < 2)
         GraphicsManager::getInstance()->doGraphics(deltaTime);
 
     }
@@ -192,8 +195,10 @@ namespace GGE
 
         delete playerSprite;
          playerSprite = NULL;
-        delete playerSprite2;
-         playerSprite2 = NULL;
+        for(const Sprite *s : playerSprite2)
+        {
+            delete s;
+        }
         delete s2;
         delete animation;
         delete animation2;

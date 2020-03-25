@@ -26,7 +26,7 @@ namespace GGE
             TextureAtlas *ta, *ta2;
 
             Sprite *playerSprite;
-            Sprite *playerSprite2;
+            std::vector<Sprite *> playerSprite2;
             Animation *animation;
             Animation *animation2;
             Sprite *s2;
